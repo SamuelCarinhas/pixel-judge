@@ -19,3 +19,14 @@
     cursor: pointer;
     border-bottom: solid 0.01rem #999;
 }
+
+@media only screen and (max-width: 700px) {
+    .footer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+}
+

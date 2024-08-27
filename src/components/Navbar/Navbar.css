@@ -1,4 +1,5 @@
 .navbar {
+    position: relative;
     height: 4rem;
     width: 100%;
     display: flex;
@@ -46,4 +47,43 @@
 .navbar .options .option:hover span {
     cursor: pointer;
     border-bottom: solid 0.01rem #000;
+}
+
+.navbar .drop {
+    display: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .navbar .drop {
+        display: flex;
+        font-size: 2rem;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navbar .drop:hover {
+        cursor: pointer;
+    }
+
+    .navbar .options {
+        top: 100%;
+        right: 0;
+        height: auto;
+        transition: all 0.5s linear;
+        position: absolute;
+        display: none;
+        overflow: hidden;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+
+    .navbar .options.show {
+        display: flex;
+        transition: all 0.5s linear;
+    }
 }

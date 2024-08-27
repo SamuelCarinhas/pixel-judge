@@ -1,5 +1,7 @@
 import './Navbar.css'
 import logo from '../../assets/images/logo.png'
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useState } from 'react';
 
 export default function Navbar() {
 
@@ -18,13 +20,18 @@ export default function Navbar() {
         }
     ]
 
+    const [showOptions, setShowOptions] = useState<boolean>(false);
+
     return (
         <div className='navbar'>
             <div className='logo'>
                 <img src={ logo }></img>
                 <span>PixelJudge</span>
             </div>
-            <div className='options'>
+            <div className='drop' onClick={() => setShowOptions(!showOptions)}>
+                <GiHamburgerMenu />
+            </div>
+            <div className={`options ${showOptions ? 'show' : ''}`}>
                 {
                     options.map((option, index) =>
                     <div key={index} className='option'>

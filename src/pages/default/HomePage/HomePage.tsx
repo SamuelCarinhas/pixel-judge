@@ -1,8 +1,10 @@
+import './HomePage.css'
+
 export default function HomePage() {
 
     return (
-        <div>
-            Teste
+        <div className="home-page">
+            <div className="loader"></div>
         </div>
     )
 }
