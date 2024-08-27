@@ -2,21 +2,28 @@ import './Navbar.css'
 import logo from '../../assets/images/logo.png'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
 
+    const navigate = useNavigate();
+
     const options = [
         {
-            title: 'Problems'
+            title: 'Problems',
+            url: '/problems'
         },
         {
-            title: 'Contests'
+            title: 'Contests',
+            url: '/contests'
         },
         {
-            title: 'Rating'
+            title: 'Rating',
+            url: '/rating'
         },
         {
-            title: 'Forum'
+            title: 'Forum',
+            url: '/forum'
         }
     ]
 
@@ -24,7 +31,7 @@ export default function Navbar() {
 
     return (
         <div className='navbar'>
-            <div className='logo'>
+            <div className='logo' onClick={ () => navigate('/') }>
                 <img src={ logo }></img>
                 <span>PixelJudge</span>
             </div>
@@ -35,7 +42,7 @@ export default function Navbar() {
                 {
                     options.map((option, index) =>
                     <div key={index} className='option'>
-                        <span>{ option.title }</span>
+                        <span onClick={ () => navigate(option.url) }>{ option.title }</span>
                     </div>
                     )
                 }

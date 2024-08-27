@@ -14,6 +14,10 @@
     height: 100%;
 }
 
+.navbar .logo:hover {
+    cursor: pointer;
+}
+
 .navbar .logo img {
     aspect-ratio: 1;
     height: 100%;

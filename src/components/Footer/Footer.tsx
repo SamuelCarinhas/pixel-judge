@@ -1,19 +1,26 @@
+import { useNavigate } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
 
+    const navigate = useNavigate();
+
     const options = [
         {
-            title: 'Bug Bounty'
+            title: 'Bug Bounty',
+            url: '/bug-bounty'
         },
         {
-            title: 'Students'
+            title: 'Students',
+            url: '/students'
         },
         {
-            title: 'Terms'
+            title: 'Terms',
+            url: '/terms'
         },
         {
-            title: 'Privacy Policy'
+            title: 'Privacy Policy',
+            url: '/privacy-policy'
         }
     ]
 
@@ -26,7 +33,7 @@ export default function Footer() {
                 {
                     options.map((option, index) =>
                         <div key={index} className='option'>
-                            <span> { option.title } </span>
+                            <span onClick={ () => navigate(option.url) }> { option.title } </span>
                         </div>
                     )
                 }
