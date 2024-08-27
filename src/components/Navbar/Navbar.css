@@ -1,0 +1,49 @@
+.navbar {
+    height: 4rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.navbar .logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar .logo img {
+    aspect-ratio: 1;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(2px 2px 5px #000000);
+}
+
+.navbar .logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.navbar .options {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.navbar .options .option {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.navbar .options .option:hover span {
+    cursor: pointer;
+    border-bottom: solid 0.01rem #000;
+}
