@@ -1,0 +1,22 @@
+.notfound-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.notfound-page span {
+    font-size: 1.5rem;
+}
+
+.notfound-page span.primary {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #FF7219;
+}
+
+
+.notfound-page img {
+    height: 20rem;
+}

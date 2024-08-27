@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')!).render(
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
               <Route path={'/test'} element={<PageContainer> <HomePage/> </PageContainer>}/>
           </Route>
-          <Route path="*" element={ <NotFoundPage />} />
+          <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
