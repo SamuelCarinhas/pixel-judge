@@ -24,8 +24,8 @@ export default function Footer() {
             </div>
             <div className='options'>
                 {
-                    options.map(option =>
-                        <div className='option'>
+                    options.map((option, index) =>
+                        <div key={index} className='option'>
                             <span> { option.title } </span>
                         </div>
                     )
