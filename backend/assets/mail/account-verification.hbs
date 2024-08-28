@@ -1,18 +1,110 @@
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Account Verification</title>
-    </head>
-    <body>
-        <h2>Account Verification</h2>
-        <p>Hello {{username}},</p>
-        <p>Thank you for signing. To activate your account, please click the link
-            below:</p>
-        <p>
-            <a href="{{callback}}">Verify Account</a>
-        </p>
-        <p>If you didn't sign up for an account, please ignore this email.</p>
-        <p>Thank you,</p>
-        <p>Carinhas Auth System</p>
-    </body>
+<head>
+    <meta charset="utf-8" />
+    <title>Verify your account email</title>
+    <style>
+        .main {
+            background-color: #e6e3e3;
+            width: 100%;
+            max-width:40rem;
+            height: auto;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-sizing: border-box;
+            font-family:'FF Mark W05',Arial,sans-serif;
+        }
+        .header {
+            margin-top: 3rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .header img {
+            height: 5rem;
+            vertical-align: middle;
+        }
+        .body {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            width: 80%;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ffffff;
+        }
+        span {
+            vertical-align: middle;
+            display: inline-block;
+            line-height: normal;
+            font-weight: bold;
+            font-size: xx-large;
+        }
+        h2 {
+            font-size: x-large;
+        }
+        .body a {
+            color: #ffffff;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-sizing: border-box;
+            text-decoration: none;
+            background-color: #00C2FF;
+        }
+        .body a:hover {
+            filter: brightness(90%);
+        }
+
+        .footer {
+            font-size: 0.8rem;
+            color: #aaa;
+            align-items: center;
+            margin-bottom: 3rem;
+            width: 80%;
+            padding-top: 1rem;
+            border-radius: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        table {
+            margin:0;padding:0;border:none;border-spacing:0;width:100%;border-collapse:collapse;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <table>
+        <tbody>
+        <tr>
+            <th class="header row">
+                <img src="https://pixel-judge.samuelcarinhas.com/assets/logo-D83ie9s2.png" alt="Logo" />
+                <span>PixelJudge</span>
+            </th>
+        </tr>
+        <tr>
+            <th class="header">
+                <h1>VERIFY ACCOUNT</h1>
+            </th>
+        </tr>
+        <tr>
+            <td class="body">
+                <p>Hello {{username}}</p>
+                <p>Please press the button below to verify your account</p>
+                <br>
+                <a href="{{callback}}">Verify Account</a>
+                <br>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td class="footer">
+                <p>Copyright &copy; 2024 PixelJudge</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
