@@ -9,8 +9,8 @@ export default function SignInPage() {
     return (
         <div className='sign-in-page'>
             <span className='title'>Welcome to PixelJudge</span>
-            <InputField icon={ <FaRegUser /> } placeholder='Username'/>
-            <InputField icon={ <FaLock /> } placeholder='Password'/>
+            <InputField icon={ <FaRegUser /> } placeholder='Username' />
+            <InputField icon={ <FaLock /> } placeholder='Password' type='password' />
             <CustomButton color={ IButtonColor.ORANGE } text='Sign In' onClick={ () => {} } />
             <span>Don't have an account? <Link to='/sign-up'>Sign up now</Link></span>
         </div>
