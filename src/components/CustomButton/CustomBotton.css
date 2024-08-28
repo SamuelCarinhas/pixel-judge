@@ -1,0 +1,26 @@
+.custom-button {
+    background-color: #ccc;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 20rem;
+}
+
+.custom-button:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.custom-button.button-green {
+    background-color: #00E000;
+    color: #ffffff;
+}
+
+.custom-button.button-orange {
+    background-color: #FF7219;
+    color: #ffffff;
+}
+
+.custom-button.button-blue {
+    background-color: #00C2FF;
+    color: #ffffff;
+
+}

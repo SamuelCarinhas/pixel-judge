@@ -3,6 +3,8 @@ import logo from '../../assets/images/logo.png'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomButton from '../CustomButton/CustomButton';
+import { IButtonColor } from '../CustomButton/ICustomButton';
 
 export default function Navbar() {
 
@@ -46,6 +48,9 @@ export default function Navbar() {
                     </div>
                     )
                 }
+                <div className='option'>
+                    <CustomButton text='Sign In' color={ IButtonColor.GREEN } onClick={() => navigate('/sign-in')}/>
+                </div>
             </div>
         </div>
     )
