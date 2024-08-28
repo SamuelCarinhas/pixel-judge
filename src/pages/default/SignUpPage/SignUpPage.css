@@ -1,4 +1,4 @@
-.sign-in-page {
+.sign-up-page {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -7,45 +7,45 @@
     gap: 1rem;
 }
 
-.sign-in-page .title {
+.sign-up-page .title {
     font-size: 2rem;
     font-weight: bold;
 }
 
-.sign-in-page span {
+.sign-up-page span {
     font-size: medium;
     font-weight: 500;
 }
 
-.sign-in-page a {
+.sign-up-page a {
     text-decoration: none;
     color: #FF7219;
 }
 
-.sign-in-page a:hover {
+.sign-up-page a:hover {
     filter: brightness(90%);
 }
 
-.sign-in-page .input-field {
+.sign-up-page .input-field {
     width: 16rem;
 }
 
 @media only screen and (max-width: 700px) {
-    .sign-in-page .title {
+    .sign-up-page .title {
         font-size: 1.5rem;
     }
 
-    .sign-in-page span {
+    .sign-up-page span {
         font-size: 1rem;
     }
 
-    .sign-in-page {
+    .sign-up-page {
         gap: 2rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
 
-    .sign-in-page .input-field {
+    .sign-up-page .input-field {
         width: 10rem;
         height: 1.5rem;
     }
