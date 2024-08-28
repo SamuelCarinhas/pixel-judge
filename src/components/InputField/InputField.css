@@ -14,7 +14,15 @@
     position: relative;
     display: flex;
     align-items: center;
+    width: auto;
     color: #333;
+}
+
+.input-text {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .input-container svg {

@@ -29,3 +29,22 @@
 .sign-in-page .input-field {
     width: 16rem;
 }
+
+@media only screen and (max-width: 700px) {
+    .sign-in-page .title {
+        font-size: 1.5rem;
+    }
+
+    .sign-in-page span {
+        font-size: 1rem;
+    }
+
+    .sign-in-page {
+        gap: 2rem;
+    }
+
+    .sign-in-page .input-field {
+        width: 10rem;
+        height: 1.5rem;
+    }
+}
