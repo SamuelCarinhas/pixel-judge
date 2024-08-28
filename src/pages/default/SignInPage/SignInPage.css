@@ -1,0 +1,31 @@
+.sign-in-page {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sign-in-page .title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.sign-in-page span {
+    font-size: medium;
+    font-weight: 500;
+}
+
+.sign-in-page a {
+    text-decoration: none;
+    color: #FF7219;
+}
+
+.sign-in-page a:hover {
+    filter: brightness(90%);
+}
+
+.sign-in-page .input-field {
+    width: 16rem;
+}

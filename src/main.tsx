@@ -13,6 +13,7 @@ import ContestPage from './pages/default/ContestsPage/ContestsPage'
 import ForumPage from './pages/default/ForumPage/ForumPage'
 import ProblemsPage from './pages/default/ProblemsPage/ProblemsPage'
 import RatingPage from './pages/default/RatingPage/RatingPage'
+import SignInPage from './pages/default/SignInPage/SignInPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,13 +21,14 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={ <PageContainer> <HomePage /> </PageContainer> } />
-          <Route path={'/contests'} element={<PageContainer> <ContestPage /> </PageContainer>}/>
-          <Route path={'/forum'} element={<PageContainer> <ForumPage /> </PageContainer>}/>
-          <Route path={'/problems'} element={<PageContainer> <ProblemsPage /> </PageContainer>}/>
-          <Route path={'/rating'} element={<PageContainer> <RatingPage /> </PageContainer>}/>
-          <Route path={'/logout'} element={<PageContainer> <LogoutPage /> </PageContainer>}/>
+          <Route path={'/contests'} element={ <PageContainer> <ContestPage /> </PageContainer> } />
+          <Route path={'/forum'} element={ <PageContainer> <ForumPage /> </PageContainer> } />
+          <Route path={'/problems'} element={ <PageContainer> <ProblemsPage /> </PageContainer> } />
+          <Route path={'/rating'} element={ <PageContainer> <RatingPage /> </PageContainer> } />
+          <Route path={'/sign-in'} element={ <PageContainer> <SignInPage /> </PageContainer> } />
+          <Route path={'/logout'} element={ <PageContainer> <LogoutPage /> </PageContainer> } />
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
-              <Route path={'/test'} element={<PageContainer> <HomePage/> </PageContainer>}/>
+              <Route path={'/test'} element={ <PageContainer> <HomePage/> </PageContainer> } />
           </Route>
           <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>

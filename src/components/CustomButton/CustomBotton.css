@@ -1,4 +1,5 @@
 .custom-button {
+    user-select: none;
     background-color: #ccc;
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-radius: 20rem;
@@ -7,6 +8,11 @@
 .custom-button:hover {
     cursor: pointer;
     filter: brightness(90%);
+}
+
+.custom-button:active {
+    transform: translate(1px, 1px);
+    filter: drop-shadow(-1px -1px 1px #ccc);
 }
 
 .custom-button.button-green {
