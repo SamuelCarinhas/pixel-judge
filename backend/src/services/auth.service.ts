@@ -49,6 +49,15 @@ const createRefreshToken = (account: Account) => {
 }
 
 export async function signUp(username: string, email: string, password: string, callback: string) {
+    const usernameExists = await prisma.account.findUnique({
+            where: {
+                username
+            }
+        }
+    );
+
+    if(usernameExists) throw new Conflict('Username already taken.');
+
     const account = await prisma.account
         .create({
             data: {
@@ -56,7 +65,7 @@ export async function signUp(username: string, email: string, password: string, 
                 email,
                 password: await argon2.hash(password)
             }
-        }).catch(() => { throw new Conflict('An account already exists with this email') })
+        }).catch(() => { throw new Conflict('Email already taken.') })
 
     await verify(callback, account.email);
 
