@@ -7,20 +7,18 @@
 
 .input-text .input-error-text {
     color: red;
-    font-weight: 600;
     max-width: 20rem;
     text-align: center;
 }
 
 .input-field.input-error {
     border: solid red;
-    box-shadow: 0 0 0 2px red;
     animation: shake 0.5s;
 }
 
 .input-field:focus {
     outline: none;
-    box-shadow: 0 0 0 1px #999;
+    border: solid #333;
 }
 
 .input-container {
