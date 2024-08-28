@@ -17,7 +17,7 @@ router.use(express.urlencoded({ extended: true }))
 router.use(cookieParser('TESTE'))
 router.use(hpp())
 
-router.use('/', authRoute)
+router.use('/auth/', authRoute)
 
 router.get("/", apiController.root)
 router.get("/health-check", apiController.health)

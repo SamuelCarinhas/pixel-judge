@@ -6,9 +6,9 @@ import authMiddleware from "../middleware/auth.middleware";
 
 const router = Router()
 
-router.post('/signin', validate(SignInSchema), authController.signIn)
+router.post('/sign-in', validate(SignInSchema), authController.signIn)
 
-router.post('/signup', validate(SignUpSchema), authController.signUp)
+router.post('/sign-up', validate(SignUpSchema), authController.signUp)
 
 router.post('/refresh-token', authMiddleware.authorizeRefresh, authController.refreshToken)
 
