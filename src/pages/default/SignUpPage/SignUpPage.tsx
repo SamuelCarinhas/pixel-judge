@@ -49,7 +49,7 @@ export default function SignUpPage() {
             <InputField value={ password } error={ passwordError } setError={ setPasswordError } icon={ <FaLock /> } placeholder='Password' type='password' />
             <InputField value={ confirmPassword } error={ confirmPasswordError } setError={ setConfirmPasswordError } icon={ <FaLock /> } placeholder='Confirm password' type='password' />
             <CustomButton color={ IButtonColor.ORANGE } text='Sign Up' onClick={ handleSignIn } />
-            <span>Already havve an account? <Link to='/sign-in'>Sign in now</Link></span>
+            <span>Already have an account? <Link to='/sign-in'>Sign in now</Link></span>
         </div>
     )
 }
