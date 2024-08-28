@@ -6,6 +6,7 @@ import './SignUpPage.css'
 import { FaLock, FaRegUser } from 'react-icons/fa'
 import { MdOutlineMailOutline } from 'react-icons/md'
 import { useRef, useState } from 'react'
+import axios from 'axios'
 
 export default function SignUpPage() {
 
@@ -26,18 +27,33 @@ export default function SignUpPage() {
       };
 
     function handleSignIn() {
+        let errors = false;
         if(username.current.length < 3) {
+            errors = true;
             setUsernameError("Username must have at least 3 characters")
         }
         if(!validateEmail(email.current)) {
+            errors = true;
             setEmailError("Email must be valid");
         }
         if(password.current.length < 8) {
+            errors = true;
             setPasswordError("Password must have at least 8 characters");
         }
         if(confirmPassword.current !== password.current) {
+            errors = true;
             setConfirmPasswordError("Passwords must match");
         }
+
+        if(errors) return;
+
+        axios.post('http://localhost:8000/auth/sign-up', {
+
+        }).then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        })
     }
 
     return (
