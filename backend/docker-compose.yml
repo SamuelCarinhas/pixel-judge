@@ -1,0 +1,28 @@
+version: '1.0'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=auth_accounts
+  auth:
+    depends_on:
+      - postgres
+    image: carinhas-auth:latest
+    hostname: auth
+    container_name: auth
+    ports:
+      - 3001:3000
+    build:
+      dockerfile: dockerfile
+      context: .
+    restart: unless-stopped
+    volumes:
+      - app:/app
+
+volumes:
+  app: {}
