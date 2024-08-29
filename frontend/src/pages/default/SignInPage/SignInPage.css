@@ -1,10 +1,15 @@
 .sign-in-page {
+    position: relative;
     display: flex;
-    width: 100%;
+    width: fit-content;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 1rem;
+}
+
+.sign-in-page-error {
+    color: red;
 }
 
 .sign-in-page .title {

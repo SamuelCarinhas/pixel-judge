@@ -1,7 +1,9 @@
 export interface ICustomButton {
     text: string
     color: IButtonColor
-    onClick: React.MouseEventHandler<HTMLDivElement>
+    onClick: React.MouseEventHandler<HTMLButtonElement>
+    type?: string | undefined
+    disabled?: boolean
 }
 
 export enum IButtonColor {

@@ -21,6 +21,10 @@
     border: solid #333;
 }
 
+.input-field:focus.input-error {
+    border: solid red;
+}
+
 .input-container {
     position: relative;
     display: flex;

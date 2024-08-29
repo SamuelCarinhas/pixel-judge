@@ -1,4 +1,6 @@
 .custom-button {
+    border: none;
+    outline: none;
     user-select: none;
     background-color: #ccc;
     padding: 0.5rem 1rem 0.5rem 1rem;

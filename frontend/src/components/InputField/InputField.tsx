@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import { forwardRef } from 'react'
 import { IInputField } from './IInputField'
 import './InputField.css'
 
-export default function InputField(props: IInputField) {
-
-    const [value, setValue] = useState<string>("");
-
-    function inputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        props.setError("");
-        setValue(e.target.value);
-        props.value.current = e.target.value; 
-    }
-
-    return (
-        <div className='input-text'>
-            { props.error.length > 0 &&
-                <span className='input-error-text'> { props.error } </span>
-            }
-            <div className='input-container'>
-                { props.icon }
-                <input value={value } className={`input-field ${props.error.length > 0 && 'input-error'}`} type={props.type || 'text'} placeholder={props.placeholder} onChange={ inputChange }>
-                </input>
+const InputField = forwardRef<HTMLInputElement, IInputField>(({label, icon, ...props}, ref) => {
+        return (
+            <div className='input-text'>
+                {props.error && <span className='input-error-text'> { props.error.message } </span> }
+                <div className='input-container'>
+                    { icon }
+                    <input ref={ref} className={`input-field ${props.error?.message && 'input-error'}`} {...props}>
+                    </input>
+                </div>
             </div>
-        </div>
-    )
-}
+        )
+    }
+);
+
+export default InputField;
