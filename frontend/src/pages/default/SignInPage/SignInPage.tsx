@@ -33,9 +33,20 @@ export default function SignInPage() {
     return (
         <form className='sign-in-page' onSubmit={ handleSubmit(onSubmit) }>
             <span className='title'>Welcome to PixelJudge</span>
-            <InputField {...register("username", {required: "Username is required"})} error={errors.username} label='username' icon={ <FaRegUser /> } placeholder='Username' />
-            <InputField {...register("password", {required: "Password is required"})} error={errors.password} label='password' icon={ <FaLock /> } placeholder='Password' type='password' />
-            <CustomButton disabled={ isSubmitting } type='submit' color={ IButtonColor.ORANGE } text='Sign In' onClick={ () => {} } />
+            <InputField
+                {...register("username", {required: "Username is required"})}
+                error={errors.username}
+                label='username'
+                icon={ <FaRegUser /> }
+                placeholder='Username' />
+            <InputField
+                {...register("password", {required: "Password is required"})}
+                error={errors.password}
+                label='password'
+                icon={ <FaLock /> }
+                placeholder='Password'
+                type='password' />
+            <CustomButton disabled={ isSubmitting } type='submit' color={ IButtonColor.ORANGE } text='Sign In' />
             { errors.root && <span className='sign-in-page-error'>{ errors.root.message }</span> }
             {
                 isSubmitting &&

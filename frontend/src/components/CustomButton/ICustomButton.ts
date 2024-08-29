@@ -1,7 +1,7 @@
 export interface ICustomButton {
     text: string
     color: IButtonColor
-    onClick: React.MouseEventHandler<HTMLButtonElement>
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
     type?: string | undefined
     disabled?: boolean
 }
