@@ -47,6 +47,7 @@ export default function SignUpPage() {
                 {...register("email", {required: "Email is required"})}
                 error={errors.email}
                 label='email'
+                type='email'
                 icon={ <MdOutlineMailOutline /> }
                 placeholder='Email' />
             <InputField

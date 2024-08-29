@@ -8,7 +8,7 @@ const InputField = forwardRef<HTMLInputElement, IInputField>(({label, icon, ...p
                 {props.error && <span className='input-error-text'> { props.error.message } </span> }
                 <div className='input-container'>
                     { icon }
-                    <input ref={ref} className={`input-field ${props.error?.message && 'input-error'}`} {...props}>
+                    <input autoComplete={"on"} id={ label } name={ label } ref={ ref } className={`input-field ${props.error?.message && 'input-error'}`} {...props}>
                     </input>
                 </div>
             </div>
