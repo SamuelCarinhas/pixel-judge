@@ -9,6 +9,7 @@ export enum AuthRole {
 export default interface IAuthContext {
     role: AuthRole;
     setRole: (value: AuthRole) => void;
+    username: string
     logout: () => void;
     login: (authToken: string, refreshToken: string) => void;
 }

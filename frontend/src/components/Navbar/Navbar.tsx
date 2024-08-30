@@ -1,14 +1,17 @@
 import './Navbar.css'
 import logo from '../../assets/images/logo.png'
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../CustomButton/CustomButton';
 import { IButtonColor } from '../CustomButton/ICustomButton';
+import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { AuthRole } from '../../context/AuthContext/IAuthContext';
 
 export default function Navbar() {
 
     const navigate = useNavigate();
+    const { role, username } = useContext(AuthContext);
 
     const options = [
         {
@@ -48,9 +51,17 @@ export default function Navbar() {
                     </div>
                     )
                 }
-                <div className='option'>
-                    <CustomButton text='Sign In' color={ IButtonColor.GREEN } onClick={() => navigate('/sign-in')}/>
-                </div>
+                {
+                    role !== AuthRole.LOADING && role !== AuthRole.DEFAULT
+                    ?
+                    <div className='option'>
+                        { username }
+                    </div>
+                    :
+                    <div className='option'>
+                        <CustomButton text='Sign In' color={ IButtonColor.GREEN } onClick={() => navigate('/sign-in')}/>
+                    </div>
+                }
             </div>
         </div>
     )

@@ -10,6 +10,7 @@ type Props = {
 const initialValue = {
     role: AuthRole.LOADING,
     setRole: () => {},
+    username: "",
     logout: () => {},
     authToken: null,
     refreshToken: null,
@@ -20,6 +21,7 @@ const AuthContext = createContext<IAuthContext>(initialValue)
 
 const AuthProvider = ({ children }: Props) => {
     const [ role, setRole ] = useState<AuthRole>(initialValue.role);
+    const [ username, setUsername ] = useState<string>("");
 
     useEffect(() => {
         const authToken = localStorage.getItem("authToken");
@@ -40,9 +42,11 @@ const AuthProvider = ({ children }: Props) => {
     function login(_authToken: string, _refreshToken: string) {
         try {
             const decoded = jwtDecode(_authToken) as never;
-            const role = roleMap[decoded['custom:role']];
+            const role = roleMap[decoded['role']];
             localStorage.setItem("authToken", _authToken);
             localStorage.setItem("refreshToken", _refreshToken);
+            console.log(decoded);
+            setUsername(decoded['user']);
             setRole(role);
         } catch(e) {
             logout();
@@ -50,7 +54,7 @@ const AuthProvider = ({ children }: Props) => {
     }
 
     return (
-        <AuthContext.Provider value={{ role, setRole, logout, login }}>
+        <AuthContext.Provider value={{ username, role, setRole, logout, login }}>
             { children }
         </AuthContext.Provider>
     )

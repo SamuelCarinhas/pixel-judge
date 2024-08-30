@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CustomButton from '../../../components/CustomButton/CustomButton'
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton'
 import InputField from '../../../components/InputField/InputField'
@@ -6,6 +6,12 @@ import './SignInPage.css'
 import { FaLock, FaRegUser } from 'react-icons/fa'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Loading from '../../../components/Loading/Loading'
+import axios from 'axios'
+import { useContext, useEffect } from 'react'
+import { AuthContext } from '../../../context/AuthContext/AuthContext'
+import { AuthRole } from '../../../context/AuthContext/IAuthContext'
+
+const REST_URL = import.meta.env.VITE_REST_URL
 
 type SignInInput = {
     username: string
@@ -21,13 +27,34 @@ export default function SignInPage() {
         formState: { errors, isSubmitting }
     } = useForm<SignInInput>();
 
+    const { role, login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(role !== AuthRole.DEFAULT && role !== AuthRole.LOADING)
+            navigate('/');
+    }, [role]);
 
     const onSubmit: SubmitHandler<SignInInput> = async (data) => {
-        await new Promise((res) => setTimeout(res, 1000));
-        console.log(data);
-        setError('root', {
-            message: "Invalid credentials"
-        })
+        try {
+            const res = await axios.post(`${REST_URL}/auth/sign-in`, data);
+            login(res.data.accessToken, res.data.refreshToken);
+        } catch(error) {
+            if(!axios.isAxiosError(error)) {
+                setError("root", { message: "This was not supposed to happen."});
+                return;
+            }
+            
+            if(error.response && error.response.data && error.response.data.description) {
+                const errors = error.response.data.description;
+                for (let [key, value] of Object.entries(errors)) {
+                    setError(key as keyof SignInInput, { message: value as string });
+                }
+            } else {
+                setError("root", { message: "The server failed to respond" });
+            }
+            return;
+        }
     }
 
     return (
