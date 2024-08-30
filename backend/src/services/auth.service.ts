@@ -11,6 +11,8 @@ const JWT_REFRESH_SECRET = String(process.env.JWT_REFRESH_SECRET)
 const JWT_ACCESS_DURATION = Number(process.env.JWT_ACCESS_DURATION)
 const JWT_REFRESH_DURATION = Number(process.env.JWT_REFRESH_DURATION)
 
+const SIGN_UP_CALLBACK = String(process.env.SIGN_UP_CALLBACK)
+
 export function signJWT(payload: Object, secret: string, options?: jwt.SignOptions | undefined) {
     const key = Buffer.from(secret, "base64").toString("ascii")
     return jwt.sign(payload, key, { ...(options && options) })
@@ -48,7 +50,7 @@ const createRefreshToken = (account: Account) => {
     })
 }
 
-export async function signUp(username: string, email: string, password: string, callback: string) {
+export async function signUp(username: string, email: string, password: string) {
     const usernameExists = await prisma.account.findUnique({
             where: {
                 username
@@ -67,7 +69,7 @@ export async function signUp(username: string, email: string, password: string, 
             }
         }).catch(() => { throw new Conflict({ username: 'Email already in use.' }) })
 
-    await verify(callback, account.email);
+    await verify(SIGN_UP_CALLBACK, account.email);
 
     return account.id
 }

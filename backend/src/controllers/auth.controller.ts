@@ -6,9 +6,9 @@ import { StatusCodes } from "http-status-codes";
 import { PasswordResetToken, RefreshToken, VerificationToken } from "../utils/types.util";
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
-    const { username, email, password, callback } = req.body
+    const { username, email, password } = req.body
 
-    authService.signUp(username, email, password, callback)
+    authService.signUp(username, email, password)
         .then(accountId => {
             logger.info(`Account ${email} created`)
             res.status(StatusCodes.CREATED).json({
@@ -64,10 +64,10 @@ export async function resetPassword(req: Request, res: Response, next: NextFunct
 }
 
 export async function askResetPassword(req: Request, res: Response, next: NextFunction) {
-    const { callback, email } = req.body
+    const { email } = req.body
 
     mailService
-        .reset(callback, email)
+        .reset(email)
         .then(() => res.status(StatusCodes.OK).json({ message: "Password Reset Email Sent!" }))
         .catch((error) => next(error))
 }

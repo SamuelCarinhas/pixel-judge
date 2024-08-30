@@ -10,6 +10,8 @@ const JWT_UTIL_SECRET = String(process.env.JWT_UTIL_SECRET)
 
 const SMTP_EMAIL = String(process.env.SMPT_EMAIL)
 
+const RESET_PASSWORD_CALLBACK = String(process.env.RESET_PASSWORD_CALLBACK)
+
 const nanoid = (size: number = 48) => crypto.randomBytes(size).toString("base64url")
 
 async function createVerificationToken(account: Account): Promise<string> {
@@ -52,7 +54,7 @@ export async function verify(callback: string, email: string) {
         .catch(err => { throw new InternalServerError(err) })
 }
 
-export async function reset(callback: string, email: string) {
+export async function reset(email: string) {
     const account = await prisma.account.findUnique({ where: { email } })
     if (account === null) {
         throw new NotFound(`The with email ${email} does not have an account`)
@@ -62,7 +64,7 @@ export async function reset(callback: string, email: string) {
 
     await mailer.sendResetPasswordMail({
         username: account.username,
-        callback: `${callback}?token=${token}`,
+        callback: `${RESET_PASSWORD_CALLBACK}?token=${token}`,
     })
         .catch(err => { throw new InternalServerError(err) })
 }
