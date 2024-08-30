@@ -7,6 +7,11 @@
     gap: 1rem;
 }
 
+.sign-up-page .sign-up-success {
+    text-align: center;
+    color: green;
+}
+
 .sign-up-page .title {
     font-size: 2rem;
     font-weight: bold;
@@ -48,5 +53,9 @@
     .sign-up-page .input-field {
         width: 10rem;
         height: 1.5rem;
+    }
+
+    .sign-up-page .input-text {
+        width: 12rem;
     }
 }

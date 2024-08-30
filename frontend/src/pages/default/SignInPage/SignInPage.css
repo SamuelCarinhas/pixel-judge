@@ -54,4 +54,8 @@
         width: 10rem;
         height: 1.5rem;
     }
+
+    .sign-in-page .input-text {
+        width: 12rem;
+    }
 }
