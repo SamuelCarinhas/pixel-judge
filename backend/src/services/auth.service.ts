@@ -174,6 +174,12 @@ export async function verifyAccount(accountId: string, code: string) {
             verifiedAt: new Date(),
         },
     })
+
+    await prisma.profile.create({
+        data: {
+            accountId: account.id
+        }
+    })
 }
 
 export async function resetPassword(accountId: string, code: string, password: string) {
