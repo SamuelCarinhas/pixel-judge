@@ -1,44 +1,37 @@
 import { z } from "zod";
 
 export const PasswordSchema = z.string()
-    .min(1)
-    .refine(password =>
-        /[a-z]/.test(password) &&
-        /[A-Z]/.test(password) &&
-        /[0-9]/.test(password) &&
-        /.{8,}/.test(password)
-        , {
-            message: 'Your password does not fulfill the minimum security requisites.'
-        })
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .max(320, { message: "Password must be less than 256 characters"})
 
 export const EmailSchema = z.string()
-    .min(1)
+    .min(1, { message: "Email is mandatory" })
+    .max(320, { message: "Email must be less than 320 characters"})
     .email("This is not a valid email")
 
 export const UsernameSchema = z.string()
-    .min(1)
-    .refine(username => !username.includes('@')
+    .min(3, { message: "Username must be at least 3 characters long"})
+    .max(30, { message: "Username must be less than 30 characters"})
+    .refine(username => username.search(/^[\w-]+$/) !== -1
         ,{
-            message: 'The username cannot contain the character @'
+            message: 'Username should contain only latin letters, digits, underscore or dash characters'
         })
 
 export const SignInSchema = z.object({
     body: z.object({
-        identifier: z.string().min(1),
-        password: z.string().min(1)
+        username: z.string().min(1, { message: "Username is mandatory" }),
+        password: z.string().min(1, { message: "Password is mandatory" })
     })
 })
 
 export const AskResetPasswordSchema = z.object({
     body: z.object({
-        callback: z.string().min(1),
         email: EmailSchema
     })
 })
 
 export const SignUpSchema = z.object({
     body: z.object({
-        callback: z.string().min(1),
         username: UsernameSchema,
         email: EmailSchema,
         password: PasswordSchema
@@ -47,10 +40,6 @@ export const SignUpSchema = z.object({
 
 export const ResetPasswordSchema = z.object({
     body: z.object({
-        password: PasswordSchema,
-        confirmPassword: PasswordSchema
-    })
-    .refine(data => data.password === data.confirmPassword, {
-        message: 'Passwords don\'t match'
+        password: PasswordSchema
     })
 })

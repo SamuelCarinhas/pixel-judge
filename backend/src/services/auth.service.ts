@@ -56,7 +56,7 @@ export async function signUp(username: string, email: string, password: string, 
         }
     );
 
-    if(usernameExists) throw new Conflict('Username already taken.');
+    if(usernameExists) throw new Conflict({ username: 'Username already taken.'});
 
     const account = await prisma.account
         .create({
@@ -65,36 +65,36 @@ export async function signUp(username: string, email: string, password: string, 
                 email,
                 password: await argon2.hash(password)
             }
-        }).catch(() => { throw new Conflict('Email already taken.') })
+        }).catch(() => { throw new Conflict({ username: 'Email already in use.' }) })
 
     await verify(callback, account.email);
 
     return account.id
 }
 
-export async function signIn(identifier: string, password: string) {
+export async function signIn(username: string, password: string) {
     let account = await prisma.account.findUnique({
         where: {
-            email: identifier
+            email: username
         }
     })
 
     if(!account) {
         account = await prisma.account.findUnique({
             where: {
-                username: identifier
+                username: username
             }
         })
     }
 
     if (!account) {
-        throw new NotFound(`Account not found`)
+        throw new NotFound("Invalid credentials")
     }
 
     const validPassword = await argon2.verify(account.password, password)
 
     if (!validPassword) {
-        throw new Unauthorized(`Incorrect password`)
+        throw new Unauthorized("Invalid credentials")
     }
 
     if (!account.verified) {

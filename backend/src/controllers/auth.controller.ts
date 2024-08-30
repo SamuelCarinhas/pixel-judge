@@ -20,11 +20,11 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function signIn(req: Request, res: Response, next: NextFunction) {
-    const { identifier, password } = req.body
+    const { username, password } = req.body
 
-    authService.signIn(identifier, password)
+    authService.signIn(username, password)
         .then(({ email, username, accessToken, refreshToken, role }) => {
-            logger.info(`Account ${identifier} logged in`)
+            logger.info(`Account ${username} logged in`)
             res.status(StatusCodes.OK).json({
                 message: "Login successful!",
                 email,
