@@ -23,7 +23,7 @@ type SignUpInput = {
 
 export default function SignUpPage() {
 
-    const { role, login } = useContext(AuthContext);
+    const { role } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
