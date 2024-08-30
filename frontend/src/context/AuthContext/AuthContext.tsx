@@ -45,7 +45,6 @@ const AuthProvider = ({ children }: Props) => {
             const role = roleMap[decoded['role']];
             localStorage.setItem("authToken", _authToken);
             localStorage.setItem("refreshToken", _refreshToken);
-            console.log(decoded);
             setUsername(decoded['user']);
             setRole(role);
         } catch(e) {
