@@ -5,7 +5,7 @@ import logger from "../utils/logger.util"
 
 const ENV = String(process.env.NODE_ENV)
 
-export function errorHandler(err: APIError, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(err: APIError, _req: Request, res: Response, _next: NextFunction) {
     err.status >= 500 ? logger.error(err) : logger.info(err)
     
     const description = (err.description.constructor === String) ? {
