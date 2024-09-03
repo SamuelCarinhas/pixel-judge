@@ -1,14 +1,40 @@
-.rating-page {
+.page-container:has(.rating-page) {
     display: flex;
-    width: 100%;
+    justify-content: flex-start;
+}
+
+.rating-page {
+    margin: 3rem 0 3rem 0;
+    display: flex;
+    width: auto;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 4rem;
-    font-size: 2rem;
     text-align: center;
 }
 
-.rating-page img {
-    height: 15rem;
+.rating-page table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.rating-page td, th {
+    border: 1px solid #eee;
+    text-align: left;
+    padding: 0.5rem;
+    font-weight: normal;
+}
+
+.rating-page tr:nth-child(even) {
+    background-color: #eeee;
+}
+
+.rating-page .rank, .rating-page .rating {
+    width: 3rem;
+    text-align: center;
+}
+
+.rating-page .username:hover {
+    cursor: pointer;
+    background-color: #ccc;
 }

@@ -11,3 +11,7 @@
     align-items: center;
     box-sizing: border-box;
 }
+
+.page-container .page-content {
+    width: 100%;
+}
