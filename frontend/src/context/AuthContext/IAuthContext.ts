@@ -15,19 +15,19 @@ export default interface IAuthContext {
 }
 
 export const roleMap = {
-    "loading": AuthRole.LOADING,
-    "default": AuthRole.DEFAULT,
-    "user": AuthRole.USER,
-    "mod": AuthRole.MOD,
-    "admin": AuthRole.ADMIN
+    "LOADING": AuthRole.LOADING,
+    "DEFAULT": AuthRole.DEFAULT,
+    "USER": AuthRole.USER,
+    "MOD": AuthRole.MOD,
+    "ADMIN": AuthRole.ADMIN
 }
 
 export const roleNames = {
     [AuthRole.LOADING]: "Loading",
     [AuthRole.DEFAULT]: "Default",
     [AuthRole.USER]: "User",
-    [AuthRole.MOD]: "Mod",
-    [AuthRole.ADMIN]: "Default"
+    [AuthRole.MOD]: "Moderator",
+    [AuthRole.ADMIN]: "Administrator"
 }
 
 export const roleColors = {

@@ -11,7 +11,7 @@ import { FaUserFriends } from "react-icons/fa";
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
-import { AuthRole } from '../../../context/AuthContext/IAuthContext';
+import { AuthRole, roleColors, roleMap, roleNames } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
 
 const REST_URL = import.meta.env.VITE_REST_URL
@@ -87,8 +87,8 @@ export default function UserPage() {
                 <div className='user'>
                     <img src={"https://image.winudf.com/v2/image1/Y29tLmthbmZvLmZ1bm55cHJvZmlsZXBpY3R1cmVfc2NyZWVuXzBfMTY3NzM3MzY0NV8wNzQ/screen-0.jpg?fakeurl=1&type=.jpg"}/>
                     <div className='user-id'>
-                        <span className='rank'>Unranked</span>
-                        <span className='username'>@{username}</span>
+                        <span className={`rank ${roleColors[roleMap[account.role as never]]}`}> { roleNames[roleMap[account.role as never]] } </span>
+                        <span className={`username ${roleColors[roleMap[account.role as never]]}`}>@{username}</span>
                         <span className='full-name'>{account.profile.firstName} {account.profile.secondName}</span>
                     </div>
                 </div>

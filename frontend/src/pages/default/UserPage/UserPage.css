@@ -15,6 +15,18 @@
     gap: 1rem;
 }
 
+.user-page .red {
+    color: red;
+}
+
+.user-page .green {
+    color: green;
+}
+
+.user-page .gray {
+    color: #666;
+}
+
 .user-page {
     margin-top: 2rem;
     margin-bottom: 2rem;
