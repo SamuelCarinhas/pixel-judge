@@ -54,8 +54,8 @@ export default function Navbar() {
                 {
                     role !== AuthRole.LOADING && role !== AuthRole.DEFAULT
                     ?
-                    <div className='option'>
-                        { username }
+                    <div className='option' onClick={ () => navigate(`/user/${username}`) }>
+                       <span>{ username }</span>
                     </div>
                     :
                     <div className='option'>

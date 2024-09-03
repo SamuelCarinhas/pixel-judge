@@ -1,13 +1,23 @@
 import { useParams } from 'react-router-dom'
 import './UserPage.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import axios from 'axios';
 import { IProfile } from '../../../utils/models/profile.model';
 
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { FaUserFriends } from "react-icons/fa";
+
+import CustomButton from '../../../components/CustomButton/CustomButton';
+import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
+
 const REST_URL = import.meta.env.VITE_REST_URL
 
 export default function UserPage() {
+
+    const authContext = useContext(AuthContext);
 
     const { username } = useParams();
     const [notFound, setNotFound] = useState<boolean>(false);
@@ -44,23 +54,35 @@ export default function UserPage() {
         <div className='user-page'>
             <div className='user-info'>
                 <div className='user'>
-                    <img src={"https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"}/>
+                    <img src={"https://image.winudf.com/v2/image1/Y29tLmthbmZvLmZ1bm55cHJvZmlsZXBpY3R1cmVfc2NyZWVuXzBfMTY3NzM3MzY0NV8wNzQ/screen-0.jpg?fakeurl=1&type=.jpg"}/>
                     <div className='user-id'>
-                        <span className='rank'>Administrator</span>
-                        <span className='username'>@carinhas</span>
-                        <span className='full-name'>Samuel Carinhas</span>
+                        <span className='rank'>Unranked</span>
+                        <span className='username'>@{username}</span>
+                        <span className='full-name'>{profile.firstName} {profile.secondName}</span>
                     </div>
+                </div>
+                {authContext.username.toLocaleLowerCase() === username?.toLocaleLowerCase() ?
+                    <CustomButton text="Edit Profile" color={IButtonColor.ORANGE}></CustomButton>
+                    :
+                    <CustomButton text="Follow" color={IButtonColor.ORANGE}></CustomButton>
+                }
+                <div className='social'>
+                    <FaUserFriends /> <span>0 Followers</span> <span>0 Following</span>
                 </div>
                 <div className='information'>
                     <h3>Information</h3>
-                    <span>University</span>
-                    <span>Location</span>
+                    <span><HiOutlineBuildingOffice2 /> {profile.organization}</span>
+                    <span><HiOutlineLocationMarker /> {profile.country}</span>
                 </div>
                 <div className='badges'>
                     <h3>Badges</h3>
+                    <div className='list'>
+                        <img src={"https://images.credly.com/images/519219f0-1969-4815-8af3-f8e4bda2b565/Beta_Tester_-__Accreditation_Badge__1_.png"}></img>
+                    </div>
                 </div>
             </div>
             <div className='user-activity'>
+
             </div>
         </div>
     )
