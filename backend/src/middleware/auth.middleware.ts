@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AccessToken, onTokenDecoded, PasswordResetToken, RefreshToken } from "../utils/types.util";
-import { Forbidden } from "../utils/error.util";
+import { Unauthorized } from "../utils/error.util";
 import prisma from "../utils/prisma.util";
 import { verifyJWT } from "../services/auth.service";
 
@@ -38,7 +38,7 @@ const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecode
     return async (req: Request, res: Response, next: NextFunction) => {
         const token = extractToken(req, cookie);
         if (!token) {
-            return next(new Forbidden(`No token was provided in the authorization header`))
+            return next(new Unauthorized(`No token was provided in the authorization header`))
         }
         const decoded = decoder(token);
         if (decoded) {
@@ -47,7 +47,7 @@ const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecode
             res.locals.token.username = await getUsernameByAccountId(decoded.accountId);
             return onTokenDecoded ? onTokenDecoded(decoded, next) : next()
         }
-        return next(new Forbidden(`Invalid / Expired Authorization Token. Permission Denied`))
+        return next(new Unauthorized(`Invalid / Expired Authorization Token. Permission Denied`))
     }
 }
 

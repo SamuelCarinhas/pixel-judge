@@ -1,7 +1,7 @@
 import prisma from "../utils/prisma.util";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import {Conflict, Forbidden, InternalServerError, NotFound, Unauthorized} from "../utils/error.util";
+import {Conflict, InternalServerError, NotFound, Unauthorized} from "../utils/error.util";
 import { Account } from "@prisma/client";
 import {verify} from "./mail.service";
 
@@ -159,7 +159,7 @@ export async function verifyAccount(accountId: string, code: string) {
     }
 
     if (account.verificationCode === null) {
-        throw new Forbidden('No verification token has been emitted')
+        throw new Unauthorized('No verification token has been emitted')
     }
 
     if (code !== account.verificationCode) {
@@ -192,7 +192,7 @@ export async function resetPassword(accountId: string, code: string, password: s
     }
 
     if (account.passwordResetCode === null) {
-        throw new Forbidden('No password reset token has been emitted')
+        throw new Unauthorized('No password reset token has been emitted')
     }
 
     if (code !== account.passwordResetCode) {
