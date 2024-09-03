@@ -67,7 +67,7 @@ export async function signUp(username: string, email: string, password: string) 
                 email,
                 password: await argon2.hash(password)
             }
-        }).catch(() => { throw new Conflict({ username: 'Email already in use.' }) })
+        }).catch(() => { throw new Conflict({ email: 'Email already in use.' }) })
 
     await verify(SIGN_UP_CALLBACK, account.email);
 
