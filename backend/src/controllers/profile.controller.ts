@@ -3,7 +3,7 @@ import profileService from "../services/profile.service"
 import { StatusCodes } from "http-status-codes"
 
 export async function getProfile(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.query
+    const { username } = req.query;
 
     profileService
         .getProfile(username as string)
@@ -36,9 +36,19 @@ export async function unfollowProfile(req: Request, res: Response, next: NextFun
         .catch((error) => next(error));
 }
 
+export async function isFollowing(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.body;
+    
+    profileService
+        .isFollowing(res.locals.token.accountId, username)
+        .then((following) => res.status(StatusCodes.OK).json({ following }))
+        .catch((error) => next(error));
+}
+
 export default {
     getProfile,
     getProfiles,
     followProfile,
-    unfollowProfile
+    unfollowProfile,
+    isFollowing
 }
