@@ -6,5 +6,6 @@ import profileController from "../controllers/profile.controller";
 const router = Router()
 
 router.get('/', validate(GetProfileSchema), profileController.getProfile)
+router.get('/all', profileController.getProfiles)
 
 export default router

@@ -11,6 +11,14 @@ export async function getProfile(req: Request, res: Response, next: NextFunction
         .catch((error) => next(error))
 }
 
+export async function getProfiles(req: Request, res: Response, next: NextFunction) {
+    profileService
+        .getProfiles()
+        .then((profiles) => res.status(StatusCodes.OK).json({ message: "Accounts retrieved", profiles }))
+        .catch((error) => next(error))
+}
+
 export default {
-    getProfile
+    getProfile,
+    getProfiles
 }

@@ -21,6 +21,20 @@ export async function getProfile(username: string) {
     return profile;
 }
 
+export async function getProfiles() {
+    let accounts = await prisma.account.findMany({
+        where: {
+            verified: true
+        },
+        select: {
+            username: true
+        }
+    })
+
+    return accounts;
+}
+
 export default {
-    getProfile
+    getProfile,
+    getProfiles
 }
