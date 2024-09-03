@@ -7,7 +7,7 @@ export async function getProfile(req: Request, res: Response, next: NextFunction
 
     profileService
         .getProfile(username as string)
-        .then((profile) => res.status(StatusCodes.OK).json({ message: "Account retrieved", profile }))
+        .then((profile) => res.status(StatusCodes.OK).json({ message: "Account retrieved", account: profile }))
         .catch((error) => next(error))
 }
 
@@ -18,7 +18,27 @@ export async function getProfiles(req: Request, res: Response, next: NextFunctio
         .catch((error) => next(error))
 }
 
+export async function followProfile(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.body;
+
+    profileService
+        .followProfile(res.locals.token.accountId, username)
+        .then(() => res.status(StatusCodes.OK).json({message: "Account followed"}))
+        .catch((error) => next(error));
+}
+
+export async function unfollowProfile(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.body;
+    
+    profileService
+        .unfollowProfile(res.locals.token.accountId, username)
+        .then(() => res.status(StatusCodes.OK).json({message: "Account unfollowed"}))
+        .catch((error) => next(error));
+}
+
 export default {
     getProfile,
-    getProfiles
+    getProfiles,
+    followProfile,
+    unfollowProfile
 }

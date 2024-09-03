@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { onTokenDecoded, PasswordResetToken, RefreshToken } from "../utils/types.util";
+import { AccessToken, onTokenDecoded, PasswordResetToken, RefreshToken } from "../utils/types.util";
 import { Forbidden } from "../utils/error.util";
 import prisma from "../utils/prisma.util";
 import { verifyJWT } from "../services/auth.service";
 
+const JWT_ACCESS_SECRET = String(process.env.JWT_ACCESS_SECRET)
 const JWT_UTIL_SECRET = String(process.env.JWT_UTIL_SECRET)
 const JWT_REFRESH_SECRET = String(process.env.JWT_REFRESH_SECRET)
 
+const verifyAccessToken = <T>(token: string) => verifyJWT<T>(token, JWT_ACCESS_SECRET);
 const verifyVerificationToken = <T>(token: string) => verifyJWT<T>(token, JWT_UTIL_SECRET);
 const verifyRefreshToken = <T>(token: string) => verifyJWT<T>(token, JWT_REFRESH_SECRET);
 const verifyResetToken = <T>(token: string) => verifyJWT<T>(token, JWT_UTIL_SECRET);
@@ -49,8 +51,14 @@ const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecode
     }
 }
 
+export const authorizeAccess = authorize(verifyAccessToken<AccessToken>);
 export const authorizeVerification = authorize(verifyVerificationToken<PasswordResetToken>);
 export const authorizeRefresh = authorize(verifyRefreshToken<RefreshToken>);
 export const authorizeResetPassword = authorize(verifyResetToken<PasswordResetToken>);
 
-export default { authorizeVerification, authorizeRefresh, authorizeResetPassword }
+export default {
+    authorizeAccess,
+    authorizeVerification,
+    authorizeRefresh,
+    authorizeResetPassword
+}

@@ -34,8 +34,6 @@ model Account {
 
   profile Profile?
 
-  @@index([email])
-  @@index([username])
   @@index([role])
 }
 
@@ -52,5 +50,25 @@ model Profile {
   lastVisit DateTime?
   registered DateTime @default(now())
 
-  @@index([country, organization, city])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt @default(now())
+
+  following    Follows[] @relation("Following")
+  followers    Follows[] @relation("Followers")
+
+  @@index([country])
+  @@index([organization])
+  @@index([city])
+}
+
+model Follows {
+  id          String   @id @default(cuid())
+  follower    Profile  @relation("Followers", fields: [followerId], references: [id])
+  followerId  String
+  following   Profile  @relation("Following", fields: [followingId], references: [id])
+  followingId String
+
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
 }

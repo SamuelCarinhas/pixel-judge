@@ -6,3 +6,9 @@ export const GetProfileSchema = z.object({
     })
 })
 
+export const FollowProfile = z.object({
+    body: z.object({
+        username: z.string().min(1, { message: "Username is required"})
+    })
+})
+
