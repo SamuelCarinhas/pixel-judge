@@ -19,28 +19,28 @@ export async function getProfiles(req: Request, res: Response, next: NextFunctio
 }
 
 export async function followProfile(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.body;
+    const { username } = req.query;
 
     profileService
-        .followProfile(res.locals.token.accountId, username)
+        .followProfile(res.locals.token.accountId, username as string)
         .then(() => res.status(StatusCodes.OK).json({message: "Account followed"}))
         .catch((error) => next(error));
 }
 
 export async function unfollowProfile(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.body;
+    const { username } = req.query;
     
     profileService
-        .unfollowProfile(res.locals.token.accountId, username)
+        .unfollowProfile(res.locals.token.accountId, username as string)
         .then(() => res.status(StatusCodes.OK).json({message: "Account unfollowed"}))
         .catch((error) => next(error));
 }
 
 export async function isFollowing(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.body;
+    const { username } = req.query;
     
     profileService
-        .isFollowing(res.locals.token.accountId, username)
+        .isFollowing(res.locals.token.accountId, username as string)
         .then((following) => res.status(StatusCodes.OK).json({ following }))
         .catch((error) => next(error));
 }

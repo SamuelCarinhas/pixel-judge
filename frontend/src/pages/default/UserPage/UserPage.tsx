@@ -12,6 +12,7 @@ import { FaUserFriends } from "react-icons/fa";
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
+import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
@@ -21,6 +22,7 @@ export default function UserPage() {
 
     const { username } = useParams();
     const [notFound, setNotFound] = useState<boolean>(false);
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [account, setAccount] = useState<IAccount>({
         username: "",
         role: "",
@@ -53,6 +55,14 @@ export default function UserPage() {
         .catch(() => setNotFound(true));
     }, [username]);
 
+    useEffect(() => {
+        if(authContext.role === AuthRole.LOADING || authContext.role === AuthRole.DEFAULT) return;
+
+        axios.get(`${REST_URL}/profile/isfollowing?username=${username}`)
+        .then(res => setIsFollowing(res.data.following))
+        .catch(() => setIsFollowing(false));
+    }, [authContext.role]);
+
     return (
         notFound ?
         <NotFoundPage />
@@ -69,6 +79,9 @@ export default function UserPage() {
                 </div>
                 {authContext.username.toLocaleLowerCase() === username?.toLocaleLowerCase() ?
                     <CustomButton text="Edit Profile" color={IButtonColor.ORANGE}></CustomButton>
+                    :
+                    isFollowing ?
+                    <CustomButton text="Unfollow" color={IButtonColor.ORANGE}></CustomButton>
                     :
                     <CustomButton text="Follow" color={IButtonColor.ORANGE}></CustomButton>
                 }

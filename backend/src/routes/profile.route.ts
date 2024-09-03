@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validate } from "../utils/validator.util";
-import { FollowProfile, GetProfileSchema } from "../models/profile.model";
+import { GetProfileSchema } from "../models/profile.model";
 import profileController from "../controllers/profile.controller";
 import authMiddleware from "../middleware/auth.middleware";
 
@@ -8,8 +8,8 @@ const router = Router()
 
 router.get('/', validate(GetProfileSchema), profileController.getProfile)
 router.get('/all', profileController.getProfiles)
-router.post('/follow', authMiddleware.authorizeAccess, validate(FollowProfile), profileController.followProfile)
-router.delete('/unfollow', authMiddleware.authorizeAccess, validate(FollowProfile), profileController.unfollowProfile)
-router.get('/isfollowing', authMiddleware.authorizeAccess, validate(FollowProfile), profileController.isFollowing)
+router.post('/follow', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.followProfile)
+router.delete('/unfollow', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.unfollowProfile)
+router.get('/isfollowing', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.isFollowing)
 
 export default router
