@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom'
 import './UserPage.css'
 import { useContext, useEffect, useState } from 'react';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import axios from 'axios';
 import { IAccount } from '../../../utils/models/profile.model';
 
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
@@ -13,6 +12,7 @@ import CustomButton from '../../../components/CustomButton/CustomButton';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
+import axiosInstance from '../../../utils/axios';
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
@@ -47,21 +47,36 @@ export default function UserPage() {
         setAccount(account);
     }
 
+    function fetchAccount(username: string) {
+        axiosInstance.get(`${REST_URL}/profile?username=${username}`)
+        .then(res => updateAccount(res.data.account))
+        .catch(() => setNotFound(true));
+    }
+
     useEffect(() => {
         if(!username) setNotFound(true);
 
-        axios.get(`${REST_URL}/profile?username=${username}`)
-        .then(res => updateAccount(res.data.account))
-        .catch(() => setNotFound(true));
+        fetchAccount(username as string);
     }, [username]);
 
     useEffect(() => {
+        if(account.username.length === 0) return;
         if(authContext.role === AuthRole.LOADING || authContext.role === AuthRole.DEFAULT) return;
 
-        axios.get(`${REST_URL}/profile/isfollowing?username=${username}`)
+        axiosInstance.get(`${REST_URL}/profile/isfollowing?username=${username}`)
         .then(res => setIsFollowing(res.data.following))
         .catch(() => setIsFollowing(false));
-    }, [authContext.role]);
+    }, [account, authContext.role]);
+
+    function follow() {
+        axiosInstance.post(`${REST_URL}/profile/follow?username=${username}`)
+        .then(() => fetchAccount(username as string))
+    }
+
+    function unfollow() {
+        axiosInstance.delete(`${REST_URL}/profile/unfollow?username=${username}`)
+        .then(() => fetchAccount(username as string))
+    }
 
     return (
         notFound ?
@@ -81,9 +96,9 @@ export default function UserPage() {
                     <CustomButton text="Edit Profile" color={IButtonColor.ORANGE}></CustomButton>
                     :
                     isFollowing ?
-                    <CustomButton text="Unfollow" color={IButtonColor.ORANGE}></CustomButton>
+                    <CustomButton text="Unfollow" color={IButtonColor.ORANGE} onClick={ unfollow }></CustomButton>
                     :
-                    <CustomButton text="Follow" color={IButtonColor.ORANGE}></CustomButton>
+                    <CustomButton text="Follow" color={IButtonColor.ORANGE} onClick={ follow }></CustomButton>
                 }
                 <div className='social'>
                     <FaUserFriends /> <span>{account.followers} Followers</span> <span>{account.following} Following</span>

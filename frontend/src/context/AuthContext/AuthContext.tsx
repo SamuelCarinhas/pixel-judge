@@ -2,6 +2,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import IAuthContext, { AuthRole } from "./IAuthContext.ts";
 import { jwtDecode } from "jwt-decode";
 import { roleMap } from "./IAuthContext.ts";
+import axiosInstance from "../../utils/axios.ts";
+import axios from "axios";
 
 type Props = {
     children?: ReactNode;
@@ -18,6 +20,8 @@ const initialValue = {
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue)
+
+const REST_URL = import.meta.env.VITE_REST_URL;
 
 const AuthProvider = ({ children }: Props) => {
     const [ role, setRole ] = useState<AuthRole>(initialValue.role);
@@ -39,14 +43,55 @@ const AuthProvider = ({ children }: Props) => {
         setRole(AuthRole.DEFAULT)
     }
 
-    function login(_authToken: string, _refreshToken: string) {
+    function login(authToken: string, refreshToken: string) {
         try {
-            const decoded = jwtDecode(_authToken) as never;
+            const decoded = jwtDecode(authToken) as never;
             const role = roleMap[decoded['role']];
-            localStorage.setItem("authToken", _authToken);
-            localStorage.setItem("refreshToken", _refreshToken);
+            localStorage.setItem("authToken", authToken);
+            localStorage.setItem("refreshToken", refreshToken);
             setUsername(decoded['user']);
             setRole(role);
+
+            axiosInstance.interceptors.request.use(request => {
+                const accessToken = localStorage.getItem('authToken');
+                request.headers['Authorization'] = `Bearer ${accessToken}`;
+                return request
+            }, error => Promise.reject(error));
+
+            axiosInstance.interceptors.response.use(
+                response => response,
+                async error => {
+                    const originalRequest = error.config;
+                    if (error.response.status === 401 || error.response.status == 403 && !originalRequest._retry) {
+                        originalRequest._retry = true;
+                        try {
+                            const refreshToken = localStorage.getItem('refreshToken');
+
+                            let instance = axios.create({
+                                headers: {
+                                    "Authorization" : `Bearer ${refreshToken}`
+                                }
+                            })
+
+                            const response = await instance.post(`${REST_URL}/auth/refresh-token`, {
+                                refreshToken,
+                            });
+
+                            const { accessToken, refreshToken: newRefreshToken } = response.data;
+                            
+                            localStorage.setItem('authToken', accessToken);
+                            localStorage.setItem('refreshToken', newRefreshToken);
+
+                            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+                            return axiosInstance(originalRequest);
+                        } catch (refreshError) {
+                            logout();
+                        }
+                    }
+                    return Promise.reject(error);
+                }
+            );
         } catch(e) {
             logout();
         }
