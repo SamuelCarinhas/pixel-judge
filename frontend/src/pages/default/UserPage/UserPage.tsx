@@ -3,7 +3,7 @@ import './UserPage.css'
 import { useContext, useEffect, useState } from 'react';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import axios from 'axios';
-import { IProfile } from '../../../utils/models/profile.model';
+import { IAccount } from '../../../utils/models/profile.model';
 
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -21,29 +21,35 @@ export default function UserPage() {
 
     const { username } = useParams();
     const [notFound, setNotFound] = useState<boolean>(false);
-    const [profile, setProfile] = useState<IProfile>({
-        firstName: null,
-        secondName: null,
-        birthDate: null,
-        country: null,
-        city: null,
-        organization: null,
-        lastVisit: null,
-        registered: new Date()
+    const [account, setAccount] = useState<IAccount>({
+        username: "",
+        role: "",
+        profile: {
+            firstName: null,
+            secondName: null,
+            birthDate: null,
+            country: null,
+            city: null,
+            organization: null,
+            lastVisit: null,
+            registered: new Date()
+        },
+        followers: 0,
+        following: 0
     });
 
-    function updateProfile(profile: IProfile) {
-        if(profile.birthDate !== null) profile.birthDate = new Date(profile.birthDate);
-        if(profile.lastVisit !== null) profile.lastVisit = new Date(profile.lastVisit);
-        profile.registered = new Date(profile.registered);
-        setProfile(profile);
+    function updateAccount(account: IAccount) {
+        if(account.profile.birthDate !== null) account.profile.birthDate = new Date(account.profile.birthDate);
+        if(account.profile.lastVisit !== null) account.profile.lastVisit = new Date(account.profile.lastVisit);
+        account.profile.registered = new Date(account.profile.registered);
+        setAccount(account);
     }
 
     useEffect(() => {
         if(!username) setNotFound(true);
 
         axios.get(`${REST_URL}/profile?username=${username}`)
-        .then(res => updateProfile(res.data.profile))
+        .then(res => updateAccount(res.data.account))
         .catch(() => setNotFound(true));
     }, [username]);
 
@@ -58,7 +64,7 @@ export default function UserPage() {
                     <div className='user-id'>
                         <span className='rank'>Unranked</span>
                         <span className='username'>@{username}</span>
-                        <span className='full-name'>{profile.firstName} {profile.secondName}</span>
+                        <span className='full-name'>{account.profile.firstName} {account.profile.secondName}</span>
                     </div>
                 </div>
                 {authContext.username.toLocaleLowerCase() === username?.toLocaleLowerCase() ?
@@ -67,12 +73,12 @@ export default function UserPage() {
                     <CustomButton text="Follow" color={IButtonColor.ORANGE}></CustomButton>
                 }
                 <div className='social'>
-                    <FaUserFriends /> <span>0 Followers</span> <span>0 Following</span>
+                    <FaUserFriends /> <span>{account.followers} Followers</span> <span>{account.following} Following</span>
                 </div>
                 <div className='information'>
                     <h3>Information</h3>
-                    <span><HiOutlineBuildingOffice2 /> {profile.organization}</span>
-                    <span><HiOutlineLocationMarker /> {profile.country}</span>
+                    <span><HiOutlineBuildingOffice2 /> {account.profile.organization}</span>
+                    <span><HiOutlineLocationMarker /> {account.profile.country}</span>
                 </div>
                 <div className='badges'>
                     <h3>Badges</h3>
