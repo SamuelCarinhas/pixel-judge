@@ -13,6 +13,11 @@
     text-align: center;
 }
 
+.rating-page a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .rating-page table {
     border-collapse: collapse;
     width: 100%;
@@ -34,7 +39,7 @@
     text-align: center;
 }
 
-.rating-page .username:hover {
+.rating-page a:hover {
     cursor: pointer;
-    background-color: #ccc;
+    color: #666;
 }

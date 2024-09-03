@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import './RatingPage.css'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
 export default function RatingPage() {
 
     const [users, setUsers] = useState<{username: string}[]>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${REST_URL}/profile/all`)
@@ -31,7 +30,7 @@ export default function RatingPage() {
                         users.map((user, key) => (
                             <tr key={key}>
                                 <th className='rank'>{key+1}</th>
-                                <th className='username' onClick={ () => navigate(`/user/${user.username}`)}>@{user.username}</th>
+                                <th className='username'><Link to={`/user/${user.username}`}>@{user.username}</Link></th>
                                 <th className='rating'>0</th>
                             </tr>
                         ))
