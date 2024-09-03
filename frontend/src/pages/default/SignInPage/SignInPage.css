@@ -1,5 +1,6 @@
 .sign-in-page {
     position: relative;
+    width: 100%;
     display: flex;
     width: fit-content;
     justify-content: center;
