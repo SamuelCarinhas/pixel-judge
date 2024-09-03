@@ -24,7 +24,6 @@
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
-    filter: drop-shadow(2px 2px 5px #000000);
 }
 
 .navbar .logo span {
