@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import {Conflict, InternalServerError, NotFound, Unauthorized} from "../utils/error.util";
 import { Account } from "@prisma/client";
 import {verify} from "./mail.service";
+import logger from "../utils/logger.util";
 
 const JWT_ACCESS_SECRET = String(process.env.JWT_ACCESS_SECRET)
 const JWT_REFRESH_SECRET = String(process.env.JWT_REFRESH_SECRET)
@@ -145,6 +146,8 @@ export async function refreshToken(accountId: string, token: string) {
             refreshToken
         },
     })
+
+    logger.info(`Account ${account.username} refreshed`)
 
     return { accessToken, refreshToken }
 }

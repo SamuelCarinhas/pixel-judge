@@ -18,8 +18,8 @@ enum Role {
 
 model Account {
   id                String  @id @default(cuid())
-  username          String  @unique
-  email             String  @unique
+  username          String  @db.Citext @unique
+  email             String  @db.Citext @unique
   password          String
   verificationCode  String?
   passwordResetCode String?
