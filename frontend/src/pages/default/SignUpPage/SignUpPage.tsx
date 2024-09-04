@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import CustomButton from '../../../components/CustomButton/CustomButton'
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton'
 import InputField from '../../../components/InputField/InputField'
@@ -7,10 +7,8 @@ import { FaLock, FaRegUser } from 'react-icons/fa'
 import { MdOutlineMailOutline } from 'react-icons/md'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Loading from '../../../components/Loading/Loading'
-import { useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
-import { AuthContext } from '../../../context/AuthContext/AuthContext'
-import { AuthRole } from '../../../context/AuthContext/IAuthContext'
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
@@ -22,14 +20,6 @@ type SignUpInput = {
 }
 
 export default function SignUpPage() {
-
-    const { role } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if(role !== AuthRole.DEFAULT && role !== AuthRole.LOADING)
-            navigate('/');
-    }, [role]);
 
     const {
         register,

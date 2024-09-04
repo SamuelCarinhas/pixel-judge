@@ -99,3 +99,12 @@
 .user-page .badges .list img {
     height: 5rem;
 }
+
+
+.user-page a {
+    text-decoration: none;
+}
+
+.user-page .custom-button {
+    width: fit-content;
+}

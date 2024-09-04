@@ -37,7 +37,7 @@
     width: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: left;
     flex-direction: column;
     gap: 0.2rem;
 }

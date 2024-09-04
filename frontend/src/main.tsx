@@ -17,6 +17,7 @@ import SignInPage from './pages/default/SignInPage/SignInPage'
 import SignUpPage from './pages/default/SignUpPage/SignUpPage'
 import UserPage from './pages/default/UserPage/UserPage'
 import VerifyAccountPage from './pages/default/VerifyAccountPage/VerifyAccountPage'
+import EditUserPage from './pages/user/EditUserPage/EditUserPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/verify-account'} element={ <PageContainer> <VerifyAccountPage /> </PageContainer> } />
           
           <Route path={'/user/:username'} element={ <PageContainer> <UserPage /> </PageContainer> } />
+          <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
 
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
               <Route path={'/test'} element={ <PageContainer> <HomePage/> </PageContainer> } />

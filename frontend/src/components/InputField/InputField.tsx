@@ -5,6 +5,7 @@ import './InputField.css'
 const InputField = forwardRef<HTMLInputElement, IInputField>(({label, icon, ...props}, ref) => {
         return (
             <div className='input-text'>
+                { props.description && <label> { props.description } </label> }
                 {props.error && <span className='input-error-text'> { props.error.message } </span> }
                 <div className='input-container'>
                     { icon }

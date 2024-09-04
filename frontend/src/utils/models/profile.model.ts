@@ -3,7 +3,7 @@ export interface IAccount {
     role: string,
     profile: {
         firstName: string | null,
-        secondName: string | null,
+        lastName: string | null,
         birthDate: Date | null,
         country: string | null,
         city: string | null,

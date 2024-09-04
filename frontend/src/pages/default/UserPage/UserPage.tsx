@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import './UserPage.css'
 import { useContext, useEffect, useState } from 'react';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
@@ -28,14 +28,13 @@ export default function UserPage() {
         role: "",
         profile: {
             firstName: null,
-            secondName: null,
+            lastName: null,
             birthDate: null,
             country: null,
             city: null,
             organization: null,
             lastVisit: null,
-            registered: new Date(),
-            imagePath: ""
+            registered: new Date()
         },
         followers: 0,
         following: 0
@@ -81,7 +80,7 @@ export default function UserPage() {
 
     return (
         notFound ?
-        <NotFoundPage />
+            <NotFoundPage />
         :
         <div className='user-page'>
             <div className='user-info'>
@@ -90,11 +89,13 @@ export default function UserPage() {
                     <div className='user-id'>
                         <span className={`rank ${roleColors[roleMap[account.role as never]]}`}> { roleNames[roleMap[account.role as never]] } </span>
                         <span className={`username ${roleColors[roleMap[account.role as never]]}`}>@{username}</span>
-                        <span className='full-name'>{account.profile.firstName} {account.profile.secondName}</span>
+                        <span className='full-name'>{account.profile.firstName} {account.profile.lastName}</span>
                     </div>
                 </div>
                 {authContext.username.toLocaleLowerCase() === username?.toLocaleLowerCase() ?
-                    <CustomButton text="Edit Profile" color={IButtonColor.ORANGE}></CustomButton>
+                    <Link to="/settings/profile">
+                        <CustomButton text="Edit Profile" color={IButtonColor.ORANGE}></CustomButton>
+                    </Link>
                     :
                     isFollowing ?
                     <CustomButton text="Unfollow" color={IButtonColor.ORANGE} onClick={ unfollow }></CustomButton>

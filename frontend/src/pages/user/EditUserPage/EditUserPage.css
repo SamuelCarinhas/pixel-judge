@@ -1,0 +1,67 @@
+.edit-user-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+.edit-user-page form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.edit-user-page-error {
+    color: red;
+}
+
+.edit-user-page .image-upload {
+    height: 10rem;
+    width: 10rem;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.edit-user-page .image-upload .image:hover {
+    cursor: pointer;
+    filter: brightness(60%);
+}
+
+.edit-user-page .image-upload .image {
+    transition: all 0.5s ease-in-out;
+    background-color: blac;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1 / 1;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+}
+
+.edit-user-page .image-upload .image input[type=file] {
+    display: none;
+}
+
+.edit-user-page .image-upload .image .show {
+    display: none;
+    color: white;
+    transition: all 0.5s ease-in-out;
+}
+
+.edit-user-page .image-upload .image:hover .show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease-in-out;
+}
