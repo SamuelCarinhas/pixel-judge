@@ -83,8 +83,10 @@
 
 .user-page .user img {
     width: 8rem;
+    object-fit: contain;
     aspect-ratio: 1;
     border-radius: 1rem;
+    border: 1px solid #ccc;
 }
 
 .user-page .badges .list {

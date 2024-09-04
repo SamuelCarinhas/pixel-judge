@@ -34,7 +34,8 @@ export default function UserPage() {
             city: null,
             organization: null,
             lastVisit: null,
-            registered: new Date()
+            registered: new Date(),
+            imagePath: ""
         },
         followers: 0,
         following: 0
@@ -85,7 +86,7 @@ export default function UserPage() {
         <div className='user-page'>
             <div className='user-info'>
                 <div className='user'>
-                    <img src={`${REST_URL}/profile/picture?username=${username}`}/>
+                    <img src={account.username ? `${REST_URL}/profile/picture?username=${account.username}` : ""}/>
                     <div className='user-id'>
                         <span className={`rank ${roleColors[roleMap[account.role as never]]}`}> { roleNames[roleMap[account.role as never]] } </span>
                         <span className={`username ${roleColors[roleMap[account.role as never]]}`}>@{username}</span>
