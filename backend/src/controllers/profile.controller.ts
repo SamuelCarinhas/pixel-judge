@@ -22,7 +22,7 @@ export async function followProfile(req: Request, res: Response, next: NextFunct
     const { username } = req.query;
 
     profileService
-        .followProfile(res.locals.token.accountId, username as string)
+        .followProfile(res.locals.account, username as string)
         .then(() => res.status(StatusCodes.OK).json({message: "Account followed"}))
         .catch((error) => next(error));
 }
@@ -31,7 +31,7 @@ export async function unfollowProfile(req: Request, res: Response, next: NextFun
     const { username } = req.query;
     
     profileService
-        .unfollowProfile(res.locals.token.accountId, username as string)
+        .unfollowProfile(res.locals.account, username as string)
         .then(() => res.status(StatusCodes.OK).json({message: "Account unfollowed"}))
         .catch((error) => next(error));
 }
@@ -40,7 +40,21 @@ export async function isFollowing(req: Request, res: Response, next: NextFunctio
     const { username } = req.query;
     
     profileService
-        .isFollowing(res.locals.token.accountId, username as string)
+        .isFollowing(res.locals.account, username as string)
+        .then((following) => res.status(StatusCodes.OK).json({ following }))
+        .catch((error) => next(error));
+}
+
+export async function getFollowers(req: Request, res: Response, next: NextFunction) {
+    profileService
+        .getFollowers(res.locals.account)
+        .then((followers) => res.status(StatusCodes.OK).json({ followers }))
+        .catch((error) => next(error));
+}
+
+export async function getFollowing(req: Request, res: Response, next: NextFunction) {
+    profileService
+        .getFollowing(res.locals.account)
         .then((following) => res.status(StatusCodes.OK).json({ following }))
         .catch((error) => next(error));
 }
@@ -50,5 +64,7 @@ export default {
     getProfiles,
     followProfile,
     unfollowProfile,
-    isFollowing
+    isFollowing,
+    getFollowers,
+    getFollowing
 }

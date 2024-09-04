@@ -10,6 +10,8 @@ router.get('/', validate(GetProfileSchema), profileController.getProfile)
 router.get('/all', profileController.getProfiles)
 router.post('/follow', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.followProfile)
 router.delete('/unfollow', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.unfollowProfile)
-router.get('/isfollowing', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.isFollowing)
+router.get('/is-following', authMiddleware.authorizeAccess, validate(GetProfileSchema), profileController.isFollowing)
+router.get('/followers', authMiddleware.authorizeAccess, profileController.getFollowers)
+router.get('/following', authMiddleware.authorizeAccess, profileController.getFollowing)
 
 export default router

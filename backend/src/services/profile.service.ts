@@ -1,5 +1,7 @@
+import { Account, Profile } from "@prisma/client";
 import { BadRequest, Conflict, NotFound } from "../utils/error.util";
 import prisma from "../utils/prisma.util"
+import { AccountWithProfile } from "../utils/types.util";
 
 export async function getProfile(username: string) {
     let account = await prisma.account.findUnique({
@@ -51,18 +53,15 @@ export async function getProfiles() {
             verified: true
         },
         select: {
-            username: true
+            username: true,
+            role: true
         }
     })
 
     return accounts;
 }
 
-export async function followProfile(accountId: string, username: string) {
-    let currentAccount = await prisma.account.findUnique({ where: { id: accountId }, include: { profile: true } });
-    if(!currentAccount) throw new NotFound("Current account invalid");
-    if(!currentAccount.profile) throw new NotFound("Current account does not have a profile");
-
+export async function followProfile(currentAccount: AccountWithProfile, username: string) {
     let targetAccount = await prisma.account.findUnique({ where: { username }, include: { profile: true } });
     if(!targetAccount) throw new NotFound("Account not found");
     if(!targetAccount.profile) throw new NotFound("This account was not yet validated");
@@ -79,11 +78,7 @@ export async function followProfile(accountId: string, username: string) {
     })
 }
 
-export async function unfollowProfile(accountId: string, username: string) {
-    let currentAccount = await prisma.account.findUnique({ where: { id: accountId }, include: { profile: true } });
-    if(!currentAccount) throw new NotFound("Current account invalid");
-    if(!currentAccount.profile) throw new NotFound("Current account does not have a profile");
-
+export async function unfollowProfile(currentAccount: AccountWithProfile, username: string) {
     let targetAccount = await prisma.account.findUnique({ where: { username }, include: { profile: true } });
     if(!targetAccount) throw new NotFound("Account not found");
     if(!targetAccount.profile) throw new NotFound("This account was not yet validated");
@@ -96,11 +91,7 @@ export async function unfollowProfile(accountId: string, username: string) {
     })
 }
 
-export async function isFollowing(accountId: string, username: string) {
-    let currentAccount = await prisma.account.findUnique({ where: { id: accountId }, include: { profile: true } });
-    if(!currentAccount) throw new NotFound("Current account invalid");
-    if(!currentAccount.profile) throw new NotFound("Current account does not have a profile");
-
+export async function isFollowing(currentAccount: AccountWithProfile, username: string) {
     let targetAccount = await prisma.account.findUnique({ where: { username }, include: { profile: true } });
     if(!targetAccount) throw new NotFound("Account not found");
     if(!targetAccount.profile) throw new NotFound("This account was not yet validated");
@@ -115,10 +106,32 @@ export async function isFollowing(accountId: string, username: string) {
     return follow !== null
 }
 
+export async function getFollowers(currentAccount: AccountWithProfile) {
+    const followers = await prisma.follows.findMany({
+        where: {
+            followingId: currentAccount.profile.id
+        }
+    })
+    
+    return followers
+}
+
+export async function getFollowing(currentAccount: AccountWithProfile) {
+    const followers = await prisma.follows.findMany({
+        where: {
+            followerId: currentAccount.profile.id
+        }
+    })
+    
+    return followers
+}
+
 export default {
     getProfile,
     getProfiles,
     followProfile,
     unfollowProfile,
-    isFollowing
+    isFollowing,
+    getFollowers,
+    getFollowing
 }

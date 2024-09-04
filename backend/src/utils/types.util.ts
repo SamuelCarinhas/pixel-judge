@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Account, Profile, Role } from "@prisma/client";
 import { NextFunction } from "express";
 
 export type AccessToken = { accountId: string; username: string; email: string; role: Role }
@@ -11,3 +11,5 @@ export type onTokenDecoded = (token: Token, next: NextFunction) => Promise<void>
 
 export type VerificationEmailPayload = { username: string; callback: string }
 export type ResetPasswordEmailPayload = { username: string; callback: string }
+
+export type AccountWithProfile = Account & { profile: Profile };

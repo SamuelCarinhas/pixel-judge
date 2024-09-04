@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { AccessToken, onTokenDecoded, PasswordResetToken, RefreshToken } from "../utils/types.util";
-import { Unauthorized } from "../utils/error.util";
+import { AccessToken, AccountWithProfile, onTokenDecoded, PasswordResetToken, RefreshToken } from "../utils/types.util";
+import { Forbidden, InternalServerError, Unauthorized } from "../utils/error.util";
 import prisma from "../utils/prisma.util";
 import { verifyJWT } from "../services/auth.service";
+import { Account, Profile } from "@prisma/client";
 
 const JWT_ACCESS_SECRET = String(process.env.JWT_ACCESS_SECRET)
 const JWT_UTIL_SECRET = String(process.env.JWT_UTIL_SECRET)
@@ -20,14 +21,17 @@ export const extractToken = (req: Request, cookie?: string): string => {
     )
 }
 
-async function getUsernameByAccountId(accountId: string): Promise<string | null> {
+async function getAccountById(accountId: string): Promise<AccountWithProfile | null> {
     try {
         const user = await prisma.account.findUnique({
             where: {
                 id: accountId,
+            },
+            include: {
+                profile: true
             }
-        });
-        return user?.username || null;
+        }) as AccountWithProfile;
+        return user;
     } catch (error) {
         console.error('Error fetching username by accountId:', error);
         throw error;
@@ -44,7 +48,9 @@ const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecode
         if (decoded) {
             res.locals.originalToken = token;
             res.locals.token = decoded;
-            res.locals.token.username = await getUsernameByAccountId(decoded.accountId);
+            res.locals.account = await getAccountById(decoded.accountId);
+            if(res.locals.account === null) return next(new InternalServerError("Account not found"));
+            if(res.locals.account.profile === null) return next(new Forbidden("Profile not found"));
             return onTokenDecoded ? onTokenDecoded(decoded, next) : next()
         }
         return next(new Unauthorized(`Invalid / Expired Authorization Token. Permission Denied`))
