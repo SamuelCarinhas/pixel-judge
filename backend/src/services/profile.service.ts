@@ -2,6 +2,9 @@ import { Account, Profile } from "@prisma/client";
 import { BadRequest, Conflict, NotFound } from "../utils/error.util";
 import prisma from "../utils/prisma.util"
 import { AccountWithProfile } from "../utils/types.util";
+import fs from 'fs';
+
+const UPLOADS_DIR = String(process.env.UPLOADS_DIR)
 
 export async function getProfile(username: string) {
     let account = await prisma.account.findUnique({
@@ -126,6 +129,32 @@ export async function getFollowing(currentAccount: AccountWithProfile) {
     return followers
 }
 
+export async function updateProfilePicture(currentAccount: AccountWithProfile, file: Express.Multer.File) {
+    if(currentAccount.profile.imagePath !== "default")
+        fs.rmSync(currentAccount.profile.imagePath, { force: true });
+
+    await prisma.profile.update({
+        where: {
+            id: currentAccount.profile.id
+        },
+        data: {
+            imagePath: file.path
+        }
+    })
+}
+
+export async function getProfilePicture(username: string) {
+    const account = await prisma.account.findUnique({ where: { username }, include: { profile: true } });
+    if(!account || !account.profile) throw new NotFound("User not found");
+
+    const filePath = account.profile.imagePath;
+
+    if(filePath === "default")
+        return `${UPLOADS_DIR}/profile/default.jpg`;
+
+     return filePath;
+}
+
 export default {
     getProfile,
     getProfiles,
@@ -133,5 +162,7 @@ export default {
     unfollowProfile,
     isFollowing,
     getFollowers,
-    getFollowing
+    getFollowing,
+    updateProfilePicture,
+    getProfilePicture
 }

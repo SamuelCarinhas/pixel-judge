@@ -50,6 +50,8 @@ model Profile {
   lastVisit DateTime?
   registered DateTime @default(now())
 
+  imagePath String @default("default")
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt @default(now())
 

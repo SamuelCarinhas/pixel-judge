@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import profileService from "../services/profile.service"
 import { StatusCodes } from "http-status-codes"
+import { BadRequest } from "../utils/error.util";
 
 export async function getProfile(req: Request, res: Response, next: NextFunction) {
     const { username } = req.query;
@@ -59,6 +60,25 @@ export async function getFollowing(req: Request, res: Response, next: NextFuncti
         .catch((error) => next(error));
 }
 
+export async function updateProfilePicture(req: Request, res: Response, next: NextFunction) {
+    const file = req.file;
+    if(!file) throw new BadRequest("File not found");
+
+    profileService
+        .updateProfilePicture(res.locals.account, file)
+        .then(() => res.status(StatusCodes.OK).json({ message: "File uploaded" }))
+        .catch((err) => next(err));
+}
+
+export async function getProfilePicture(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.query;
+
+    profileService
+        .getProfilePicture(username as string)
+        .then((path) => res.status(StatusCodes.OK).sendFile(path))
+        .catch((err) => next(err));
+}
+
 export default {
     getProfile,
     getProfiles,
@@ -66,5 +86,7 @@ export default {
     unfollowProfile,
     isFollowing,
     getFollowers,
-    getFollowing
+    getFollowing,
+    updateProfilePicture,
+    getProfilePicture
 }

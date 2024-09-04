@@ -12,7 +12,7 @@ function diskStorage(storage: string) {
             callback(null, `${UPLOADS_DIR}/${storage}`)
         },
         filename: (_, file, callback) => {
-            callback(null, `${file.originalname}-${Date.now() + "-" + Math.round(Math.random() * 1e9)}`)
+            callback(null, `${Date.now() + "-" + Math.round(Math.random() * 1e9)}-${file.originalname}`)
         },
     })
 }
