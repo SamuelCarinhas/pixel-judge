@@ -63,7 +63,7 @@ export default function UserPage() {
         if(account.username.length === 0) return;
         if(authContext.role === AuthRole.LOADING || authContext.role === AuthRole.DEFAULT) return;
 
-        axiosInstance.get(`${REST_URL}/profile/isfollowing?username=${username}`)
+        axiosInstance.get(`${REST_URL}/profile/is-following?username=${username}`)
         .then(res => setIsFollowing(res.data.following))
         .catch(() => setIsFollowing(false));
     }, [account, authContext.role]);
