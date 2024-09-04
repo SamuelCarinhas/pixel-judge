@@ -85,7 +85,7 @@ export default function UserPage() {
         <div className='user-page'>
             <div className='user-info'>
                 <div className='user'>
-                    <img src={"https://image.winudf.com/v2/image1/Y29tLmthbmZvLmZ1bm55cHJvZmlsZXBpY3R1cmVfc2NyZWVuXzBfMTY3NzM3MzY0NV8wNzQ/screen-0.jpg?fakeurl=1&type=.jpg"}/>
+                    <img src={`${REST_URL}/profile/picture?username=${username}`}/>
                     <div className='user-id'>
                         <span className={`rank ${roleColors[roleMap[account.role as never]]}`}> { roleNames[roleMap[account.role as never]] } </span>
                         <span className={`username ${roleColors[roleMap[account.role as never]]}`}>@{username}</span>
