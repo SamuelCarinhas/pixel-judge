@@ -50,6 +50,11 @@ export default function Navbar() {
                     </Link>
                     )
                 }
+                {role === AuthRole.ADMIN &&
+                    <Link className='option' to="/admin">
+                        <span>Admin</span>
+                    </Link>
+                }
                 {
                     role !== AuthRole.LOADING && role !== AuthRole.DEFAULT
                     ?
