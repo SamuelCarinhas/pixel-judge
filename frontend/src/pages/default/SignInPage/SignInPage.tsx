@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import CustomButton from '../../../components/CustomButton/CustomButton'
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton'
 import InputField from '../../../components/InputField/InputField'
@@ -7,9 +7,8 @@ import { FaLock, FaRegUser } from 'react-icons/fa'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Loading from '../../../components/Loading/Loading'
 import axios from 'axios'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '../../../context/AuthContext/AuthContext'
-import { AuthRole } from '../../../context/AuthContext/IAuthContext'
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
@@ -27,13 +26,7 @@ export default function SignInPage() {
         formState: { errors, isSubmitting }
     } = useForm<SignInInput>();
 
-    const { role, login } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if(role !== AuthRole.DEFAULT && role !== AuthRole.LOADING)
-            navigate('/');
-    }, [role]);
+    const { login } = useContext(AuthContext);
 
     const onSubmit: SubmitHandler<SignInInput> = async (data) => {
         try {

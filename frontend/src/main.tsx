@@ -29,8 +29,11 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/forum'} element={ <PageContainer> <ForumPage /> </PageContainer> } />
           <Route path={'/problems'} element={ <PageContainer> <ProblemsPage /> </PageContainer> } />
           <Route path={'/rating'} element={ <PageContainer> <RatingPage /> </PageContainer> } />
-          <Route path={'/sign-in'} element={ <PageContainer> <SignInPage /> </PageContainer> } />
-          <Route path={'/sign-up'} element={ <PageContainer> <SignUpPage /> </PageContainer> } />
+
+          <Route element={ <ProtectedRoute roles={[AuthRole.DEFAULT]}/> }>
+              <Route path={'/sign-in'} element={ <PageContainer> <SignInPage /> </PageContainer> } />
+              <Route path={'/sign-up'} element={ <PageContainer> <SignUpPage /> </PageContainer> } />
+          </Route>
           <Route path={'/logout'} element={ <PageContainer> <LogoutPage /> </PageContainer> } />
           <Route path={'/verify-account'} element={ <PageContainer> <VerifyAccountPage /> </PageContainer> } />
           
@@ -38,7 +41,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
 
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
-              <Route path={'/test'} element={ <PageContainer> <HomePage/> </PageContainer> } />
+              <Route path={'/admin'} element={ <PageContainer> <HomePage/> </PageContainer> } />
           </Route>
           <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>
