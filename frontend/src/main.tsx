@@ -18,6 +18,7 @@ import SignUpPage from './pages/default/SignUpPage/SignUpPage'
 import UserPage from './pages/default/UserPage/UserPage'
 import VerifyAccountPage from './pages/default/VerifyAccountPage/VerifyAccountPage'
 import EditUserPage from './pages/user/EditUserPage/EditUserPage'
+import AdminPage from './pages/admin/AdminPage/AdminPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -41,7 +42,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
 
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
-              <Route path={'/admin'} element={ <PageContainer> <HomePage/> </PageContainer> } />
+              <Route path={'/admin'} element={ <PageContainer> <AdminPage/> </PageContainer> } />
           </Route>
           <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>
