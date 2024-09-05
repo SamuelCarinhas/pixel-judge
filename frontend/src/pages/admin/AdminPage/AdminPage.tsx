@@ -1,6 +1,6 @@
 import { IoIosOptions } from 'react-icons/io'
 import './AdminPage.css'
-import { FaClipboardList } from 'react-icons/fa'
+import { FaClipboardList, FaTrophy } from 'react-icons/fa'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { useState } from 'react'
 
@@ -35,7 +35,7 @@ export default function AdminPage() {
         },
         {
             title: 'Contests',
-            icon: <FaClipboardList />,
+            icon: <FaTrophy />,
             options: [
                 {
                     title: "Contests List",
