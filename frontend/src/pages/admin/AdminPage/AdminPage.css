@@ -1,5 +1,88 @@
 .admin-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     width: 100%;
-    flex-grow: 1;
-    background-color: red;
+    height: 100%;
+    gap: 1rem;
+    margin: 1rem 0 1rem 0;
+}
+
+.admin-page .side-bar {
+    width: 30rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.admin-page .content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+
+.admin-page .side-bar .dropdown {
+    background-color: #00C2FF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    font-size: large;
+    color: #fff;
+}
+
+.admin-page .side-bar .dropdown .text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem
+}
+
+.admin-page .side-bar .dropdown:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.admin-page .side-bar .item .dropdown .arrow {
+    transition: all 0.3s ease-in-out;
+    transform: rotateZ(0deg);
+}
+
+.admin-page .side-bar .item.active .dropdown .arrow {
+    transition: all 0.3s ease-in-out;
+    transform: rotateZ(180deg);
+}
+
+.admin-page .side-bar .options {
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.admin-page .side-bar .item.active .options {
+    transition: all 0.5s ease-in-out;
+    max-height: 10rem;
+}
+
+.admin-page .side-bar .option {
+    padding: 0.5rem;
+    background-color: #fff;
+    padding-left: 1rem;
+}
+
+.admin-page .side-bar .option:hover {
+    cursor: pointer;
+    filter: brightness(90%);
 }
