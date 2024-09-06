@@ -19,7 +19,7 @@ export default function AdminUsers() {
 
     const [users, setUsers] = useState<IUser[]>([]);
 
-    const { role } = useContext(AuthContext);
+    const { role, username } = useContext(AuthContext);
 
     useEffect(() => {
         if(role !== AuthRole.ADMIN) return;
@@ -32,7 +32,7 @@ export default function AdminUsers() {
                         createdAt: new Date(user.createdAt),
                         email: user.email,
                         role: roleMap[user.role as never],
-                        verified: user.verifie
+                        verified: user.verified
                     }))
                 )
             });
@@ -63,12 +63,17 @@ export default function AdminUsers() {
                                 <td>{ roleNames[user.role] }</td>
                                 <td>{ user.verified ? "yes" : "no" }</td>
                                 <td className='options'>
-                                    <div className='option orange'>
-                                        <MdEdit />
-                                    </div>
-                                    <div className='option red'>
-                                        <MdDelete />
-                                    </div>
+                                    {
+                                        username !== user.username &&
+                                        <>
+                                            <div className='option orange'>
+                                                <MdEdit />
+                                            </div>
+                                            <div className='option red'>
+                                                <MdDelete />
+                                            </div>
+                                        </>
+                                    }
                                 </td>
                             </tr>
                         ))
