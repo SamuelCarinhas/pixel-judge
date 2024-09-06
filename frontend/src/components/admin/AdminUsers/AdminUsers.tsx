@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import './AdminUsers.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
-import { AuthRole, roleMap } from '../../../context/AuthContext/IAuthContext';
+import { AuthRole, roleMap, roleNames } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
 import InputField from '../../InputField/InputField';
 import { CiSearch } from 'react-icons/ci';
@@ -60,7 +60,7 @@ export default function AdminUsers() {
                                 <td>{ user.username }</td>
                                 <td>{ user.email }</td>
                                 <td>{ user.createdAt.toLocaleString() }</td>
-                                <td>{ user.role }</td>
+                                <td>{ roleNames[user.role] }</td>
                                 <td>{ user.verified ? "yes" : "no" }</td>
                                 <td className='options'>
                                     <div className='option orange'>
