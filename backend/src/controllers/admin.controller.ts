@@ -9,6 +9,16 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
         .catch((error) => next(error))
 }
 
+export async function updateUser(req: Request, res: Response, next: NextFunction) {
+    const { username, verified, role } = req.body;
+
+    adminService
+        .updateUser(res.locals.account, username, verified, role)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Role updated"}))
+        .catch((error) => next(error))
+}
+
 export default {
-    getUsers
+    getUsers,
+    updateUser
 }
