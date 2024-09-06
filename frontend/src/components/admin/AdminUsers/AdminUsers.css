@@ -1,4 +1,59 @@
 .admin-users {
     display: flex;
     width: 100%;
+    background-color: #fff;
+    box-sizing: border-box;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #eee;
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.admin-users .search-bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-users table {
+    border-collapse: collapse;
+    border: none;
+    overflow: hidden;
+    width: 100%;
+    border: solid #eee 1px;
+    margin-bottom: 1rem;
+}
+
+.admin-users td, th {
+    text-align: left;
+    padding: 8px;
+    border: none;
+}
+
+.admin-users tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.admin-users .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-users .red {
+    color: red;
+}
+
+.admin-users .orange {
+    color: orange;
+}
+
+.admin-users .option:hover {
+    cursor: pointer;
+    filter: brightness(80%);
 }
