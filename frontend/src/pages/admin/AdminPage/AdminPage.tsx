@@ -1,12 +1,15 @@
 import { IoIosOptions } from 'react-icons/io'
 import './AdminPage.css'
 import { FaClipboardList, FaTrophy } from 'react-icons/fa'
-import { MdKeyboardArrowDown } from 'react-icons/md'
-import { useState } from 'react'
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md'
+import { ReactNode, useState } from 'react'
+import AdminUsers from '../../../components/admin/AdminUsers/AdminUsers'
 
 export default function AdminPage() {
 
     const [activeDropdown, setActiveDropdown] = useState<boolean[]>([false, false, false]);
+    const [currentComponent, setCurrentComponent] = useState<ReactNode>(undefined);
+    const [currentHeader, setCurrentHeader]= useState<string>("");
 
     const dropdowns = [
         {
@@ -15,9 +18,11 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Users",
+                    component: <AdminUsers />,
                 },
                 {
-                    title: "System Config"
+                    title: "System Config",
+                    component: undefined
                 }
             ]
         },
@@ -27,9 +32,11 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Problem List",
+                    component: undefined
                 },
                 {
-                    title: "Create Problem"
+                    title: "Create Problem",
+                    component: undefined
                 }
             ]
         },
@@ -39,9 +46,11 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Contests List",
+                    component: undefined
                 },
                 {
-                    title: "Create Contest"
+                    title: "Create Contest",
+                    component: undefined
                 }
             ]
         }
@@ -51,6 +60,14 @@ export default function AdminPage() {
         const dropdowns = [...activeDropdown];
         dropdowns[idx] = !dropdowns[idx];
         setActiveDropdown(dropdowns);
+    }
+
+    function updateOption(option: {
+        title: string,
+        component: ReactNode
+    }) {
+        setCurrentComponent(option.component);
+        setCurrentHeader(option.title);
     }
 
     return (
@@ -68,7 +85,7 @@ export default function AdminPage() {
                             <div className='options'>
                                 {
                                     dropdown.options.map((option, idx) => (
-                                        <div className='option' key={idx}>
+                                        <div className={`option ${option.title === currentHeader ? 'selected' : ''}`} key={idx} onClick={ () => updateOption( option ) }>
                                             { option.title }
                                         </div>
                                     ))
@@ -79,7 +96,12 @@ export default function AdminPage() {
                 }
             </div>
             <div className='content'>
-                Content
+                <div className='header'>
+                    Admin <MdKeyboardArrowRight /> { currentHeader }
+                </div>
+                <div className='component'>
+                    { currentComponent }
+                </div>
             </div>
         </div>
     )
