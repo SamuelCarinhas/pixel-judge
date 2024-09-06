@@ -10,5 +10,5 @@ export default function ProtectedRoute(props: IProtectedRoute) {
     if(props.roles.includes(role))
         return <Outlet />
 
-    return ( role !== AuthRole.LOADING && <Navigate to={"/unauthorized"} replace /> )
+    return ( role !== AuthRole.LOADING && <Navigate to={"/"} replace /> )
 }
