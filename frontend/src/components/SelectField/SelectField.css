@@ -1,0 +1,11 @@
+.select-field {
+    border-radius: 0.5rem;
+    background-color: #00C2FF;
+    color: #fff;
+    padding: 0.5rem;
+    border: none;
+}
+
+.select-field:hover {
+    cursor: pointer;
+}

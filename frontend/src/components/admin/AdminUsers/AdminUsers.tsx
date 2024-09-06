@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import './AdminUsers.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
-import { AuthRole, roleMap, roleNames } from '../../../context/AuthContext/IAuthContext';
+import { AuthRole, roleMap, roleNames, roleTags } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
 import InputField from '../../InputField/InputField';
 import { CiSearch } from 'react-icons/ci';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdCancel, MdDelete, MdEdit } from 'react-icons/md';
+import SelectField from '../../SelectField/SelectField';
+import { FaSave } from 'react-icons/fa';
 
 interface IUser {
     username: string,
@@ -18,8 +20,12 @@ interface IUser {
 export default function AdminUsers() {
 
     const [users, setUsers] = useState<IUser[]>([]);
+    const [currentEditing, setCurrentEditing] = useState<IUser | undefined>(undefined);
+    const [search, setSearch] = useState<string>("");
 
     const { role, username } = useContext(AuthContext);
+
+    const roles = ['USER', 'ADMIN', 'MOD'];
 
     useEffect(() => {
         if(role !== AuthRole.ADMIN) return;
@@ -38,11 +44,29 @@ export default function AdminUsers() {
             });
     }, [role]);
 
+    function saveUser() {
+
+        axiosInstance.post('/admin/user', currentEditing)
+        .then(() => {
+            const copyUsers = [...users];
+            const idx = copyUsers.findIndex((user) => user.username === currentEditing?.username);
+            if(idx === -1) return;
+            copyUsers[idx] = currentEditing!;
+            setUsers(copyUsers);
+            setCurrentEditing(undefined);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    function deleteUser() {
+        alert('Function not available');
+    }
+
     return (
         <div className='admin-users'>
             <div className='search-bar'>
                 <h3>Users</h3>
-                <InputField label='search' icon={<CiSearch />} placeholder='Search' />
+                <InputField value={search} onChange={ (e) => setSearch(e.target.value) }label='search' icon={<CiSearch />} placeholder='Search' />
             </div>
             <table>
                 <tbody>
@@ -55,21 +79,51 @@ export default function AdminUsers() {
                         <th>Options</th>
                     </tr>
                     {
-                        users.map((user, idx) => (
+                        users.filter(user => user.username.toLowerCase().includes(search.toLowerCase())).map((user, idx) => (
                             <tr key={idx}>
                                 <td>{ user.username }</td>
                                 <td>{ user.email }</td>
                                 <td>{ user.createdAt.toLocaleString() }</td>
-                                <td>{ roleNames[user.role] }</td>
-                                <td>{ user.verified ? "yes" : "no" }</td>
+                                <td>
+                                    {
+                                        user.username === currentEditing?.username ?
+                                        <SelectField options={roles} value={roleTags[currentEditing.role]} onChange={(e) => setCurrentEditing({
+                                            ...currentEditing,
+                                            role: roleMap[e.target.value as never]
+                                        })}/>
+                                        :
+                                        roleNames[user.role] 
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        user.username === currentEditing?.username ?
+                                        <SelectField options={["yes", "no"]} value={currentEditing.verified ? "yes" : "no"} onChange={(e) => setCurrentEditing({
+                                            ...currentEditing,
+                                            verified: e.target.value === "yes"
+                                        })}/>
+                                        :
+                                        user.verified ? "yes" : "no"
+                                    }
+                                </td>
                                 <td className='options'>
                                     {
+                                        user.username === currentEditing?.username ?
+                                        <>
+                                            <div className='option green' onClick={ saveUser }>
+                                                <FaSave />
+                                            </div>
+                                            <div className='option red' onClick={ () => setCurrentEditing(undefined) }>
+                                                <MdCancel />
+                                            </div>
+                                        </>
+                                        :
                                         username !== user.username &&
                                         <>
-                                            <div className='option orange'>
+                                            <div className='option orange' onClick={ () => setCurrentEditing({...user}) }>
                                                 <MdEdit />
                                             </div>
-                                            <div className='option red'>
+                                            <div className='option red' onClick={ deleteUser }>
                                                 <MdDelete />
                                             </div>
                                         </>

@@ -30,8 +30,11 @@
 
 .admin-users td, th {
     text-align: left;
+    vertical-align: middle;
     padding: 8px;
     border: none;
+    align-items: center;
+    height: 2rem;
 }
 
 .admin-users tr:nth-child(even) {
@@ -51,6 +54,10 @@
 
 .admin-users .orange {
     color: orange;
+}
+
+.admin-users .green {
+    color: green;
 }
 
 .admin-users .option:hover {

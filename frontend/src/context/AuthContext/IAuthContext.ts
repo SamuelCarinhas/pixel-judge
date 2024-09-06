@@ -30,6 +30,14 @@ export const roleNames = {
     [AuthRole.ADMIN]: "Administrator"
 }
 
+export const roleTags = {
+    [AuthRole.LOADING]: "ERROR",
+    [AuthRole.DEFAULT]: "ERROR",
+    [AuthRole.USER]: "USER",
+    [AuthRole.MOD]: "MOD",
+    [AuthRole.ADMIN]: "ADMIN"
+}
+
 export const roleColors = {
     [AuthRole.LOADING]: "black",
     [AuthRole.DEFAULT]: "black",
