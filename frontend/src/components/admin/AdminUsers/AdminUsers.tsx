@@ -25,7 +25,7 @@ export default function AdminUsers() {
 
     const { role, username } = useContext(AuthContext);
 
-    const roles = ['USER', 'ADMIN', 'MOD'];
+    const roles = ['USER', 'ADMIN', 'MODERATOR'];
 
     useEffect(() => {
         if(role !== AuthRole.ADMIN) return;
@@ -45,11 +45,18 @@ export default function AdminUsers() {
     }, [role]);
 
     function saveUser() {
+        if(!currentEditing) return;
 
-        axiosInstance.post('/admin/user', currentEditing)
+        console.log(currentEditing)
+
+        axiosInstance.post('/admin/user', {
+            username: currentEditing.username,
+            validate: currentEditing.verified,
+            role: roleTags[currentEditing.role]
+        })
         .then(() => {
             const copyUsers = [...users];
-            const idx = copyUsers.findIndex((user) => user.username === currentEditing?.username);
+            const idx = copyUsers.findIndex((user) => user.username === currentEditing.username);
             if(idx === -1) return;
             copyUsers[idx] = currentEditing!;
             setUsers(copyUsers);

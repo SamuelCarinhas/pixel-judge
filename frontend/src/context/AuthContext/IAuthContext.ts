@@ -2,7 +2,7 @@ export enum AuthRole {
     LOADING,
     DEFAULT,
     USER,
-    MOD,
+    MODERATOR,
     ADMIN
 }
 
@@ -18,7 +18,7 @@ export const roleMap = {
     "LOADING": AuthRole.LOADING,
     "DEFAULT": AuthRole.DEFAULT,
     "USER": AuthRole.USER,
-    "MOD": AuthRole.MOD,
+    "MODERATOR": AuthRole.MODERATOR,
     "ADMIN": AuthRole.ADMIN
 }
 
@@ -26,7 +26,7 @@ export const roleNames = {
     [AuthRole.LOADING]: "Loading",
     [AuthRole.DEFAULT]: "Default",
     [AuthRole.USER]: "User",
-    [AuthRole.MOD]: "Moderator",
+    [AuthRole.MODERATOR]: "Moderator",
     [AuthRole.ADMIN]: "Administrator"
 }
 
@@ -34,7 +34,7 @@ export const roleTags = {
     [AuthRole.LOADING]: "ERROR",
     [AuthRole.DEFAULT]: "ERROR",
     [AuthRole.USER]: "USER",
-    [AuthRole.MOD]: "MOD",
+    [AuthRole.MODERATOR]: "MODERATOR",
     [AuthRole.ADMIN]: "ADMIN"
 }
 
@@ -42,6 +42,6 @@ export const roleColors = {
     [AuthRole.LOADING]: "black",
     [AuthRole.DEFAULT]: "black",
     [AuthRole.USER]: "gray",
-    [AuthRole.MOD]: "green",
+    [AuthRole.MODERATOR]: "green",
     [AuthRole.ADMIN]: "red"
 }
