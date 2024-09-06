@@ -7,7 +7,7 @@ export type VerificationToken = { accountId: string; code: string }
 export type PasswordResetToken = { accountId: string; code: string }
 
 export type Token = RefreshToken | AccessToken
-export type onTokenDecoded = (token: Token, next: NextFunction) => Promise<void>
+export type onTokenDecoded = (account: AccountWithProfile, next: NextFunction) => Promise<void>
 
 export type VerificationEmailPayload = { username: string; callback: string }
 export type ResetPasswordEmailPayload = { username: string; callback: string }

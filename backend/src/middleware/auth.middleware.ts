@@ -3,7 +3,7 @@ import { AccessToken, AccountWithProfile, onTokenDecoded, PasswordResetToken, Re
 import { Forbidden, InternalServerError, Unauthorized } from "../utils/error.util";
 import prisma from "../utils/prisma.util";
 import { verifyJWT } from "../services/auth.service";
-import { Account, Profile } from "@prisma/client";
+import { Account, Profile, Role } from "@prisma/client";
 
 const JWT_ACCESS_SECRET = String(process.env.JWT_ACCESS_SECRET)
 const JWT_UTIL_SECRET = String(process.env.JWT_UTIL_SECRET)
@@ -38,6 +38,11 @@ async function getAccountById(accountId: string): Promise<AccountWithProfile | n
     }
 }
 
+const adminTokenCheck = async (account: AccountWithProfile, next: NextFunction) => {
+    if(account.role !== Role.ADMIN) return next(new Forbidden("Admin privileges are required to access this service"));
+    return next()
+}
+
 const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecoded) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const token = extractToken(req, cookie);
@@ -61,10 +66,12 @@ export const authorizeAccess = authorize(verifyAccessToken<AccessToken>);
 export const authorizeVerification = authorize(verifyVerificationToken<PasswordResetToken>);
 export const authorizeRefresh = authorize(verifyRefreshToken<RefreshToken>);
 export const authorizeResetPassword = authorize(verifyResetToken<PasswordResetToken>);
+export const authorizeAdmin = authorize(verifyAccessToken<AccessToken>, undefined, adminTokenCheck);
 
 export default {
     authorizeAccess,
     authorizeVerification,
     authorizeRefresh,
-    authorizeResetPassword
+    authorizeResetPassword,
+    authorizeAdmin
 }
