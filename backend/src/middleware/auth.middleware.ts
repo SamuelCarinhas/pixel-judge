@@ -53,6 +53,8 @@ const authorize = (decoder: any, cookie?: string, onTokenDecoded?: onTokenDecode
         if (decoded) {
             res.locals.originalToken = token;
             res.locals.token = decoded;
+            if(decoded.code)
+                return onTokenDecoded ? onTokenDecoded(decoded, next) : next()
             res.locals.account = await getAccountById(decoded.accountId);
             if(res.locals.account === null) return next(new InternalServerError("Account not found"));
             if(res.locals.account.profile === null) return next(new Forbidden("Profile not found"));
