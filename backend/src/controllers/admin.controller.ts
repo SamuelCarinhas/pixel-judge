@@ -18,7 +18,15 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
         .catch((error) => next(error))
 }
 
+export async function getAdminLogs(req: Request, res: Response, next: NextFunction) {
+    adminService
+        .getAdminLogs()
+        .then((logs) => res.status(StatusCodes.OK).json({ message: "Logs retrieveed", logs }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
-    updateUser
+    updateUser,
+    getAdminLogs
 }

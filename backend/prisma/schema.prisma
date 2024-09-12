@@ -16,6 +16,13 @@ enum Role {
   USER
 }
 
+enum AdminLogType {
+  UPDATE
+  CREATE
+  DELETE
+  GENERAL
+}
+
 model Account {
   id                String  @id @default(cuid())
   username          String  @db.Citext @unique
@@ -33,6 +40,7 @@ model Account {
   updatedAt       DateTime  @updatedAt
 
   profile Profile?
+  adminLogs AdminLog[]
 
   @@index([role])
 }
@@ -73,4 +81,16 @@ model Follows {
   createdAt   DateTime @default(now())
 
   @@unique([followerId, followingId])
+}
+
+model AdminLog {
+  id String @id @default(cuid())
+
+  author Account @relation(fields: [authorId], references: [id])
+  authorId String
+
+  text String
+  type AdminLogType
+
+  createdAt       DateTime  @default(now())
 }
