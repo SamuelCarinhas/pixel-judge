@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import './AdminLogs.css'
+import './AdminLogsPage.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
@@ -18,7 +18,7 @@ const colorType = {
     'ADMIN': 'red'
 }
 
-export default function AdminLogs() {
+export default function AdminLogsPage() {
 
     const { role } = useContext(AuthContext);
 

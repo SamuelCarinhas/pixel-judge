@@ -18,7 +18,9 @@ import SignUpPage from './pages/default/SignUpPage/SignUpPage'
 import UserPage from './pages/default/UserPage/UserPage'
 import VerifyAccountPage from './pages/default/VerifyAccountPage/VerifyAccountPage'
 import EditUserPage from './pages/user/EditUserPage/EditUserPage'
-import AdminPage from './pages/admin/AdminPage/AdminPage'
+import AdminContainer from './components/containers/AdminContainer/AdminContainer'
+import AdminUsersPage from './pages/admin/AdminUsersPage/AdminUsersPage'
+import AdminLogsPage from './pages/admin/AdminLogPage/AdminLogsPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -42,7 +44,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
 
           <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
-              <Route path={'/admin'} element={ <PageContainer> <AdminPage/> </PageContainer> } />
+              <Route path={'/admin'} element={ <PageContainer> <AdminContainer/> </PageContainer> } />
+              <Route path={'/admin/logs'} element={ <PageContainer> <AdminContainer> <AdminLogsPage /> </AdminContainer> </PageContainer> } />
+              <Route path={'/admin/users'} element={ <PageContainer> <AdminContainer> <AdminUsersPage /> </AdminContainer> </PageContainer> } />
           </Route>
           <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>

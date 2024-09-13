@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import './AdminUsers.css'
+import './AdminUsersPage.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole, roleMap, roleNames, roleTags } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
-import InputField from '../../InputField/InputField';
 import { CiSearch } from 'react-icons/ci';
 import { MdCancel, MdDelete, MdEdit } from 'react-icons/md';
-import SelectField from '../../SelectField/SelectField';
 import { FaSave } from 'react-icons/fa';
+import InputField from '../../../components/InputField/InputField';
+import SelectField from '../../../components/SelectField/SelectField';
 
 interface IUser {
     username: string,
@@ -17,7 +17,7 @@ interface IUser {
     verified: boolean
 }
 
-export default function AdminUsers() {
+export default function AdminUsersPage() {
 
     const [users, setUsers] = useState<IUser[]>([]);
     const [currentEditing, setCurrentEditing] = useState<IUser | undefined>(undefined);

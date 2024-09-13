@@ -1,16 +1,16 @@
 import { IoIosOptions } from 'react-icons/io'
-import './AdminPage.css'
+import './AdminContainer.css'
 import { FaClipboardList, FaTrophy } from 'react-icons/fa'
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md'
-import { ReactNode, useState } from 'react'
-import AdminUsers from '../../../components/admin/AdminUsers/AdminUsers'
-import AdminLogs from '../../../components/admin/AdminLogs/AdminLogs'
+import { useState } from 'react'
+import IAdminContainer from './IAdminContainer'
+import { Link, useLocation } from 'react-router-dom'
+import '../../../utils/string.utils'
 
-export default function AdminPage() {
+export default function AdminContainer(props: IAdminContainer) {
 
-    const [activeDropdown, setActiveDropdown] = useState<boolean[]>([false, false, false]);
-    const [currentComponent, setCurrentComponent] = useState<ReactNode>(undefined);
-    const [currentHeader, setCurrentHeader]= useState<string>("");
+    const [activeDropdown, setActiveDropdown] = useState<boolean[]>([false, false, false])
+    const path = useLocation();
 
     const dropdowns = [
         {
@@ -19,15 +19,15 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Logs",
-                    component: <AdminLogs />
+                    path: '/admin/logs'
                 },
                 {
                     title: "Users",
-                    component: <AdminUsers />,
+                    path: '/admin/users'
                 },
                 {
                     title: "System Config",
-                    component: undefined
+                    path: '/admin/system-config'
                 }
             ]
         },
@@ -37,11 +37,11 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Problem List",
-                    component: undefined
+                    path: '/admin/problems'
                 },
                 {
                     title: "Create Problem",
-                    component: undefined
+                    path: '/admin/create-problem'
                 }
             ]
         },
@@ -51,11 +51,11 @@ export default function AdminPage() {
             options: [
                 {
                     title: "Contests List",
-                    component: undefined
+                    path: '/admin/contests'
                 },
                 {
                     title: "Create Contest",
-                    component: undefined
+                    path: '/admin/create-contest'
                 }
             ]
         }
@@ -67,16 +67,8 @@ export default function AdminPage() {
         setActiveDropdown(dropdowns);
     }
 
-    function updateOption(option: {
-        title: string,
-        component: ReactNode
-    }) {
-        setCurrentComponent(option.component);
-        setCurrentHeader(option.title);
-    }
-
     return (
-        <div className='admin-page'>
+        <div className='admin-container'>
             <div className='side-bar'>
                 {
                     dropdowns.map((dropdown, idx) => (
@@ -90,9 +82,11 @@ export default function AdminPage() {
                             <div className='options'>
                                 {
                                     dropdown.options.map((option, idx) => (
-                                        <div className={`option ${option.title === currentHeader ? 'selected' : ''}`} key={idx} onClick={ () => updateOption( option ) }>
-                                            { option.title }
-                                        </div>
+                                        <Link to={option.path} key={idx}>
+                                            <div className={`option ${option.path === path.pathname ? 'selected' : ''}`}>
+                                                { option.title }
+                                            </div>
+                                        </Link>
                                     ))
                                 }
                             </div>
@@ -102,10 +96,10 @@ export default function AdminPage() {
             </div>
             <div className='content'>
                 <div className='header'>
-                    Admin <MdKeyboardArrowRight /> { currentHeader }
+                    Admin <MdKeyboardArrowRight /> { path.pathname.replace('/admin/', '').toCamelCase() }
                 </div>
                 <div className='component'>
-                    { currentComponent }
+                    { props.children }
                 </div>
             </div>
         </div>
