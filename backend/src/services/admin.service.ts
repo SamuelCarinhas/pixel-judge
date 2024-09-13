@@ -37,7 +37,7 @@ export async function updateUser(currentAccount: AccountWithProfile, username: s
     })
 
     if(account.verified !== verified)
-        logger.admin(`${username}'s verified status from ${account.verified} to ${verified}`, currentAccount);
+        logger.admin(`${currentAccount.username} updated ${username}'s verified status from ${account.verified} to ${verified}`, currentAccount);
     if(account.role !== role)
         logger.admin(`${currentAccount.username} updated ${username}'s role from ${account.role} to ${role}`, currentAccount);
 }

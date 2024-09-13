@@ -51,7 +51,7 @@ export default function AdminUsersPage() {
 
         axiosInstance.post('/admin/user', {
             username: currentEditing.username,
-            validate: currentEditing.verified,
+            verified: currentEditing.verified,
             role: roleTags[currentEditing.role]
         })
         .then(() => {
