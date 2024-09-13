@@ -2,7 +2,7 @@ import { IoIosOptions } from 'react-icons/io'
 import './AdminContainer.css'
 import { FaClipboardList, FaTrophy } from 'react-icons/fa'
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import IAdminContainer from './IAdminContainer'
 import { Link, useLocation } from 'react-router-dom'
 import '../../../utils/string.utils'
@@ -63,9 +63,14 @@ export default function AdminContainer(props: IAdminContainer) {
 
     function toggleDropdown(idx: number) {
         const dropdowns = [...activeDropdown];
-        dropdowns[idx] = !dropdowns[idx];
+        dropdowns[idx] = true;
         setActiveDropdown(dropdowns);
     }
+
+    useEffect(() => {
+        const idx = dropdowns.findIndex(dropdown => dropdown.options.findIndex(option => option.path === path.pathname.toLowerCase()) !== -1)
+        if(idx !== -1) toggleDropdown(idx);
+    }, [path]);
 
     return (
         <div className='admin-container'>
