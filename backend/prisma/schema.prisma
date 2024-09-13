@@ -110,6 +110,9 @@ model Problem {
   checkerPath String?
   testCases ProblemTestCase[]
   solutions ProblemSolution[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model ProblemSolution {
@@ -119,6 +122,9 @@ model ProblemSolution {
 
   problem Problem @relation(fields: [problemId], references: [id])
   problemId String
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model ProblemTestCase {
@@ -129,4 +135,7 @@ model ProblemTestCase {
 
   problem Problem @relation(fields: [problemId], references: [id])
   problemId String
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
