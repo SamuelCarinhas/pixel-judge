@@ -43,7 +43,7 @@ export async function updateUser(currentAccount: AccountWithProfile, username: s
 }
 
 export async function getLogs() {
-    const logs = await prisma.log.findMany({ orderBy: [ { createdAt: 'desc' } ] })
+    const logs = await prisma.log.findMany({ orderBy: [ { createdAt: 'desc' } ], include: { author: { select: { username: true } } } })
     return logs
 }
 

@@ -1,0 +1,38 @@
+.admin-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-logs .logs {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.admin-logs .log {
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-logs .log:nth-child(even) {
+    background-color: #eee;
+}
+
+.admin-logs .log .header {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.admin-logs .red {
+    color: red;
+}
+
+.admin-logs .blue {
+    font-weight: 500;
+    color: #00C2FF;
+}

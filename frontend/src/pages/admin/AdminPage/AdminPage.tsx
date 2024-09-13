@@ -4,6 +4,7 @@ import { FaClipboardList, FaTrophy } from 'react-icons/fa'
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md'
 import { ReactNode, useState } from 'react'
 import AdminUsers from '../../../components/admin/AdminUsers/AdminUsers'
+import AdminLogs from '../../../components/admin/AdminLogs/AdminLogs'
 
 export default function AdminPage() {
 
@@ -16,6 +17,10 @@ export default function AdminPage() {
             title: 'General',
             icon: <IoIosOptions />,
             options: [
+                {
+                    title: "Logs",
+                    component: <AdminLogs />
+                },
                 {
                     title: "Users",
                     component: <AdminUsers />,
