@@ -92,3 +92,40 @@ model Log {
 
   createdAt       DateTime  @default(now())
 }
+
+model Problem {
+  id String @id @unique
+
+  timeLimit Int @default(1000) // ms
+  memoryLimit Int @default(256) // MB
+  
+  problemDescription String @default("")
+  inputDescription String @default("")
+  outputDescription String @default("")
+  restrictions String @default("")
+
+  public Boolean @default(false)
+
+  checkerPath String?
+  testCases ProblemTestCase[]
+  solutions ProblemSolution[]
+}
+
+model ProblemSolution {
+  id String @id @unique
+
+  solutionPath String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  problemId String
+}
+
+model ProblemTestCase {
+  id String @id @unique
+
+  inputFilePath String
+  outputFilePath String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  problemId String
+}
