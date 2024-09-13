@@ -19,6 +19,7 @@ type CreateProblemInput = {
 
 interface Problem {
     id: string
+    public: boolean
     title: string
 }
 
@@ -89,12 +90,14 @@ export default function AdminProblemListPage() {
                 <tbody>
                     <tr>
                         <th>ID</th>
+                        <th>Public</th>
                         <th>Options</th>
                     </tr>
                     {
                         problems.filter(problem => problem.id.toLowerCase().includes(search.toLowerCase())).map((problem, idx) => (
                             <tr key={idx}>
                                 <td>{ problem.id }</td>
+                                <td>{ problem.public.toString() }</td>
                                 <td className='options'>
                                     <Link to={`/problems/edit?id=${problem.id}`}>
                                         <div className='option orange'>

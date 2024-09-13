@@ -14,7 +14,7 @@ export async function createProblem(currentAccount: AccountWithProfile, id: stri
 }
 
 export async function getProblems() {
-    return await prisma.problem.findMany({ select: { id: true, title: true } })
+    return await prisma.problem.findMany({ select: { id: true, title: true, public: true } })
 }
 
 export default {
