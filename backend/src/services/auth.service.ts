@@ -118,7 +118,7 @@ export async function signIn(username: string, password: string) {
 
     const role = account.role;
 
-    logger.info(`Account ${username} sign in`)
+    logger.info(`Account ${username} sign in`, account)
 
     return {
         email: account.email,
