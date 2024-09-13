@@ -1,0 +1,32 @@
+.admin-problems {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-problems .search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-problems .search-bar .bar-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-problems .create-problem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-problems .admin-problems-error {
+    color: red;
+}

@@ -1,0 +1,83 @@
+.markdown-container {
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.markdown-container h1,
+.markdown-container h2,
+.markdown-container h3,
+.markdown-container h4,
+.markdown-container h5,
+.markdown-container h6 {
+    color: #333;
+}
+
+.markdown-container pre {
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    white-space: pre;
+}
+
+.markdown-container code {
+    color: #333;
+}
+
+.markdown-container ul,
+.markdown-container ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.markdown-container li {
+    margin: 5px 0;
+}
+
+.markdown-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.markdown-container a:hover {
+    text-decoration: underline;
+}
+
+.markdown-container blockquote {
+    border-left: 4px solid #007bff;
+    padding-left: 10px;
+    margin: 10px 0;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.markdown-container table {
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.markdown-container th,
+.markdown-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.markdown-container th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.markdown-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.markdown-container tr:hover {
+    background-color: #f1f1f1;
+}
+
+.markdown-container td {
+    word-break: break-word;
+}

@@ -38,10 +38,6 @@ export default function AdminContainer(props: IAdminContainer) {
                 {
                     title: "Problem List",
                     path: '/admin/problems'
-                },
-                {
-                    title: "Create Problem",
-                    path: '/admin/create-problem'
                 }
             ]
         },
@@ -52,10 +48,6 @@ export default function AdminContainer(props: IAdminContainer) {
                 {
                     title: "Contests List",
                     path: '/admin/contests'
-                },
-                {
-                    title: "Create Contest",
-                    path: '/admin/create-contest'
                 }
             ]
         }
