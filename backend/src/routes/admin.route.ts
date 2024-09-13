@@ -8,6 +8,6 @@ const router = Router()
 
 router.get('/users', adminController.getUsers)
 router.post('/user', validate(AdminUpdateUserSchem), adminController.updateUser)
-router.post('/logs', adminController.getLogs)
+router.get('/logs', adminController.getLogs)
 
 export default router
