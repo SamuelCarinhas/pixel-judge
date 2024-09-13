@@ -52,7 +52,7 @@ export default function AdminProblemListPage() {
     const onSubmit: SubmitHandler<CreateProblemInput> = async (data) => {
         try {
             await axiosInstance.post(`/problem`, data);
-            navigate(`/admin/problems/edit?id=${data.id}`)
+            navigate(`/admin/admin/problems/edit/${data.id}`)
         } catch(error) {
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});
@@ -99,7 +99,7 @@ export default function AdminProblemListPage() {
                                 <td>{ problem.id }</td>
                                 <td>{ problem.public.toString() }</td>
                                 <td className='options'>
-                                    <Link to={`/problems/edit?id=${problem.id}`}>
+                                    <Link to={`/admin/problems/edit/${problem.id}`}>
                                         <div className='option orange'>
                                             <MdEdit />
                                         </div>

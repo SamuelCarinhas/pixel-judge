@@ -22,6 +22,7 @@ import AdminContainer from './components/containers/AdminContainer/AdminContaine
 import AdminUsersPage from './pages/admin/AdminUsersPage/AdminUsersPage'
 import AdminLogsPage from './pages/admin/AdminLogPage/AdminLogsPage'
 import AdminProblemListPage from './pages/admin/AdminProblemListPage/AdminProblemListPage'
+import AdminProblemEditPage from './pages/admin/AdminProblemEditPage/AdminProblemEditPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -49,6 +50,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path={'/admin/logs'} element={ <PageContainer> <AdminContainer> <AdminLogsPage /> </AdminContainer> </PageContainer> } />
               <Route path={'/admin/users'} element={ <PageContainer> <AdminContainer> <AdminUsersPage /> </AdminContainer> </PageContainer> } />
               <Route path={'/admin/problems'} element={ <PageContainer> <AdminContainer> <AdminProblemListPage /> </AdminContainer> </PageContainer> } />
+              <Route path={'/admin/problems/edit/:id'} element={ <PageContainer> <AdminContainer> <AdminProblemEditPage /> </AdminContainer> </PageContainer> } />
           </Route>
           <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
         </Routes>
