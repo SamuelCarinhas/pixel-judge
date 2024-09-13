@@ -27,6 +27,48 @@
     align-items: center;
 }
 
-.admin-problems .admin-problems-error {
+.admin-problems table {
+    border-collapse: collapse;
+    border: none;
+    overflow: hidden;
+    width: 100%;
+    border: solid #eee 1px;
+    margin-bottom: 1rem;
+}
+
+.admin-problems td, th {
+    text-align: left;
+    vertical-align: middle;
+    padding: 8px;
+    border: none;
+    align-items: center;
+    height: 1.5rem;
+}
+
+.admin-problems tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.admin-problems .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-problems .red {
     color: red;
+}
+
+.admin-problems .orange {
+    color: orange;
+}
+
+.admin-problems .green {
+    color: green;
+}
+
+.admin-problems .option:hover {
+    cursor: pointer;
+    filter: brightness(80%);
 }

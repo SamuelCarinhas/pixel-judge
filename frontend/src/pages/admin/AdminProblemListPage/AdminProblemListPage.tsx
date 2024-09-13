@@ -1,17 +1,25 @@
 import './AdminProblemListPage.css'
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InputField from "../../../components/InputField/InputField";
 import { CiSearch } from "react-icons/ci";
 import CustomButton from "../../../components/CustomButton/CustomButton";
 import { IButtonColor } from "../../../components/CustomButton/ICustomButton";
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { MdLibraryBooks } from 'react-icons/md';
+import { MdEdit, MdLibraryBooks } from 'react-icons/md';
 import Popup from '../../../components/Popup/Popup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../../utils/axios';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
+import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 
 type CreateProblemInput = {
     id: string
+}
+
+interface Problem {
+    id: string
+    title: string
 }
 
 export default function AdminProblemListPage() {
@@ -19,6 +27,18 @@ export default function AdminProblemListPage() {
     const [search, setSearch] = useState<string>('');
     const [creatingProblem, setCreatingProblem] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { role } = useContext(AuthContext);
+
+    const [problems, setProblems] = useState<Problem[]>([]);
+
+    useEffect(() => {
+        if(role !== AuthRole.ADMIN) return;
+
+        axiosInstance.get('/problem/all')
+            .then(res => {
+                setProblems(res.data.problems);
+            })
+    }, [role]);
 
     const {
         register,
@@ -30,8 +50,8 @@ export default function AdminProblemListPage() {
 
     const onSubmit: SubmitHandler<CreateProblemInput> = async (data) => {
         try {
-            await axios.post(`/admin/create-problem`, data);
-            navigate(`/admin/problems?edit=${data.id}`)
+            await axiosInstance.post(`/problem`, data);
+            navigate(`/admin/problems/edit?id=${data.id}`)
         } catch(error) {
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});
@@ -46,7 +66,8 @@ export default function AdminProblemListPage() {
             } else {
                 setError("root", { message: "The server failed to respond" });
             }
-            return;
+
+            throw error;
         }
     }
 
@@ -64,9 +85,28 @@ export default function AdminProblemListPage() {
                     <InputField value={search} onChange={ (e) => setSearch(e.target.value) } label='search' icon={<CiSearch />} placeholder='Search' />
                 </div>
             </div>
-            <div className="problem-list">
-                This will be a list
-            </div>
+            <table className='problem-list'>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>Options</th>
+                    </tr>
+                    {
+                        problems.filter(problem => problem.id.toLowerCase().includes(search.toLowerCase())).map((problem, idx) => (
+                            <tr key={idx}>
+                                <td>{ problem.id }</td>
+                                <td className='options'>
+                                    <Link to={`/problems/edit?id=${problem.id}`}>
+                                        <div className='option orange'>
+                                            <MdEdit />
+                                        </div>
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
             {
                 creatingProblem &&
                 <Popup title='Create Problem' onClose={ closePopup }>

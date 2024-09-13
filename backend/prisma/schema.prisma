@@ -95,6 +95,7 @@ model Log {
 
 model Problem {
   id String @id @unique
+  title String @default("")
 
   timeLimit Int @default(1000) // ms
   memoryLimit Int @default(256) // MB

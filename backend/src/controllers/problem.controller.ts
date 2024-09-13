@@ -11,6 +11,14 @@ export async function createProblem(req: Request, res: Response, next: NextFunct
         .catch((error) => next(error))
 }
 
+export async function getProblems(_req: Request, res: Response, next: NextFunction) {
+    problemService
+        .getProblems()
+        .then((problems) => res.status(StatusCodes.OK).json({ message: "Problems retrieved", problems }))
+        .catch((error) => next(error))
+}
+
 export default {
     createProblem,
+    getProblems
 }
