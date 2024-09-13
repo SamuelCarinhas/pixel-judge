@@ -1,9 +1,8 @@
-import { AdminLogType } from "@prisma/client";
-import { AccountWithProfile } from "./types.util";
+import { Account, LogType } from "@prisma/client";
 import prisma from "./prisma.util";
 
-export async function saveAdminLog(currentAccount: AccountWithProfile, text: string, type: AdminLogType) {
-    return await prisma.adminLog.create({
+export async function saveLog(currentAccount: Account, text: string, type: LogType) {
+    return await prisma.log.create({
         data: {
             authorId: currentAccount.id,
             text,
@@ -13,5 +12,5 @@ export async function saveAdminLog(currentAccount: AccountWithProfile, text: str
 }
 
 export default {
-    saveAdminLog
+    saveLog
 }

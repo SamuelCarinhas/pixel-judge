@@ -16,11 +16,9 @@ enum Role {
   USER
 }
 
-enum AdminLogType {
-  UPDATE
-  CREATE
-  DELETE
-  GENERAL
+enum LogType {
+  INFO
+  ADMIN
 }
 
 model Account {
@@ -40,7 +38,7 @@ model Account {
   updatedAt       DateTime  @updatedAt
 
   profile Profile?
-  adminLogs AdminLog[]
+  logs Log[]
 
   @@index([role])
 }
@@ -83,14 +81,14 @@ model Follows {
   @@unique([followerId, followingId])
 }
 
-model AdminLog {
+model Log {
   id String @id @default(cuid())
 
   author Account @relation(fields: [authorId], references: [id])
   authorId String
 
   text String
-  type AdminLogType
+  type LogType
 
   createdAt       DateTime  @default(now())
 }

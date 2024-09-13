@@ -1,8 +1,8 @@
-import { AdminLogType, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import prisma from "../utils/prisma.util";
 import { BadRequest, NotFound } from "../utils/error.util";
 import { AccountWithProfile } from "../utils/types.util";
-import dbLogsUtil from "../utils/db-logs.util";
+import logger from "../utils/logger.util";
 
 export async function getUsers() {
     const users = await prisma.account.findMany({
@@ -37,18 +37,18 @@ export async function updateUser(currentAccount: AccountWithProfile, username: s
     })
 
     if(account.verified !== verified)
-        dbLogsUtil.saveAdminLog(currentAccount, `${currentAccount.username} updated ${username}'s verified status from ${account.verified} to ${verified}`, AdminLogType.UPDATE);
+        logger.admin(`${username}'s verified status from ${account.verified} to ${verified}`, currentAccount);
     if(account.role !== role)
-        dbLogsUtil.saveAdminLog(currentAccount, `${currentAccount.username} updated ${username}'s role from ${account.role} to ${role}`, AdminLogType.UPDATE);
+        logger.admin(`${currentAccount.username} updated ${username}'s role from ${account.role} to ${role}`, currentAccount);
 }
 
-export async function getAdminLogs() {
-    const logs = await prisma.adminLog.findMany({ orderBy: [ { createdAt: 'desc' } ] })
+export async function getLogs() {
+    const logs = await prisma.log.findMany({ orderBy: [ { createdAt: 'desc' } ] })
     return logs
 }
 
 export default {
     getUsers,
     updateUser,
-    getAdminLogs
+    getLogs
 }

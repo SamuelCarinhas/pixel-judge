@@ -72,6 +72,8 @@ export async function signUp(username: string, email: string, password: string) 
 
     await verify(SIGN_UP_CALLBACK, account.email);
 
+    logger.info(`${account.username} created`, account)
+
     return account.id
 }
 
@@ -116,6 +118,8 @@ export async function signIn(username: string, password: string) {
 
     const role = account.role;
 
+    logger.info(`Account ${username} sign in`)
+
     return {
         email: account.email,
         username: account.username,
@@ -147,7 +151,7 @@ export async function refreshToken(accountId: string, token: string) {
         },
     })
 
-    logger.info(`Account ${account.username} refreshed`)
+    logger.info(`Account ${account.username} refreshed auth token`, account)
 
     return { accessToken, refreshToken }
 }
@@ -183,6 +187,8 @@ export async function verifyAccount(accountId: string, code: string) {
             accountId: account.id
         }
     })
+
+    logger.info(`Account ${account.username} verified`, account);
 }
 
 export async function resetPassword(accountId: string, code: string, password: string) {
@@ -210,6 +216,8 @@ export async function resetPassword(accountId: string, code: string, password: s
             passwordResetAt: new Date(),
         },
     })
+
+    logger.info(`Account ${account.username} changed password`, account);
 }
 
 export default { signUp, signIn, refreshToken, verifyAccount, resetPassword }

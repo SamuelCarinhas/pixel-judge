@@ -1,4 +1,6 @@
 import winston from "winston"
+import { saveLog } from "./db-logs.util"
+import { Account, LogType } from "@prisma/client"
 
 const ENV = String(process.env.NODE_ENV)
 
@@ -65,7 +67,15 @@ class Logger {
     this.logger.debug(msg, meta)
   }
 
-  info(msg: any, meta?: any) {
+  info(msg: any, currentAccount?: Account, meta?: any) {
+    if(currentAccount)
+      saveLog(currentAccount, msg, LogType.INFO)
+    this.logger.info(msg, meta)
+  }
+
+  admin(msg: any, currentAccount?: Account, meta?: any) {
+    if(currentAccount)
+      saveLog(currentAccount, msg, LogType.ADMIN)
     this.logger.info(msg, meta)
   }
 

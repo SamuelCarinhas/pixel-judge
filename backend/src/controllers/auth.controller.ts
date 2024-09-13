@@ -10,7 +10,6 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 
     authService.signUp(username, email, password)
         .then(accountId => {
-            logger.info(`Account ${email} created`)
             res.status(StatusCodes.CREATED).json({
                 message: `Account created`,
                 accountId
@@ -24,7 +23,6 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
 
     authService.signIn(username, password)
         .then(({ email, username, accessToken, refreshToken, role }) => {
-            logger.info(`Account ${username} logged in`)
             res.status(StatusCodes.OK).json({
                 message: "Login successful!",
                 email,
