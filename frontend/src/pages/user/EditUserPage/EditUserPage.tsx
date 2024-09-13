@@ -62,9 +62,7 @@ export default function EditUserPage() {
         if(e.target.files === null || e.target.files.length === 0) return;
         const file = e.target.files[0];
         const image = URL.createObjectURL(e.target.files[0]);
-
-        console.log(file);
-
+        
         axiosInstance.putForm('/profile/picture', {
             file
         }).then(() => {

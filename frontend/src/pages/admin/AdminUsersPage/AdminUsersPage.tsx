@@ -47,8 +47,6 @@ export default function AdminUsersPage() {
     function saveUser() {
         if(!currentEditing) return;
 
-        console.log(currentEditing)
-
         axiosInstance.post('/admin/user', {
             username: currentEditing.username,
             verified: currentEditing.verified,

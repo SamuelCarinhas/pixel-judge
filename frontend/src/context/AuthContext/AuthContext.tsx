@@ -63,7 +63,6 @@ const AuthProvider = ({ children }: Props) => {
                 async error => {
                     const originalRequest = error.config;
                     if (error.response.status === 401 && !originalRequest._retry) {
-                        console.log(111)
                         originalRequest._retry = true;
                         try {
                             const refreshToken = localStorage.getItem('refreshToken');
