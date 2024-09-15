@@ -1,0 +1,7 @@
+.edit-problem-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: flex-start;
+    gap: 1rem;
+}

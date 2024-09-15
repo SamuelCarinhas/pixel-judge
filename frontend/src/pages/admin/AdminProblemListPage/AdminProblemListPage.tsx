@@ -52,7 +52,7 @@ export default function AdminProblemListPage() {
     const onSubmit: SubmitHandler<CreateProblemInput> = async (data) => {
         try {
             await axiosInstance.post(`/problem`, data);
-            navigate(`/admin/admin/problems/edit/${data.id}`)
+            navigate(`/admin/problems/edit/${data.id}`)
         } catch(error) {
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});
