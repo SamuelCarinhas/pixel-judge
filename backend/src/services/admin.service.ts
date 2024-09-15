@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import prisma from "../utils/prisma.util";
-import { BadRequest, NotFound } from "../utils/error.util";
+import { BadRequest, Conflict, NotFound } from "../utils/error.util";
 import { AccountWithProfile } from "../utils/types.util";
 import logger from "../utils/logger.util";
 
@@ -47,8 +47,24 @@ export async function getLogs() {
     return logs
 }
 
+export async function createProblem(currentAccount: AccountWithProfile, id: string) {
+    await prisma.problem.create({
+        data: {
+            id
+        }
+    }).catch(() => {
+        throw new Conflict({ 'id': "There is already a problem with this id" });
+    })
+}
+
+export async function getProblems() {
+    return await prisma.problem.findMany({ select: { id: true, title: true, public: true } })
+}
+
 export default {
     getUsers,
     updateUser,
-    getLogs
+    getLogs,
+    createProblem,
+    getProblems
 }
