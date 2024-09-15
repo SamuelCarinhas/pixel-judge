@@ -3,6 +3,8 @@ import prisma from "../utils/prisma.util";
 import { BadRequest, Conflict, NotFound } from "../utils/error.util";
 import { AccountWithProfile } from "../utils/types.util";
 import logger from "../utils/logger.util";
+import { AdminUpdateProblemSchema } from "../models/admin.model";
+import { z } from "zod";
 
 export async function getUsers() {
     const users = await prisma.account.findMany({
@@ -61,10 +63,41 @@ export async function getProblems() {
     return await prisma.problem.findMany({ select: { id: true, title: true, public: true } })
 }
 
+export async function getProblem(id: string) {
+    const problem = await prisma.problem.findUnique({
+        where: {
+            id
+        },
+        include: {
+            solutions: true,
+            testCases: true
+        }
+    })
+
+    return problem
+}
+
+export async function updateProblem(id: string, input: z.infer<typeof AdminUpdateProblemSchema>['body']) {
+    const problem = await prisma.problem.findUnique({ where: { id } })
+    if(!problem) throw new NotFound("Problem not found");
+
+    const updatedProblem = await prisma.problem.update({
+        where: {
+            id
+        },
+        data: {
+            ...input
+        }
+    })
+
+    return updatedProblem
+}
+
 export default {
     getUsers,
     updateUser,
     getLogs,
     createProblem,
-    getProblems
+    getProblems,
+    updateProblem
 }

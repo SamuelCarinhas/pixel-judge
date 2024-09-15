@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import adminService from "../services/admin.service";
+import { AdminUpdateProblemSchema } from "../models/admin.model";
 
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
     adminService
@@ -41,10 +42,21 @@ export async function getProblems(_req: Request, res: Response, next: NextFuncti
         .catch((error) => next(error))
 }
 
+
+export async function updateProblem(req: Request, res: Response, next: NextFunction) {
+    const input = AdminUpdateProblemSchema.safeParse({ body: req.body }).data?.body!;
+
+    adminService
+        .updateProblem(input.id, input)
+        .then((problem) => res.status(StatusCodes.OK).json({ message: "Problem Updated", problem }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
     getLogs,
     createProblem,
-    getProblems
+    getProblems,
+    updateProblem
 }
