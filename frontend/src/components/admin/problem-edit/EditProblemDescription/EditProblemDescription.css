@@ -1,0 +1,22 @@
+.edit-problem-description {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.edit-problem-description .problem-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.edit-problem-description .input-area {
+    width: 100%;
+}
+
+.edit-problem-description .input-area-field {
+    width: 100%;
+    resize: none;
+}
