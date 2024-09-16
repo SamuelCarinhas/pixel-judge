@@ -13,6 +13,8 @@ import { IAdminProblem } from '../../../../utils/models/admin.model';
 import axiosInstance from '../../../../utils/axios';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { AlertType } from '../../../../context/AlertContext/IAlertContext';
+import { AlertContext } from '../../../../context/AlertContext/AlertContext';
 
 type ProblemSettingsInput = {
     title: string
@@ -24,6 +26,7 @@ export default function EditProblemSettings() {
 
     const { role } = useContext(AuthContext);
     const { id } = useParams();
+    const { addAlert } = useContext(AlertContext);
     const [problem, setProblem] = useState<IAdminProblem>();
 
     const {
@@ -40,8 +43,11 @@ export default function EditProblemSettings() {
         axiosInstance.put('/admin/problem', {
             id: problem.id,
             ...data
-        }).then(() => {
-            console.log('Success')
+        }).then(() => {addAlert({
+            type: AlertType.SUCCESS,
+            title: 'Success',
+            text: 'Problem settings updated'
+        })
         }).catch((error) => {
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});

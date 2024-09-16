@@ -12,6 +12,8 @@ import { IAdminProblem } from '../../../../utils/models/admin.model'
 import { AuthRole } from '../../../../context/AuthContext/IAuthContext'
 import axiosInstance from '../../../../utils/axios'
 import axios from 'axios'
+import { AlertContext } from '../../../../context/AlertContext/AlertContext'
+import { AlertType } from '../../../../context/AlertContext/IAlertContext'
 
 type ProblemDescriptionInput = {
     problemDescription: string
@@ -24,6 +26,7 @@ export default function EditProblemDescription() {
 
     const { role } = useContext(AuthContext);
     const { id } = useParams();
+    const { addAlert } = useContext(AlertContext);
     const [problem, setProblem] = useState<IAdminProblem>();
 
     const {
@@ -42,7 +45,11 @@ export default function EditProblemDescription() {
             id: problem.id,
             ...data
         }).then(() => {
-            console.log('Success')
+            addAlert({
+                type: AlertType.SUCCESS,
+                title: 'Success',
+                text: 'Problem description updated'
+            })
         }).catch((error) => {
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});

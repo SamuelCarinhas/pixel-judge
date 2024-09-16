@@ -12,6 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
+import { AlertType } from '../../../context/AlertContext/IAlertContext';
+import { AlertContext } from '../../../context/AlertContext/AlertContext';
 
 type CreateProblemInput = {
     id: string
@@ -29,6 +31,7 @@ export default function AdminProblemListPage() {
     const [creatingProblem, setCreatingProblem] = useState<boolean>(false);
     const navigate = useNavigate();
     const { role } = useContext(AuthContext);
+    const { addAlert } = useContext(AlertContext);
 
     const [problems, setProblems] = useState<Problem[]>([]);
 
@@ -51,7 +54,12 @@ export default function AdminProblemListPage() {
 
     const onSubmit: SubmitHandler<CreateProblemInput> = async (data) => {
         try {
-            await axiosInstance.post(`/problem`, data);
+            await axiosInstance.post(`/admin/problem`, data);
+            addAlert({
+                type: AlertType.SUCCESS,
+                title: 'Success',
+                text: `Problem ${data.id} created`
+            })
             navigate(`/admin/problems/edit/${data.id}`)
         } catch(error) {
             if(!axios.isAxiosError(error)) {
@@ -123,7 +131,7 @@ export default function AdminProblemListPage() {
                             placeholder='problem-id'
                         />
                         <CustomButton disabled={ isSubmitting } type='submit' text='Confirm' color={IButtonColor.GREEN}/>
-                        { errors.root && <span className='admin-problems-error'>{ errors.root.message }</span> }
+                        { errors.root && <span className='red'>{ errors.root.message }</span> }
                     </form>
                 </Popup>
             }
