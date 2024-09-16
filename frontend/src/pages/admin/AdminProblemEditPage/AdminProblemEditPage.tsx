@@ -3,15 +3,18 @@ import './AdminProblemEditPage.css'
 import { useEffect, useState } from 'react';
 import EditProblemSettings from '../../../components/admin/problem-edit/EditProblemSettings/EditProblemSettings';
 import EditProblemDescription from '../../../components/admin/problem-edit/EditProblemDescription/EditProblemDescription';
+import axiosInstance from '../../../utils/axios';
+import NotFoundPage from '../../default/NotFoundPage/NotFoundPage';
 
 export default function AdminProblemEditPage() {
 
     const { id } = useParams();
 
     const [component, setComponent] = useState<number>(0);
+    const [notFound, setNotFound] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(id)
+        axiosInstance.get(`/admin/problem?id=${id}`).catch(() => setNotFound(true))
     }, [id]);
 
     const options = [
@@ -34,6 +37,8 @@ export default function AdminProblemEditPage() {
     ]
 
     return (
+        notFound ? <NotFoundPage />
+        :
         <div className="admin-problem-edit">
             <div className='top-bar'>
                 {

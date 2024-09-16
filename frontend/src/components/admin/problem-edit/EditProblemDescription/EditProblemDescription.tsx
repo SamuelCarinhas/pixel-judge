@@ -5,6 +5,13 @@ import './EditProblemDescription.css'
 import CustomButton from '../../../CustomButton/CustomButton'
 import Loading from '../../../Loading/Loading'
 import { IButtonColor } from '../../../CustomButton/ICustomButton'
+import { AuthContext } from '../../../../context/AuthContext/AuthContext'
+import { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { IAdminProblem } from '../../../../utils/models/admin.model'
+import { AuthRole } from '../../../../context/AuthContext/IAuthContext'
+import axiosInstance from '../../../../utils/axios'
+import axios from 'axios'
 
 type ProblemDescriptionInput = {
     problemDescription: string
@@ -15,18 +22,59 @@ type ProblemDescriptionInput = {
 
 export default function EditProblemDescription() {
 
+    const { role } = useContext(AuthContext);
+    const { id } = useParams();
+    const [problem, setProblem] = useState<IAdminProblem>();
+
     const {
         register,
         handleSubmit,
         setError,
+        setValue,
         watch,
         formState: { errors, isSubmitting }
     } = useForm<ProblemDescriptionInput>();
 
     const onSubmit: SubmitHandler<ProblemDescriptionInput> = async (data) => {
-        console.log(data)
-        setError('root', { message: 'TODO' })
+        if(!problem) return;
+
+        axiosInstance.put('/admin/problem', {
+            id: problem.id,
+            ...data
+        }).then(() => {
+            console.log('Success')
+        }).catch((error) => {
+            if(!axios.isAxiosError(error)) {
+                setError("root", { message: "This was not supposed to happen."});
+                return;
+            }
+            
+            if(error.response && error.response.data && error.response.data.description) {
+                const errors = error.response.data.description;
+                for (let [key, value] of Object.entries(errors)) {
+                    setError(key as keyof ProblemDescriptionInput, { message: value as string });
+                }
+            } else {
+                setError("root", { message: "The server failed to respond" });
+            }
+
+            throw error;
+        })
     }
+
+    useEffect(() => {
+        if(!problem) return;
+        setValue('problemDescription', problem.problemDescription)
+        setValue('inputDescription', problem.inputDescription)
+        setValue('outputDescription', problem.outputDescription)
+        setValue('restrictions', problem.restrictions)
+    }, [problem]);
+
+    useEffect(() => {
+        if(role !== AuthRole.ADMIN) return;
+        console.log(id);
+        axiosInstance.get(`/admin/problem?id=${id}`).then((res) => setProblem(res.data.problem));
+    }, [role]);
 
     const problemDescription = watch('problemDescription');
     const inputDescription = watch('inputDescription');
@@ -34,6 +82,8 @@ export default function EditProblemDescription() {
     const restrictions = watch('restrictions');
 
     return (
+        !problem ? <Loading />
+        :
         <div className='edit-problem-description'>
             <form className='problem-description' onSubmit={ handleSubmit(onSubmit) }>
                 <InputAreaField

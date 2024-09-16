@@ -19,3 +19,74 @@
     flex-direction: column;
     justify-content: flex-start;
 }
+
+.page-container .alerts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    pointer-events: none;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 4rem;
+    box-sizing: border-box;
+}
+
+.page-container .alerts .alert {
+    pointer-events: all;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    width: fit-content;
+    border: 0.1rem solid;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.page-container .alerts .alert.animate-slide-up {
+    animation: slide-up 0.5s ease-out forwards;
+}
+
+.page-container .alerts .alert.animate-fade-out {
+    animation: fade-out 0.25s ease-out forwards;
+}
+
+@keyframes slide-up {
+    0% { transform: translateY(100%); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes fade-out {
+    0% { opacity: 100%; }
+    100% { opacity: 0; }
+}
+
+.page-container .alerts .alert.gray {
+    color: #333;
+}
+
+.page-container .alerts .alert.blue {
+    color: #00C2FF;
+}
+
+.page-container .alerts .alert.green {
+    color: #00E000;
+}
+
+.page-container .alerts .alert.orange {
+    color: #FF7219;
+}
+
+.page-container .alerts .alert.red {
+    color: red;
+}
+
+.page-container .alerts .alert span {
+    font-weight: bold;
+}

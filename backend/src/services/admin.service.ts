@@ -74,6 +74,8 @@ export async function getProblem(id: string) {
         }
     })
 
+    if(!problem) throw new NotFound('Problem not found')
+
     return problem
 }
 
