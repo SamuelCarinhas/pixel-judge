@@ -1,0 +1,41 @@
+.edit-test-cases table {
+    border-collapse: collapse;
+    border: none;
+    overflow: hidden;
+    width: 100%;
+    border: solid #eee 1px;
+    margin-bottom: 1rem;
+}
+
+.edit-test-cases td, th {
+    text-align: left;
+    vertical-align: middle;
+    padding: 8px;
+    border: none;
+    align-items: center;
+    height: 2rem;
+}
+
+.edit-test-cases tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.edit-test-cases .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-test-cases .option:hover {
+    cursor: pointer;
+    filter: brightness(80%);
+}
+
+.edit-test-cases .red {
+    color: red;
+}
+
+.edit-test-cases .orange {
+    color: orange;
+}

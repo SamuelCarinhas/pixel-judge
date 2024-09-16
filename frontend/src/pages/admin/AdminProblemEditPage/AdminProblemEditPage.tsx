@@ -5,6 +5,7 @@ import EditProblemSettings from '../../../components/admin/problem-edit/EditProb
 import EditProblemDescription from '../../../components/admin/problem-edit/EditProblemDescription/EditProblemDescription';
 import axiosInstance from '../../../utils/axios';
 import NotFoundPage from '../../default/NotFoundPage/NotFoundPage';
+import EditProblemTestCases from '../../../components/admin/problem-edit/EditProblemTestCases/EditProblemTestCases';
 
 export default function AdminProblemEditPage() {
 
@@ -28,7 +29,7 @@ export default function AdminProblemEditPage() {
         },
         {
             title: 'Test Cases',
-            component: undefined
+            component: <EditProblemTestCases />
         },
         {
             title: 'Solutions',
