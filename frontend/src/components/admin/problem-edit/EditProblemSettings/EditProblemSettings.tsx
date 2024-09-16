@@ -41,7 +41,7 @@ export default function EditProblemSettings() {
         if(!problem) return;
 
         data.memoryLimit = parseInt(data.memoryLimit.toString())
-        data.timeLimit = parseInt(data.memoryLimit.toString())
+        data.timeLimit = parseInt(data.timeLimit.toString())
 
         axiosInstance.put('/admin/problem', {
             id: problem.id,
