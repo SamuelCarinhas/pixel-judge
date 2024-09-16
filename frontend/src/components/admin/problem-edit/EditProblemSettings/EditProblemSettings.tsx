@@ -40,6 +40,9 @@ export default function EditProblemSettings() {
     const onSubmit: SubmitHandler<ProblemSettingsInput> = async (data) => {
         if(!problem) return;
 
+        data.memoryLimit = parseInt(data.memoryLimit.toString())
+        data.timeLimit = parseInt(data.memoryLimit.toString())
+
         axiosInstance.put('/admin/problem', {
             id: problem.id,
             ...data
