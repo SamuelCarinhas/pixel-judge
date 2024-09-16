@@ -47,7 +47,7 @@ export async function updateProblem(req: Request, res: Response, next: NextFunct
     const input = AdminUpdateProblemSchema.safeParse({ body: req.body }).data?.body!;
 
     adminService
-        .updateProblem(input.id, input)
+        .updateProblem(res.locals.account, input.id, input)
         .then((problem) => res.status(StatusCodes.OK).json({ message: "Problem Updated", problem }))
         .catch((error) => next(error))
 }

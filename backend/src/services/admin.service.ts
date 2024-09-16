@@ -57,6 +57,8 @@ export async function createProblem(currentAccount: AccountWithProfile, id: stri
     }).catch(() => {
         throw new Conflict({ 'id': "There is already a problem with this id" });
     })
+
+    logger.admin(`${currentAccount.username} created problem ${id}`, currentAccount)
 }
 
 export async function getProblems() {
@@ -79,7 +81,7 @@ export async function getProblem(id: string) {
     return problem
 }
 
-export async function updateProblem(id: string, input: z.infer<typeof AdminUpdateProblemSchema>['body']) {
+export async function updateProblem(currentAccount: AccountWithProfile, id: string, input: z.infer<typeof AdminUpdateProblemSchema>['body']) {
     const problem = await prisma.problem.findUnique({ where: { id } })
     if(!problem) throw new NotFound("Problem not found");
 
@@ -91,6 +93,9 @@ export async function updateProblem(id: string, input: z.infer<typeof AdminUpdat
             ...input
         }
     })
+
+
+    logger.admin(`${currentAccount.username} updated problem ${id}`, currentAccount)
 
     return updatedProblem
 }
