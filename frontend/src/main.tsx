@@ -24,6 +24,7 @@ import AdminLogsPage from './pages/admin/AdminLogPage/AdminLogsPage'
 import AdminProblemListPage from './pages/admin/AdminProblemListPage/AdminProblemListPage'
 import AdminProblemEditPage from './pages/admin/AdminProblemEditPage/AdminProblemEditPage'
 import { AlertProvider } from './context/AlertContext/AlertContext'
+import ProblemPage from './pages/default/ProblemPage/ProblemPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -36,6 +37,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path={'/forum'} element={ <PageContainer> <ForumPage /> </PageContainer> } />
             <Route path={'/problems'} element={ <PageContainer> <ProblemsPage /> </PageContainer> } />
             <Route path={'/rating'} element={ <PageContainer> <RatingPage /> </PageContainer> } />
+            <Route path={'/problem/:id'} element={ <PageContainer> <ProblemPage /> </PageContainer> } />
 
             <Route element={ <ProtectedRoute roles={[AuthRole.DEFAULT]}/> }>
                 <Route path={'/sign-in'} element={ <PageContainer> <SignInPage /> </PageContainer> } />

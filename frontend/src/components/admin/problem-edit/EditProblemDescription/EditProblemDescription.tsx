@@ -79,7 +79,6 @@ export default function EditProblemDescription() {
 
     useEffect(() => {
         if(role !== AuthRole.ADMIN) return;
-        console.log(id);
         axiosInstance.get(`/admin/problem?id=${id}`).then((res) => setProblem(res.data.problem));
     }, [role]);
 
