@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import './RatingPage.css'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../../../utils/axios';
 
 export default function RatingPage() {
 
     const [users, setUsers] = useState<{username: string}[]>([]);
 
     useEffect(() => {
-        axios.get('/profile/all')
+        axiosInstance.get('/profile/all')
         .then(res => {
             setUsers(res.data.profiles);
         })
         .catch(() => {});
-    })
+    }, [])
 
     return (
         <div className='rating-page'>

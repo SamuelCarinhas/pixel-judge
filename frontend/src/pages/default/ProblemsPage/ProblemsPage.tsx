@@ -14,7 +14,7 @@ export default function ProblemsPage() {
             setProblems(res.data.problems);
         })
         .catch(() => {});
-    })
+    }, [])
 
     return (
         <div className='problems-page'>
