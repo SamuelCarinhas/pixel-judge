@@ -35,7 +35,7 @@ export default function AdminProblemListPage() {
     useEffect(() => {
         if(role !== AuthRole.ADMIN) return;
 
-        axiosInstance.get('/problem/all')
+        axiosInstance.get('/admin/problems')
             .then(res => {
                 setProblems(res.data.problems);
             })

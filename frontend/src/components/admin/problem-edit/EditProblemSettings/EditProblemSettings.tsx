@@ -6,32 +6,81 @@ import CustomButton from "../../../CustomButton/CustomButton";
 import { IButtonColor } from "../../../CustomButton/ICustomButton";
 import Loading from "../../../Loading/Loading";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../../context/AuthContext/AuthContext';
+import { AuthRole } from '../../../../context/AuthContext/IAuthContext';
+import { IAdminProblem } from '../../../../utils/models/admin.model';
+import axiosInstance from '../../../../utils/axios';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 type ProblemSettingsInput = {
-    problemName: string
+    title: string
     memoryLimit: number
     timeLimit: number
 }
 
 export default function EditProblemSettings() {
 
+    const { role } = useContext(AuthContext);
+    const { id } = useParams();
+    const [problem, setProblem] = useState<IAdminProblem>();
+
     const {
         register,
         handleSubmit,
         setError,
+        setValue,
         formState: { errors, isSubmitting }
     } = useForm<ProblemSettingsInput>();
 
     const onSubmit: SubmitHandler<ProblemSettingsInput> = async (data) => {
-        console.log(data)
-        setError('root', { message: 'TODO' })
+        if(!problem) return;
+
+        axiosInstance.put('/admin/problem', {
+            id: problem.id,
+            ...data
+        }).then(() => {
+            console.log('Success')
+        }).catch((error) => {
+            if(!axios.isAxiosError(error)) {
+                setError("root", { message: "This was not supposed to happen."});
+                return;
+            }
+            
+            if(error.response && error.response.data && error.response.data.description) {
+                const errors = error.response.data.description;
+                for (let [key, value] of Object.entries(errors)) {
+                    setError(key as keyof ProblemSettingsInput, { message: value as string });
+                }
+            } else {
+                setError("root", { message: "The server failed to respond" });
+            }
+
+            throw error;
+        })
     }
 
+    useEffect(() => {
+        if(!problem) return;
+        setValue('title', problem.title)
+        setValue('memoryLimit', problem.memoryLimit)
+        setValue('timeLimit', problem.timeLimit)
+    }, [problem]);
+
+    useEffect(() => {
+        if(role !== AuthRole.ADMIN) return;
+        console.log(id);
+        axiosInstance.get(`/admin/problem?id=${id}`).then((res) => setProblem(res.data.problem));
+    }, [role]);
+
     return (
+        !problem ? <Loading />
+        :
         <form className='edit-problem-settings' onSubmit={ handleSubmit(onSubmit) }>
             <InputField
-                    {...register("problemName", {required: "Problem Limit is required"})}
-                    error={errors.problemName}
+                    {...register("title", {required: "Problem Limit is required"})}
+                    error={errors.title}
                 icon={ <MdDriveFileRenameOutline /> }
                 label='problem-name'
                 description='Problem Name'
