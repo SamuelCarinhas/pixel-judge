@@ -25,3 +25,9 @@ export const AdminUpdateProblemSchema = z.object({
         restrictions: ProblemDescriptionSchema
     })
 })
+
+export const AdminProblemGetSchema = z.object({
+    query: z.object({
+        id: z.string({ message: 'Problem ID is required'})
+    })
+})

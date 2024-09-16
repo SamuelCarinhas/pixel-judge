@@ -98,6 +98,7 @@ export default {
     updateUser,
     getLogs,
     createProblem,
+    getProblem,
     getProblems,
     updateProblem
 }

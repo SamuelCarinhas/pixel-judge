@@ -52,11 +52,21 @@ export async function updateProblem(req: Request, res: Response, next: NextFunct
         .catch((error) => next(error))
 }
 
+export async function getProblem(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.query;
+
+    adminService
+        .getProblem(id as string)
+        .then((problem) => res.status(StatusCodes.OK).json({ message: "Problem retrieved", problem }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
     getLogs,
     createProblem,
+    getProblem,
     getProblems,
     updateProblem
 }

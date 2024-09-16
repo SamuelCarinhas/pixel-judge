@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../utils/validator.util";
 import adminController from "../controllers/admin.controller";
-import { AdminUpdateProblemSchema, AdminUpdateUserSchem } from "../models/admin.model";
+import { AdminProblemGetSchema, AdminUpdateProblemSchema, AdminUpdateUserSchem } from "../models/admin.model";
 import authMiddleware from "../middleware/auth.middleware";
 import { CreateProblemSchema } from "../models/problem.model";
 
@@ -12,7 +12,7 @@ router.post('/user', validate(AdminUpdateUserSchem), adminController.updateUser)
 router.get('/logs', adminController.getLogs)
 
 router.post('/problem', authMiddleware.authorizeAdmin, validate(CreateProblemSchema), adminController.createProblem)
-router.get('/problem', authMiddleware.authorizeAdmin, adminController.getProblems)
+router.get('/problem', authMiddleware.authorizeAdmin, validate(AdminProblemGetSchema), adminController.getProblem)
 router.put('/problem', authMiddleware.authorizeAdmin, validate(AdminUpdateProblemSchema), adminController.updateProblem)
 
 
