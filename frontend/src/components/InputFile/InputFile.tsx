@@ -4,14 +4,14 @@ import { IInputFile } from './IInputFile';
 
 const InputFile = forwardRef<HTMLInputElement, IInputFile>(({label, icon, ...props}, ref) => {
         return (
-            <div className='input-field'>
+            <div className='input-file-area'>
                 { props.description && <label> { props.description } </label> }
                 {props.error && <span className='error'> { props.error.message } </span> }
-                <div className='input-container'>
+                <label className='input-file-container'>
                     { icon }
-                    <input type='file' autoComplete={"on"} id={ label } name={ label } ref={ ref } className={`input-field ${props.error?.message && 'input-error'}`} {...props}>
+                    <input type='file' autoComplete={"on"} id={ label } name={ label } ref={ ref } className={`input-file ${props.error?.message && 'input-error'}`} {...props}>
                     </input>
-                </div>
+                </label>
             </div>
         )
     }
