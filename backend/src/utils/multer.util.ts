@@ -31,4 +31,18 @@ export const ProfileImageMulter = multer({
   },
 })
 
-export default { ProfileImageMulter }
+export const TestCaseMulter = (problemId: string) => multer({
+  storage: diskStorage(`problem/${problemId}/test-cases`),
+  fileFilter: function (_, file, callback) {
+    const type = file.mimetype
+    if (type == "text/plain") {
+      return callback(null, true)
+    }
+    callback(new Forbidden("Only txt files are allowed, the type sent was "+type))
+  },
+  limits: {
+    fileSize: MAX_UPLOAD_SIZE * 1024 * 1024,
+  },
+})
+
+export default { ProfileImageMulter, TestCaseMulter }

@@ -128,7 +128,7 @@ model ProblemSolution {
 }
 
 model ProblemTestCase {
-  id String @id @unique
+  id String @id @unique @default(cuid())
 
   inputFilePath String
   outputFilePath String

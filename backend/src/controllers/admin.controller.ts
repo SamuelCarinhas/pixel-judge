@@ -61,6 +61,61 @@ export async function getProblem(req: Request, res: Response, next: NextFunction
         .catch((error) => next(error))
 }
 
+export async function addTestCase(req: Request, res: Response, next: NextFunction) {
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+    const { id  } = req.query;
+
+    const inputFile = files['input'][0]
+    const outputFile = files['output'][0]
+
+    adminService
+        .addTestCase(res.locals.account, id as string, inputFile, outputFile)
+        .then((testCase) => res.status(StatusCodes.CREATED).json({ message: "Test case added", testCase }))
+        .catch((error) => next(error))
+}
+
+export async function editTestCase(req: Request, res: Response, next: NextFunction) {
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+    const { id  } = req.query;
+
+    const inputFile = files['input'][0]
+    const outputFile = files['output'][0]
+
+    adminService
+        .editTestCase(res.locals.account, id as string, inputFile, outputFile)
+        .then((testCase) => res.status(StatusCodes.OK).json({ message: "Test case updated", testCase }))
+        .catch((error) => next(error))
+}
+
+export async function removeTestCase(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+
+    adminService
+        .removeTestCase(res.locals.account, id as string)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Test case removed" }))
+        .catch((error) => next(error))
+}
+
+export async function getTestCase(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+
+    adminService
+        .getTestCase(id as string)
+        .then((testCase) => res.status(StatusCodes.OK).json({ message: "Test case retrieved", testCase }))
+        .catch((error) => next(error))
+}
+
+export async function getTestCases(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+
+    adminService
+        .getTestCases(id as string)
+        .then((testCases) => res.status(StatusCodes.OK).json({ message: "Test cases retrieved", testCases }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
@@ -68,5 +123,10 @@ export default {
     createProblem,
     getProblem,
     getProblems,
-    updateProblem
+    updateProblem,
+    addTestCase,
+    editTestCase,
+    removeTestCase,
+    getTestCases,
+    getTestCase
 }

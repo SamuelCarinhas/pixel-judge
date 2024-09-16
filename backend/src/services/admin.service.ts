@@ -5,6 +5,7 @@ import { AccountWithProfile } from "../utils/types.util";
 import logger from "../utils/logger.util";
 import { AdminUpdateProblemSchema } from "../models/admin.model";
 import { z } from "zod";
+import { readFileSync, readSync, rmSync } from "fs";
 
 export async function getUsers() {
     const users = await prisma.account.findMany({
@@ -100,6 +101,80 @@ export async function updateProblem(currentAccount: AccountWithProfile, id: stri
     return updatedProblem
 }
 
+export async function addTestCase(currentAccount: AccountWithProfile, problemID: string, inputFile: Express.Multer.File, outputFile: Express.Multer.File) {
+    const problem = await prisma.problem.findUnique({ where: { id: problemID } })
+    if(!problem) throw new NotFound("Problem not found");
+
+    const testCase = await prisma.problemTestCase.create({
+        data: {
+            inputFilePath: inputFile.path,
+            outputFilePath: outputFile.path,
+            problemId: problem.id
+        }
+    })
+
+    logger.admin(`${currentAccount.username} added a test case to problem ${problem.id}`, currentAccount);
+
+    return testCase
+}
+
+export async function removeTestCase(currentAccount: AccountWithProfile, id: string) {
+    const testCase = await prisma.problemTestCase.findUnique({ where: { id }, include: { problem: true } })
+    if(!testCase) throw new NotFound("Test case not found")
+    
+    rmSync(testCase.inputFilePath)
+    rmSync(testCase.outputFilePath)
+
+    await prisma.problemTestCase.delete({ where: { id } })
+
+    logger.admin(`${currentAccount.username} deleted a test case from ${testCase.problem.id}`, currentAccount);
+}
+
+export async function editTestCase(currentAccount: AccountWithProfile, testCaseID: string, inputFile: Express.Multer.File, outputFile: Express.Multer.File) {
+    let testCase = await prisma.problemTestCase.findUnique({ where: { id: testCaseID }, include: { problem: true } })
+    if(!testCase) throw new NotFound("Test case not found");
+
+    rmSync(testCase.inputFilePath)
+    rmSync(testCase.outputFilePath)
+
+    testCase = await prisma.problemTestCase.update({
+        where: {
+            id: testCase.id
+        },
+        data: {
+            inputFilePath: inputFile.path,
+            outputFilePath: outputFile.path,
+        },
+        include: {
+            problem: true
+        }
+    })
+
+    logger.admin(`${currentAccount.username} updated a test case on problem ${testCase.problem.id}`, currentAccount);
+    return testCase
+}
+
+export async function getTestCases(problemId: string) {
+    const problem = await prisma.problem.findUnique({ where: { id: problemId } })
+    if(!problem) throw new NotFound("Problem not found");
+
+    const testCases = await prisma.problemTestCase.findMany({ where: { problemId }, include: { problem: true }, orderBy: { createdAt: 'asc' } })
+
+    return testCases
+}
+
+export async function getTestCase(id: string) {
+    const testCase = await prisma.problemTestCase.findUnique({ where: { id } })
+    if(!testCase) throw new NotFound("Test case not found");
+
+    const res = {
+        input: readFileSync(testCase.inputFilePath, 'utf8'),
+        output: readFileSync(testCase.outputFilePath, 'utf8')
+    }
+
+    return res
+}
+
 export default {
     getUsers,
     updateUser,
@@ -107,5 +182,10 @@ export default {
     createProblem,
     getProblem,
     getProblems,
-    updateProblem
+    updateProblem,
+    getTestCase,
+    getTestCases,
+    editTestCase,
+    removeTestCase,
+    addTestCase
 }
