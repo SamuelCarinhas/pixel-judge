@@ -3,14 +3,12 @@ import './RatingPage.css'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const REST_URL = import.meta.env.VITE_REST_URL
-
 export default function RatingPage() {
 
     const [users, setUsers] = useState<{username: string}[]>([]);
 
     useEffect(() => {
-        axios.get(`${REST_URL}/profile/all`)
+        axios.get('/profile/all')
         .then(res => {
             setUsers(res.data.profiles);
         })

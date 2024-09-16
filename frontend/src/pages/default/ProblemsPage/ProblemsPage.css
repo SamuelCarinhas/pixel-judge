@@ -5,10 +5,36 @@
     align-items: center;
     flex-direction: column;
     gap: 4rem;
-    font-size: 2rem;
     text-align: center;
 }
 
-.problems-page img {
-    height: 15rem;
+.problems-page a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.problems-page table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.problems-page td, th {
+    border: 1px solid #eee;
+    text-align: left;
+    padding: 0.5rem;
+    font-weight: normal;
+}
+
+.problems-page tr:nth-child(even) {
+    background-color: #eeee;
+}
+
+.problems-page .rank, .problems-page .rating {
+    width: 3rem;
+    text-align: center;
+}
+
+.problems-page a:hover {
+    cursor: pointer;
+    color: #666;
 }
