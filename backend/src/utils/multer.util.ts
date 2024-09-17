@@ -1,6 +1,7 @@
 import fs from "fs"
 import multer from "multer"
 import { Forbidden } from "./error.util"
+import path from "path"
 
 const UPLOADS_DIR = String(process.env.UPLOADS_DIR)
 const MAX_UPLOAD_SIZE = Number(process.env.MAX_UPLOAD_SIZE)
@@ -45,4 +46,19 @@ export const TestCaseMulter = (problemId: string) => multer({
   },
 })
 
-export default { ProfileImageMulter, TestCaseMulter }
+export const SubmissionMulter = (problemId: string) => multer({
+  storage: diskStorage(`problem/${problemId}/submissions`),
+  fileFilter: function (_, file, callback) {
+    const allowedExtensions = ['.cpp', '.java', '.c', '.js', '.py'];
+    const fileExtension = path.extname(file.originalname).toLocaleLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      return callback(null, true)
+    }
+    callback(new Forbidden("Extension not supported"))
+  },
+  limits: {
+    fileSize: MAX_UPLOAD_SIZE * 1024 * 1024,
+  },
+})
+
+export default { ProfileImageMulter, TestCaseMulter, SubmissionMulter }

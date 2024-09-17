@@ -17,7 +17,17 @@ export async function getProblems(req: Request, res: Response, next: NextFunctio
         .catch(error => next(error))
 }
 
+export async function submitSolution(req: Request, res: Response, next: NextFunction) {
+    const solutionFile = req.file as Express.Multer.File;
+    const { id  } = req.query;
+
+    problemService.submitSolution(res.locals.account, id as string, solutionFile)
+        .then(() => res.status(StatusCodes.OK).json({ message: 'Solution submitted' }))
+        .catch(error => next(error))
+}
+
 export default {
     getProblem,
-    getProblems
+    getProblems,
+    submitSolution
 }

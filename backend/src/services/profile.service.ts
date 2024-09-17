@@ -3,6 +3,7 @@ import { BadRequest, Conflict, NotFound } from "../utils/error.util";
 import prisma from "../utils/prisma.util"
 import { AccountWithProfile } from "../utils/types.util";
 import fs from 'fs';
+import logger from "../utils/logger.util";
 
 const UPLOADS_DIR = String(process.env.UPLOADS_DIR)
 

@@ -1,7 +1,8 @@
 import { NotFound } from "../utils/error.util"
 import logger from "../utils/logger.util";
 import prisma from "../utils/prisma.util"
-import { readFile } from 'fs';
+import { readFile, rmSync } from 'fs';
+import { AccountWithProfile } from "../utils/types.util";
 
 const readFileContents = (filePath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -89,7 +90,18 @@ export async function getProblems() {
     return problems
 }
 
+export async function submitSolution(currentAccount: AccountWithProfile, id: string, solution: Express.Multer.File) {
+    const problem = await prisma.problem.findUnique({ where: { id } })
+    if(!problem) {
+        rmSync(solution.path)
+        throw new NotFound('Problem not found')
+    }
+
+    logger.info(`${currentAccount.username} submitted a solution for problem ${problem.id}`)
+}
+
 export default {
     getProblem,
-    getProblems
+    getProblems,
+    submitSolution
 }
