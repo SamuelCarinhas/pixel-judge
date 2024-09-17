@@ -25,10 +25,10 @@ export function uploadTestCases() {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] }; 
 
             if(!files || !files['input'] || !files['output']) {
-                if(files['input'])
+                if(files && files['input'])
                     rmSync(files['input'][0].path)
 
-                if(files['output'])
+                if(files && files['output'])
                     rmSync(files['output'][0].path)
                 return next(new BadRequest("Both input and output files must be uploaded"));
             }
