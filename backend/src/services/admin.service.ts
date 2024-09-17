@@ -175,6 +175,28 @@ export async function getTestCase(id: string) {
     return res
 }
 
+export async function changeTestCaseVisibility(currentAccount: AccountWithProfile, id: string, visible: boolean) {
+    let testCase = await prisma.problemTestCase.findUnique({ where: { id }, include: { problem: true } })
+    if(!testCase) throw new NotFound("Test case not found");
+
+    if(visible === testCase.visible) return testCase;
+
+    testCase = await prisma.problemTestCase.update({
+        where: {
+            id: testCase.id
+        },
+        data: {
+            visible
+        },
+        include: {
+            problem: true
+        }
+    })
+
+    logger.admin(`${currentAccount.username} changed a test case visibility on problem ${testCase.problem.id}`, currentAccount)
+    return testCase
+}
+
 export default {
     getUsers,
     updateUser,
@@ -187,5 +209,6 @@ export default {
     getTestCases,
     editTestCase,
     removeTestCase,
-    addTestCase
+    addTestCase,
+    changeTestCaseVisibility
 }

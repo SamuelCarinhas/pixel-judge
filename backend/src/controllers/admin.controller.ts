@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import adminService from "../services/admin.service";
 import { AdminUpdateProblemSchema } from "../models/admin.model";
+import { AccountWithProfile } from "../utils/types.util";
 
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
     adminService
@@ -116,6 +117,16 @@ export async function getTestCases(req: Request, res: Response, next: NextFuncti
         .catch((error) => next(error))
 }
 
+export async function changeTestCaseVisibility(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+    const { visible } = req.body;
+
+    adminService
+        .changeTestCaseVisibility(res.locals.account, id as string, visible as boolean)
+        .then((testCase) => res.status(StatusCodes.OK).json({ message: "Test case updated", testCase }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
@@ -128,5 +139,6 @@ export default {
     editTestCase,
     removeTestCase,
     getTestCases,
-    getTestCase
+    getTestCase,
+    changeTestCaseVisibility
 }

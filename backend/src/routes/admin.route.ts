@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../utils/validator.util";
 import adminController from "../controllers/admin.controller";
-import { AdminProblemGetSchema, AdminUpdateProblemSchema, AdminUpdateUserSchem } from "../models/admin.model";
+import { AdminProblemGetSchema, AdminTestCaseVisibility, AdminUpdateProblemSchema, AdminUpdateUserSchem } from "../models/admin.model";
 import { CreateProblemSchema } from "../models/problem.model";
 import adminMiddleware from "../middleware/admin.middleware";
 
@@ -18,6 +18,7 @@ router.get('/problems', adminController.getProblems)
 
 router.post('/test-case', validate(AdminProblemGetSchema), adminMiddleware.uploadTestCases(), adminController.addTestCase)
 router.put('/test-case', validate(AdminProblemGetSchema), adminMiddleware.uploadTestCases(), adminController.editTestCase)
+router.put('/test-case/visible', validate(AdminTestCaseVisibility), adminController.changeTestCaseVisibility)
 router.delete('/test-case', validate(AdminProblemGetSchema), adminController.removeTestCase)
 router.get('/test-cases', validate(AdminProblemGetSchema), adminController.getTestCases)
 router.get('/test-case', validate(AdminProblemGetSchema), adminController.getTestCase)

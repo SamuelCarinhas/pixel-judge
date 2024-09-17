@@ -28,6 +28,15 @@ export const AdminUpdateProblemSchema = z.object({
 
 export const AdminProblemGetSchema = z.object({
     query: z.object({
-        id: z.string({ message: 'Problem ID is required'})
+        id: z.string({ message: 'ID is required'})
+    })
+})
+
+export const AdminTestCaseVisibility = z.object({
+    query: z.object({
+        id: z.string({ message: 'Test case ID is required' })
+    }),
+    body: z.object({
+        visible: z.boolean({ message: 'Value must be a boolean' })
     })
 })
