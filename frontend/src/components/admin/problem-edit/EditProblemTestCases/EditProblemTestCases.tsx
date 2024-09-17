@@ -14,6 +14,7 @@ import InputFile from '../../../InputFile/InputFile';
 import Loading from '../../../Loading/Loading';
 import { IAdminProblem } from '../../../../utils/models/admin.model';
 import axios from 'axios';
+import InputBox from '../../../InputBox/InputBox';
 
 type TestCaseInput = {
     input: FileList,
@@ -31,7 +32,7 @@ export default function EditProblemTestCases() {
     const { addAlert } = useContext(AlertContext);
     const { id } = useParams();
 
-    const [testCases, setTestCases] = useState<{id: string}[]>([]);
+    const [testCases, setTestCases] = useState<{id: string, visible: boolean}[]>([]);
     const [deleteTestCase, setDeleteTestCase] = useState<number>(-1);
     const [editTestCase, setEditTestCase] = useState<number>(-1);
     const [viewTestCase, setViewTestCase] = useState<number>(-1);
@@ -168,6 +169,25 @@ export default function EditProblemTestCases() {
         setViewTestCase(-1);
     }
 
+    function changeVisibility(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+        const isVisible = e.target.checked;
+
+        axiosInstance.put(`/admin/test-case/visible?id=${testCases[index].id}`, {
+            visible: isVisible
+        }).then(() => {
+            addAlert({
+                type: AlertType.SUCCESS,
+                title: 'Success',
+                text: `Test case ${index+1} visibility updated`
+            })
+            setTestCases(prevTestCases =>
+                prevTestCases.map((testCase, idx) =>
+                    idx === index ? { ...testCase, visible: isVisible } : testCase
+                )
+            );
+        });
+    }
+
     return (
         <div className='edit-test-cases'>
             <CustomButton text='New test case' color={IButtonColor.GREEN} onClick={ handleNewClick }/>
@@ -176,6 +196,7 @@ export default function EditProblemTestCases() {
                     <tr>
                         <th>#</th>
                         <th>ID</th>
+                        <th>Visible </th>
                         <th>Options</th>
                     </tr>
                     {
@@ -183,6 +204,7 @@ export default function EditProblemTestCases() {
                             <tr key={idx}>
                                 <th className='view' onClick={ () => getTestCase(idx) }> <FaFolder /> { testCase.id }</th>
                                 <th>{ `TestCase ${idx+1}` }</th>
+                                <th> <InputBox label='visible' checked={ testCase.visible } onChange={ (e) => changeVisibility(e, idx) }/></th>
                                 <th className='options'>
                                     <div className='option orange' onClick={ () => handleEditClick(idx) }>
                                         <MdEdit />

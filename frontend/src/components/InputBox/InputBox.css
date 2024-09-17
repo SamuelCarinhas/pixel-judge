@@ -1,0 +1,36 @@
+.input-box-container input:checked + .checkmark {
+    background-color: #00C2FF;
+    border-color: #00C2FF;
+}
+
+.input-box-container input {
+    display: none;
+}
+
+.input-box-container .checkmark {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border: 2px solid #aaa;
+    border-radius: 100%;
+    position: relative;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.input-box-container input:checked + .checkmark:before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.input-box-container:hover {
+    cursor: pointer;
+}
