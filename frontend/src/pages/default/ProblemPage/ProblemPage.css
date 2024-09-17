@@ -33,3 +33,25 @@
     width: 20rem;
     background-color: #eee;
 }
+
+.problem-page .examples {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.problem-page .examples .example {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.problem .examples .example pre {
+    background-color: #eee;
+    padding: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 0.5rem;
+}

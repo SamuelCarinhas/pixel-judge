@@ -40,6 +40,30 @@ export default function ProblemPage() {
                     <h3>Restrictions</h3>
                     <MarkdownContainer content={ problem.restrictions }/>
                 </div>
+                {
+                    problem.testCases.length > 0 &&
+                    <>
+                        <h3>Examples</h3>
+                        <div className='examples'>
+                            {problem.testCases.map((example, idx) => (
+                                <div className='example' key={idx}>
+                                    <h4>Input {idx+1}</h4>
+                                    <pre>
+                                        {
+                                            example.input
+                                        }
+                                    </pre>
+                                    <h4>Output {idx+1}</h4>
+                                    <pre>
+                                        {
+                                            example.output
+                                        }
+                                    </pre>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                }
             </div>
             <div className='side-bar'>
                 This will be a side bar

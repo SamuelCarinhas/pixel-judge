@@ -10,5 +10,10 @@ export interface IAdminProblem {
     outputDescription: string
     restrictions: string
 
+    testCases: {
+        input: string
+        output: string
+    }[]
+
     public: boolean
 }
