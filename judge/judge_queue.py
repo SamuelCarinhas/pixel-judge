@@ -31,10 +31,14 @@ def resolve_submissions(count=0):
     submissions = cursor.fetchall()
     for submission in submissions:
         submissionId = submission[0]
+        cursor.execute('UPDATE \"Submission\" SET status=\'JUDGING\' WHERE id=%s', (submissionId,))
+        conn.commit()
         problemId = submission[1]
         solutionPath = submission[2]
         timeLimit = submission[3]
-        memoryLimit = submission[4]
+        memoryLimit = submission[4] * 1000
+
+        print(f'Evaluating submission {submissionId}')
 
         cursor.execute('SELECT "inputFilePath", "outputFilePath" FROM \"ProblemTestCase\" where "problemId"=%s order by "createdAt";', (problemId,))
         testCases = cursor.fetchall()
@@ -44,15 +48,31 @@ def resolve_submissions(count=0):
 
         res = sandbox.compile_code(solution_name)
 
-        print(res)
-
+        if res['error']:
+            cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Compilation Error', verdict['log'], submissionId))
+            conn.commit()
+            print('Compilation Error')
+            continue
+        
+        executable = res['executable']
+        verdict = None
         for i, testCase in enumerate(testCases):
+            print(f'Running test case {i+1}')
+            cursor.execute('UPDATE \"Submission\" SET verdict=%s WHERE id=%s', (f'Running test case {i+1}', submissionId))
+            conn.commit()
             inputPath = testCase[0]
             outputPath = testCase[1]
-
+            res = sandbox.run_test_case(executable, inputPath, outputPath, 'default_evaluator.py', timeLimit, memoryLimit)
+            verdict = res
+            if res['response'] != 'Accepted':
+                break
+        cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', (verdict['response'], verdict['log'], submissionId))
+        conn.commit()
+        print('Verdict:', verdict)
         os.system(f'rm {solution_name}')
-        
-        print(solutionPath)
+        if solution_name != executable:
+            os.system(f'rm {executable}')
+        os.system(f'rm output.txt')
 
 
     cursor.close()

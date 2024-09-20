@@ -15,13 +15,40 @@ def compile_code(code_path):
     file_extension = code_path.split('.')[-1].lower()
 
     if not compile_command[file_extension]:
-        return None
+        return {
+            'executable': code_path,
+            'error': ''
+        }
     
-    result = subprocess.run(compile_command[file_extension].split(), check=True, capture_output=True, text=True)
-    
-    return result.stderr
+    args = compile_command[file_extension].split()
+    args.append(code_path)
 
 
+    try:
+        result = subprocess.run(args, check=True, capture_output=True, text=True, timeout=5)
+        return {
+            'executable': 'a.out',
+            'error': result.stderr
+        }
+    except subprocess.TimeoutExpired:
+        return {
+            'executable': None,
+            'error': 'Compilation timed out'
+        }
+    except subprocess.CalledProcessError as e:
+        return {
+            'executable': None,
+            'error': e.stderr
+        }
+
+def execute_command(command):
+    ext = command.split('.')[-1]
+    if ext == 'py':
+        return [f'/usr/bin/python3', f'{command}']
+    elif ext == 'java':
+        return [f'/usr/bin/java', f'{command}']
+    else:
+        return [f'./{command}']
 
 def run_test_case(executable_path, input_path, output_path, checker_path, time_limit, memory_limit):
     assert os.path.isfile(executable_path)
@@ -43,49 +70,49 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
         os.system(f'cp {input_path} {box}')
         os.system(f'cp {checker_path} {box}')
 
+        cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', '--time', f'{time_limit}', '--run', '--',
+            *execute_command(executable_name)]
         result = subprocess.run(
-            ['isolate', f'--mem={memory_limit}', '--processes=1', '--time', f'{time_limit}', '--run', '--',
-            f'./{executable_name}'],
+            cmds,
             input=open(input_path, 'r').read(),
             capture_output=True, text=True
         )
-
 
         with open('output.txt', 'w') as output_file:
             output_file.write(result.stdout)
     
     except subprocess.CalledProcessError as e:
         return {
-            response: 'System Error',
-            out: result.stdout,
-            log: e
+            'response': 'System Error',
+            'out': result.stdout,
+            'log': e
         }
     
     finally:
         # Cleanup the sandbox
         subprocess.run(['isolate', '--cleanup'], check=True)
 
-    checker_result = subprocess.run(['python3', checker_name, input_name, output_name, 'output.txt'], check=True, capture_output=True, text=True)
+    checker_result = subprocess.run(['python3', checker_name, input_path, output_path, 'output.txt'], check=True, capture_output=True, text=True)
     accepted = 'Accepted' in checker_result.stdout
 
     if not accepted and result.returncode != 0:
         if result.stderr.strip() == 'Time limit exceeded':
             return {
-                response: 'Time Limit Exceeded',
-                out: result.stdout,
-                log: ''
+                'response': 'Time Limit Exceeded',
+                'out': result.stdout,
+                'log': ''
             }
         else:
             return {
-                response: 'Runtime Error',
-                out: result.stdout,
-                log: result.stderr
+                'response': 'Runtime Error',
+                'out': result.stdout,
+                'log': result.stderr
             }
     
     return {
-        response: 'Accepted' if accepted else 'Wrong Answer',
-        out: result.stdout,
-        log: ''
+        'response': 'Accepted' if accepted else 'Wrong Answer',
+        'out': result.stdout,
+        'log': ''
     }
 
     return result.stdout, result.stderr
