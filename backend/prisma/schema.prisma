@@ -21,6 +21,12 @@ enum LogType {
   ADMIN
 }
 
+enum SubmissionStatus {
+  WAITING
+  JUDGING
+  FINISHED
+}
+
 model Account {
   id                String  @id @default(cuid())
   username          String  @db.Citext @unique
@@ -39,6 +45,8 @@ model Account {
 
   profile Profile?
   logs Log[]
+
+  submissions Submission[]
 
   @@index([role])
 }
@@ -110,6 +118,7 @@ model Problem {
   checkerPath String?
   testCases ProblemTestCase[]
   solutions ProblemSolution[]
+  submissions Submission[]
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -137,6 +146,25 @@ model ProblemTestCase {
   problemId String
 
   visible Boolean @default(false)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Submission {
+  id String @id @unique @default(cuid())
+
+  solutionPath String
+
+  author Account @relation(fields: [authorId], references: [id])
+  authorId String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  problemId String
+
+  status SubmissionStatus @default(WAITING)
+  verdict String @default("Waiting for bot")
+  details String?
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

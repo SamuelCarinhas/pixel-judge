@@ -1,6 +1,7 @@
 import os
 import redis
 import psycopg2
+import sandbox
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -17,7 +18,7 @@ pubsub = redis_client.pubsub()
 
 pubsub.subscribe('ping')
 
-def resolve_submissions():
+def resolve_submissions(count=0):
     conn = psycopg2.connect(
         dbname=DB_NAME,
         user=DB_USER,
@@ -26,11 +27,39 @@ def resolve_submissions():
         port=DB_PORT
     )
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM \"Submission\" where status=\'WAITING\';')  # Adjust according to your schema
+    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id where status=\'WAITING\';')
     submissions = cursor.fetchall()
-    print("Fetched submissions:", submissions)
+    for submission in submissions:
+        submissionId = submission[0]
+        problemId = submission[1]
+        solutionPath = submission[2]
+        timeLimit = submission[3]
+        memoryLimit = submission[4]
+
+        cursor.execute('SELECT "inputFilePath", "outputFilePath" FROM \"ProblemTestCase\" where "problemId"=%s order by "createdAt";', (problemId,))
+        testCases = cursor.fetchall()
+
+        os.system(f'cp {solutionPath} .')
+        solution_name = os.path.basename(solutionPath)
+
+        res = sandbox.compile_code(solution_name)
+
+        print(res)
+
+        for i, testCase in enumerate(testCases):
+            inputPath = testCase[0]
+            outputPath = testCase[1]
+
+        os.system(f'rm {solution_name}')
+        
+        print(solutionPath)
+
+
     cursor.close()
     conn.close()
+
+    if count == 0:
+        resolve_submissions(count+1)
 
 def ping_listener():
     print("Listening for pings...")

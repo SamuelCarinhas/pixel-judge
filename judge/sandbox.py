@@ -2,13 +2,36 @@ import os
 import subprocess
 import sys
 
-def run_test_case(executable_path, input_path, checker_path):
+compile_command = {
+    'py': None,
+    'cpp': 'g++ -std=gnu++17 -O2',
+    'c': 'gcc -std=gnu17 -O2',
+    'java': 'javac -encoding utf-8'
+}
+
+def compile_code(code_path):
+    assert os.path.isfile(code_path)
+
+    file_extension = code_path.split('.')[-1].lower()
+
+    if not compile_command[file_extension]:
+        return None
+    
+    result = subprocess.run(compile_command[file_extension].split(), check=True, capture_output=True, text=True)
+    
+    return result.stderr
+
+
+
+def run_test_case(executable_path, input_path, output_path, checker_path, time_limit, memory_limit):
     assert os.path.isfile(executable_path)
     assert os.path.isfile(input_path)
+    assert os.path.isfile(output_path)
     assert os.path.isfile(checker_path)
 
     executable_name = os.path.basename(executable_path)
     input_name = os.path.basename(input_path)
+    output_name = os.path.basename(output_path)
     checker_name = os.path.basename(checker_path)
     
     try:
@@ -21,7 +44,7 @@ def run_test_case(executable_path, input_path, checker_path):
         os.system(f'cp {checker_path} {box}')
 
         result = subprocess.run(
-            ['isolate', '--mem=216000', '--processes=1', '--time', '1', '--run', '--',
+            ['isolate', f'--mem={memory_limit}', '--processes=1', '--time', f'{time_limit}', '--run', '--',
             f'./{executable_name}'],
             input=open(input_path, 'r').read(),
             capture_output=True, text=True
@@ -32,34 +55,37 @@ def run_test_case(executable_path, input_path, checker_path):
             output_file.write(result.stdout)
     
     except subprocess.CalledProcessError as e:
-        print(f"Error during process execution: {e}")
-        return "", e.stderr
+        return {
+            response: 'System Error',
+            out: result.stdout,
+            log: e
+        }
     
     finally:
         # Cleanup the sandbox
         subprocess.run(['isolate', '--cleanup'], check=True)
 
-    checker_result = subprocess.run(['python3', checker_name, input_name, 'output.txt'], check=True, capture_output=True, text=True)
+    checker_result = subprocess.run(['python3', checker_name, input_name, output_name, 'output.txt'], check=True, capture_output=True, text=True)
     accepted = 'Accepted' in checker_result.stdout
 
     if not accepted and result.returncode != 0:
         if result.stderr.strip() == 'Time limit exceeded':
-            print('Time limit')
-            exit(0)
+            return {
+                response: 'Time Limit Exceeded',
+                out: result.stdout,
+                log: ''
+            }
         else:
-            print('Runtime Error')
-            exit(0)
+            return {
+                response: 'Runtime Error',
+                out: result.stdout,
+                log: result.stderr
+            }
+    
+    return {
+        response: 'Accepted' if accepted else 'Wrong Answer',
+        out: result.stdout,
+        log: ''
+    }
 
     return result.stdout, result.stderr
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <path_to_executable>")
-        sys.exit(1)
-
-    executable_path = sys.argv[1]
-    stdout, stderr = run_test_case(executable_path, 'input1.txt', 'eval.py')
-    print("Standard Output:")
-    print(stdout)
-    print("Standard Error:")
-    print(stderr)

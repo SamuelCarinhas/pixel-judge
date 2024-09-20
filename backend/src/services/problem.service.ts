@@ -106,6 +106,14 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
         throw new NotFound('Problem not found')
     }
 
+    await prisma.submission.create({
+        data: {
+            solutionPath: solution.path,
+            authorId: currentAccount.id,
+            problemId: problem.id
+        }
+    })
+
     logger.info(`${currentAccount.username} submitted a solution for problem ${problem.id}`)
 
     try {
