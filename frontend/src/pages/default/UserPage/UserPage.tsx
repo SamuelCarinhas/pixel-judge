@@ -13,10 +13,24 @@ import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole, roleColors, roleMap, roleNames } from '../../../context/AuthContext/IAuthContext';
 import axiosInstance from '../../../utils/axios';
+import { ISubmission } from '../../../utils/models/submission.model';
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
 export default function UserPage() {
+
+    const [submissions, setSubmissions] = useState<ISubmission[]>([]);
+
+    useEffect(() => {
+        axiosInstance.get('/submission/my')
+        .then(res => {
+            const submissions = res.data.submissions as ISubmission[]
+            submissions.map(submission => submission.createdAt = new Date(submission.createdAt))
+            submissions.map(submission => submission.updatedAt = new Date(submission.updatedAt))
+            setSubmissions(submissions);
+        })
+        .catch(() => {});
+    }, [])
 
     const authContext = useContext(AuthContext);
 
@@ -118,7 +132,29 @@ export default function UserPage() {
                 </div>
             </div>
             <div className='user-activity'>
-
+                <h2>Submissions</h2>
+                <div className='submissions'>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Submitted</th>
+                                <th>Problem</th>
+                                <th>Verdict</th>
+                            </tr>
+                            {
+                                submissions.map((submission, key) => (
+                                    <tr key={key}>
+                                        <th className='id'><Link to={`/submission/${submission.id}`}>{submission.id}</Link></th>
+                                        <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
+                                        <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>
+                                        <th className={`verdict ${submission.verdict === 'Accepted' ? 'green' : 'red'}`}>{submission.verdict}</th>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )

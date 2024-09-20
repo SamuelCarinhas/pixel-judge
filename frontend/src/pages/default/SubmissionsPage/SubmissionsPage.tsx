@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import './Submissions.css'
+import './SubmissionsPage.css'
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import { ISubmission } from '../../../utils/models/submission.model';
 
-export default function Submissions() {
+export default function SubmissionsPage() {
 
     const [submissions, setSubmissions] = useState<ISubmission[]>([]);
 
@@ -20,7 +20,7 @@ export default function Submissions() {
     }, [])
 
     return (
-        <div className='submissions'>
+        <div className='submissions-page'>
             <table>
                 <tbody>
                     <tr>
@@ -33,7 +33,7 @@ export default function Submissions() {
                     {
                         submissions.map((submission, key) => (
                             <tr key={key}>
-                                <th className='id'>{submission.id}</th>
+                                <th className='id'><Link to={`/submission/${submission.id}`}>{submission.id}</Link></th>
                                 <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
                                 <th className='author'><Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></th>
                                 <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>

@@ -103,3 +103,30 @@
     width: 100%;
     border-radius: 0.5rem;
 }
+
+.problem-page .recent-submission {
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.problem-page .side-bar .content a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.problem-page .side-bar .content .red {
+    color: red;
+}
+
+.problem-page .side-bar .content .green {
+    color: green;
+}
+
+.problem-page .side-bar .content a:hover {
+    cursor: pointer;
+    filter: brightness(50%);
+}

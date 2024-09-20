@@ -32,7 +32,7 @@ export async function getSubmissionInfo(id: string) {
     })
     if(!submission) throw new NotFound({ id: "Solution not found" })
     const { solutionPath, ...submissionWithoutPath } = submission;
-    const code = readFileContents(solutionPath);
+    const code = await readFileContents(solutionPath);
     return {
         ...submissionWithoutPath,
         code

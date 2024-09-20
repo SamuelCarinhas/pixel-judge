@@ -1,4 +1,4 @@
-.submissions {
+.submissions-page {
     margin: 3rem 0 3rem 0;
     display: flex;
     width: auto;
@@ -8,26 +8,26 @@
     text-align: center;
 }
 
-.submissions .red {
+.submissions-page .red {
     color: red;
 }
 
-.submissions .green {
+.submissions-page .green {
     color: green;
 }
 
-.submissions a {
+.submissions-page a {
     text-decoration: none;
     color: inherit;
 }
 
-.submissions table {
+.submissions-page table {
     border-collapse: collapse;
     width: 100%;
     font-weight: 100;
 }
 
-.submissions td, .submissions th {
+.submissions-page td, .submissions-page th {
     border: 1px solid #eee;
     text-align: left;
     padding: 0 1rem 0 1rem;
@@ -35,11 +35,11 @@
     width: fit-content;
 }
 
-.submissions tr:nth-child(even) {
+.submissions-page tr:nth-child(even) {
     background-color: #fafafa;
 }
 
-.submissions a:hover {
+.submissions-page a:hover {
     cursor: pointer;
     color: #666;
 }

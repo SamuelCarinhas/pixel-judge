@@ -8,10 +8,10 @@ export function uploadProfilePhoto() {
         const upload = ProfileImageMulter.single("file");
         upload(req, res, (err) => {
             if(err instanceof MulterError) return next(new BadRequest(err.message));
-            if(err) next(err);
+            if(err) return next(err);
             if(req.file === null || req.file === undefined)
                 return next(new BadRequest("No file uploaded"));
-            next();
+            next(err);
         })
     }
 }

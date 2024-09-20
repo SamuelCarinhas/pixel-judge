@@ -1,6 +1,6 @@
 import fs from "fs"
 import multer from "multer"
-import { Forbidden } from "./error.util"
+import { BadRequest, Forbidden } from "./error.util"
 import path from "path"
 
 const UPLOADS_DIR = String(process.env.UPLOADS_DIR)
@@ -25,7 +25,7 @@ export const ProfileImageMulter = multer({
     if (type == "image/png" || type == "image/jpg" || type == "image/jpeg") {
       return callback(null, true)
     }
-    callback(new Forbidden("Only images (.png, .jpg, .jpeg) are allowed, the type sent was "+type))
+    callback(new BadRequest("Only images (.png, .jpg, .jpeg) are allowed, the type sent was "+type))
   },
   limits: {
     fileSize: MAX_UPLOAD_SIZE * 1024 * 1024,
@@ -39,7 +39,7 @@ export const TestCaseMulter = (problemId: string) => multer({
     if (type == "text/plain") {
       return callback(null, true)
     }
-    callback(new Forbidden("Only txt files are allowed, the type sent was "+type))
+    callback(new BadRequest("Only txt files are allowed, the type sent was "+type))
   },
   limits: {
     fileSize: MAX_UPLOAD_SIZE * 1024 * 1024,
@@ -54,7 +54,7 @@ export const SubmissionMulter = (problemId: string) => multer({
     if (allowedExtensions.includes(fileExtension)) {
       return callback(null, true)
     }
-    callback(new Forbidden("Extension not supported"))
+    callback(new BadRequest("Extension not supported"))
   },
   limits: {
     fileSize: MAX_UPLOAD_SIZE * 1024 * 1024,

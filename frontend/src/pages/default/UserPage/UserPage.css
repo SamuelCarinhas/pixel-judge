@@ -55,11 +55,45 @@
 
 .user-page .user-activity {
     width: 100%;
-
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    gap: 1rem;
+}
+
+.user-page .user-activity .red {
+    color: red;
+}
+
+.user-page .user-activity .green {
+    color: green;
+}
+
+.user-page .user-activity a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-page .user-activity table {
+    border-collapse: collapse;
+    width: 100%;
+    font-weight: 100;
+}
+
+.user-page .user-activity td, .user-page .user-activity th {
+    border: 1px solid #eee;
+    text-align: left;
+    padding: 0 1rem 0 1rem;
+    font-weight: normal;
+    width: fit-content;
+}
+
+.user-page .user-activity tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.user-page .user-activity a:hover {
+    cursor: pointer;
+    color: #666;
 }
 
 .user-page .user-info {

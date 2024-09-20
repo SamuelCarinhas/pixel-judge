@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import './ProblemPage.css'
 import { useContext, useEffect, useState } from 'react';
 import { IAdminProblem } from '../../../utils/models/admin.model';
@@ -11,13 +11,15 @@ import { GoGraph } from 'react-icons/go';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import InputFile from '../../../components/InputFile/InputFile';
-import { FaUpload } from 'react-icons/fa';
+import { FaFile, FaUpload } from 'react-icons/fa';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import Loading from '../../../components/Loading/Loading';
 import { AlertContext } from '../../../context/AlertContext/AlertContext';
 import { AlertType } from '../../../context/AlertContext/IAlertContext';
+import { ISubmission } from '../../../utils/models/submission.model';
+import axios from 'axios';
 
 type SubmitInput = {
     code: FileList
@@ -30,11 +32,23 @@ export default function ProblemPage() {
     const [problem, setProblem] = useState<IAdminProblem>();
     const { role } = useContext(AuthContext);
     const { addAlert } = useContext(AlertContext);
+    const navigate = useNavigate();
+
+    const [submissions, setSubmissions] = useState<ISubmission[]>([]);
 
     useEffect(() => {
         axiosInstance.get(`/problem?id=${id}`)
             .then((res) => setProblem(res.data.problem))
             .catch(() => setNotFound(true));
+
+        axiosInstance.get(`/submission/my-recent-problem?id=${id}`)
+            .then(res => {
+                const submissions = res.data.submissions as ISubmission[]
+                submissions.map(submission => submission.createdAt = new Date(submission.createdAt))
+                submissions.map(submission => submission.updatedAt = new Date(submission.updatedAt))
+                setSubmissions(submissions);
+            })
+            .catch(() => {});
     }, [id]);
 
     const {
@@ -45,13 +59,31 @@ export default function ProblemPage() {
     } = useForm<SubmitInput>();
 
     const onSubmit: SubmitHandler<SubmitInput> = async (data) => {
-        console.log(data);
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setError('root', { message: "Server error" });
-        addAlert({
-            type: AlertType.INFO,
-            title: 'Info',
-            text: 'Solution submitted'
+        const formData = new FormData();
+        formData.append('code', data.code[0])
+        axiosInstance.post(`/problem/submit?id=${id}`, formData)
+        .then(() => {
+            addAlert({
+                type: AlertType.INFO,
+                title: 'Info',
+                text: 'Solution submitted'
+            })
+            navigate('/submissions')
+        }).catch((error) => {
+            if(!axios.isAxiosError(error)) {
+                setError("root", { message: "This was not supposed to happen."});
+                return;
+            }
+            if(error.response && error.response.data && error.response.data.description) {
+                const errors = error.response.data.description;
+                for (let [key, value] of Object.entries(errors)) {
+                    setError(key as keyof SubmitInput, { message: value as string });
+                }
+            } else {
+                setError("root", { message: "The server failed to respond" });
+            }
+
+            throw error;
         })
     }
 
@@ -110,7 +142,16 @@ export default function ProblemPage() {
                         <div className='side-option submit-problem'>
                             <div className='header'><CiTimer /> Recent Submissions</div>
                             <div className='content'>
-                                None
+                                {
+                                    submissions.map((submission, index) => (
+                                        <Link to={`/submission/${submission.id}`} key={index}>
+                                            <div className={`recent-submission ${submission.verdict === 'Accepted' ? 'green' : 'red'}`}>
+                                                    <span><FaFile /></span>
+                                                    <span>{ submission.createdAt.toLocaleString() }</span>
+                                            </div>
+                                        </Link>
+                                    ))
+                                }
                             </div>
                         </div>
                         <div className='side-option submit-problem'>

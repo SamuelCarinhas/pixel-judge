@@ -20,7 +20,7 @@ export function uploadTestCases() {
 
         upload(req, res, (err) => {
             if(err instanceof MulterError) return next(new BadRequest(err.message));
-            if(err) next(err);
+            if(err) return next(err);
 
             const files = req.files as { [fieldname: string]: Express.Multer.File[] }; 
 

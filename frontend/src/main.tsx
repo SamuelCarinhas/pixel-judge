@@ -25,7 +25,8 @@ import AdminProblemListPage from './pages/admin/AdminProblemListPage/AdminProble
 import AdminProblemEditPage from './pages/admin/AdminProblemEditPage/AdminProblemEditPage'
 import { AlertProvider } from './context/AlertContext/AlertContext'
 import ProblemPage from './pages/default/ProblemPage/ProblemPage'
-import Submissions from './pages/default/Submissions/Submissions'
+import SubmissionsPage from './pages/default/SubmissionsPage/SubmissionsPage'
+import SubmissionPage from './pages/default/SubmissionPage/SubmissionPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -48,7 +49,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path={'/verify-account'} element={ <PageContainer> <VerifyAccountPage /> </PageContainer> } />
             
             <Route path={'/user/:username'} element={ <PageContainer> <UserPage /> </PageContainer> } />
-            <Route path={'/submissions'} element={ <PageContainer> <Submissions /> </PageContainer> } />
+
+            <Route path={'/submissions'} element={ <PageContainer> <SubmissionsPage /> </PageContainer> } />
+            <Route path={'/submission/:id'} element={ <PageContainer> <SubmissionPage /> </PageContainer> } />
             
             <Route element={ <ProtectedRoute roles={[AuthRole.USER, AuthRole.MODERATOR, AuthRole.ADMIN]} />}>
                 <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
