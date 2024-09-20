@@ -114,7 +114,7 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
         }
     })
 
-    logger.info(`${currentAccount.username} submitted a solution for problem ${problem.id}`)
+    logger.info(`${currentAccount.username} submitted a solution for problem ${problem.id}`, currentAccount)
 
     try {
         await redis.publish('ping', 'queue pinged');
