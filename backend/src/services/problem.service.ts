@@ -3,6 +3,14 @@ import logger from "../utils/logger.util";
 import prisma from "../utils/prisma.util"
 import { readFile, rmSync } from 'fs';
 import { AccountWithProfile } from "../utils/types.util";
+import * as Celery from 'celery-node';
+
+const REDIS_PASSWORD = String(process.env.REDIS_PASSWORD);
+
+const celeryClient = Celery.createClient(
+    `redis://:${REDIS_PASSWORD}@localhost:6379/0`,
+    `redis://:${REDIS_PASSWORD}@localhost:6379/0`
+);
 
 const readFileContents = (filePath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -98,6 +106,16 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
     }
 
     logger.info(`${currentAccount.username} submitted a solution for problem ${problem.id}`)
+
+    try {
+        const task = celeryClient.createTask('judge_celery.ping_queue');
+
+        const result = task.applyAsync([]);
+
+        logger.info(`Task enqueued to Celery ${result.taskId}`);
+    } catch(error) {
+        logger.error('Failed to enqueue task:', error);
+    }
 }
 
 export default {
