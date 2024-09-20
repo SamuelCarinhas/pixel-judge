@@ -1,40 +1,45 @@
-.problems-page {
+.submissions {
+    margin: 3rem 0 3rem 0;
     display: flex;
-    width: 100%;
+    width: auto;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 4rem;
     text-align: center;
 }
 
-.problems-page a {
+.submissions .red {
+    color: red;
+}
+
+.submissions .green {
+    color: green;
+}
+
+.submissions a {
     text-decoration: none;
     color: inherit;
 }
 
-.problems-page table {
+.submissions table {
     border-collapse: collapse;
     width: 100%;
+    font-weight: 100;
 }
 
-.problems-page td, .problems-page th {
+.submissions td, .submissions th {
     border: 1px solid #eee;
     text-align: left;
     padding: 0 1rem 0 1rem;
     font-weight: normal;
+    width: fit-content;
 }
 
-.problems-page tr:nth-child(even) {
-    background-color: #eeee;
+.submissions tr:nth-child(even) {
+    background-color: #fafafa;
 }
 
-.problems-page .rank, .problems-page .rating {
-    width: 3rem;
-    text-align: center;
-}
-
-.problems-page a:hover {
+.submissions a:hover {
     cursor: pointer;
     color: #666;
 }

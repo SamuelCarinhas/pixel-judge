@@ -16,7 +16,20 @@ const readFileContents = (filePath: string): Promise<string> => {
 };
 
 export async function getSubmissionInfo(id: string) {
-    const submission = await prisma.submission.findUnique({ where: { id } })
+    const submission = await prisma.submission.findUnique({ where: { id },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     if(!submission) throw new NotFound({ id: "Solution not found" })
     const { solutionPath, ...submissionWithoutPath } = submission;
     const code = readFileContents(solutionPath);
@@ -27,7 +40,20 @@ export async function getSubmissionInfo(id: string) {
 }
 
 export async function getAllSubmissions() {
-    const submissions = await prisma.submission.findMany({ orderBy: { createdAt: 'desc', } })
+    const submissions = await prisma.submission.findMany({ orderBy: { createdAt: 'desc', },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     
     const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
 
@@ -35,7 +61,20 @@ export async function getAllSubmissions() {
 }
 
 export async function getMySubmissions(currentAccount: AccountWithProfile) {
-    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id }, orderBy: { createdAt: 'desc', } })
+    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id }, orderBy: { createdAt: 'desc', },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     
     const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
 
@@ -43,7 +82,20 @@ export async function getMySubmissions(currentAccount: AccountWithProfile) {
 }
 
 export async function getProblemSubmissions(id: string) {
-    const submissions = await prisma.submission.findMany({ where: { problemId: id }, orderBy: { createdAt: 'desc', } })
+    const submissions = await prisma.submission.findMany({ where: { problemId: id }, orderBy: { createdAt: 'desc', },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     
     const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
 
@@ -51,7 +103,20 @@ export async function getProblemSubmissions(id: string) {
 }
 
 export async function getMyProblemSubmissions(currentAccount: AccountWithProfile, id: string) {
-    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id, problemId: id }, orderBy: { createdAt: 'desc', } })
+    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id, problemId: id }, orderBy: { createdAt: 'desc', },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     
     const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
 
@@ -59,7 +124,20 @@ export async function getMyProblemSubmissions(currentAccount: AccountWithProfile
 }
 
 export async function getRecentProblemSubmissions(currentAccount: AccountWithProfile, id: string) {
-    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id, problemId: id }, orderBy: { createdAt: 'desc', }, take: 3 })
+    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id, problemId: id }, orderBy: { createdAt: 'desc', }, take: 3,
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
     
     const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
 
