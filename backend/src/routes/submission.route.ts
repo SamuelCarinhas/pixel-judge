@@ -10,7 +10,7 @@ const router = Router()
 
 router.get('/', validate(AdminProblemGetSchema), submissionController.getSubmissionInfo)
 router.get('/all', submissionController.getAllSubmissions)
-router.get('/user', validate(GetProfileSchema), submissionController.getUserProblemSubmissions)
+router.get('/user', validate(GetProfileSchema), submissionController.getUserSubmissions)
 router.get('/problem', validate(AdminProblemGetSchema), submissionController.getProblemSubmissions)
 router.get('/', authMiddleware.authorizeAccess, validate(AdminProblemGetSchema), submissionController.getMyProblemSubmissions)
 router.get('/my-recent-problem', authMiddleware.authorizeAccess, validate(AdminProblemGetSchema), submissionController.getRecentProblemSubmissions)
