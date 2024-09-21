@@ -60,8 +60,10 @@ export async function getAllSubmissions() {
     return submissionsWithoutPath;
 }
 
-export async function getMySubmissions(currentAccount: AccountWithProfile) {
-    const submissions = await prisma.submission.findMany({ where: { authorId: currentAccount.id }, orderBy: { createdAt: 'desc', },
+export async function getUserSubmissions(username: string) {
+    const user = await prisma.account.findUnique({ where: { username } });
+    if(!user) throw new NotFound({ username: "Account not found" })
+    const submissions = await prisma.submission.findMany({ where: { authorId: user.id }, orderBy: { createdAt: 'desc', },
         include: {
             author: {
                 select: {
@@ -147,7 +149,7 @@ export async function getRecentProblemSubmissions(currentAccount: AccountWithPro
 export default {
     getSubmissionInfo,
     getAllSubmissions,
-    getMySubmissions,
+    getUserSubmissions,
     getProblemSubmissions,
     getMyProblemSubmissions,
     getRecentProblemSubmissions
