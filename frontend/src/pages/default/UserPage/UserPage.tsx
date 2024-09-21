@@ -60,8 +60,8 @@ export default function UserPage() {
         if(!username) setNotFound(true);
 
         fetchAccount(username as string);
-        
-        axiosInstance.get(`/submission/?username=${username}`)
+
+        axiosInstance.get(`/submission?username=${username}`)
         .then(res => {
             const submissions = res.data.submissions as ISubmission[]
             submissions.map(submission => submission.createdAt = new Date(submission.createdAt))
