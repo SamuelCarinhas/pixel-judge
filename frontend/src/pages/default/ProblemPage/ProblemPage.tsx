@@ -97,7 +97,7 @@ export default function ProblemPage() {
                 <div className='problem-settings'>
                     <h2>{ problem.title } </h2>
                     <span>Memory Limit: { problem.memoryLimit } MB</span>
-                    <span>Time Limit: { problem.timeLimit } ms</span>
+                    <span>Time Limit: { problem.timeLimit } seconds</span>
                 </div>
                 <div className='problem-description'>
                     <h3>Description</h3>

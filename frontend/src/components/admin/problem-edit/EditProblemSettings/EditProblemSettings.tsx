@@ -107,7 +107,7 @@ export default function EditProblemSettings() {
                 type='number'
                 icon={ <LuClock /> }
                 label='time-limit'
-                description='Time Limit (ms)'
+                description='Time Limit (s)'
                 placeholder='1000' />
             <CustomButton disabled={ isSubmitting } type='submit' color={ IButtonColor.GREEN } text='Save' />
             { errors.root && <span className='sign-in-page-error'>{ errors.root.message }</span> }
