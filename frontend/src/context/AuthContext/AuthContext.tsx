@@ -70,7 +70,7 @@ const AuthProvider = ({ children }: Props) => {
                 }
             })
         } catch(err) {
-            console.log('Not authenticated');
+            logout();
         }
 
         return () => {
