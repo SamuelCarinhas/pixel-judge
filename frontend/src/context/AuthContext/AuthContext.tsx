@@ -88,13 +88,15 @@ const AuthProvider = ({ children }: Props) => {
             return;
         }
         login(authToken, refreshToken);
-
-        connectSocketIO();
     }, []);
 
     function logout() {
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
+        if(socket) {
+            socket.close();
+            setSocket(null);
+        }
         setRole(AuthRole.DEFAULT)
     }
 
@@ -106,6 +108,8 @@ const AuthProvider = ({ children }: Props) => {
             localStorage.setItem("refreshToken", refreshToken);
             setUsername(decoded['user']);
             setRole(role);
+
+            connectSocketIO();
 
             axiosInstance.interceptors.request.use(request => {
                 const accessToken = localStorage.getItem('authToken');
