@@ -1,12 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './SubmissionsPage.css'
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import { ISubmission } from '../../../utils/models/submission.model';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function SubmissionsPage() {
 
+    const color = {
+        'Accepted': 'green',
+        'Wrong Answer': 'red',
+        'Runtime Error': 'red',
+        'Time Limit Exceeded': 'red'
+    }
+
     const [submissions, setSubmissions] = useState<ISubmission[]>([]);
+    const { socket } = useContext(AuthContext);
+
+    useEffect(() => {
+        if(socket === null) return;
+        socket.on('submission_status', ({submissionId, verdict}: {submissionId: string, verdict: string}  ) => {
+            console.log(submissionId)
+            setSubmissions(prevSubmissions =>
+                prevSubmissions.map(submission =>
+                    submission.id === submissionId ? { ...submission, verdict } : submission
+                )
+            );
+        });
+    }, [socket])
+
 
     useEffect(() => {
         axiosInstance.get('/submission/all')
@@ -37,7 +59,7 @@ export default function SubmissionsPage() {
                                 <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
                                 <th className='author'><Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></th>
                                 <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>
-                                <th className={`verdict ${submission.verdict === 'Accepted' ? 'green' : 'red'}`}>{submission.verdict}</th>
+                                <th className={`verdict ${color[submission.verdict as never] ? color[submission.verdict as never] : 'black'}`}>{submission.verdict}</th>
                             </tr>
                         ))
                     }

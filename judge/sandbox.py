@@ -70,7 +70,7 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
         os.system(f'cp {input_path} {box}')
         os.system(f'cp {checker_path} {box}')
 
-        cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', '--time', f'{time_limit}', '--run', '--',
+        cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', f'--time={time_limit}', '--run', '--',
             *execute_command(executable_name)]
         result = subprocess.run(
             cmds,

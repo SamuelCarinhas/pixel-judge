@@ -28,7 +28,7 @@ def resolve_submissions(count=0):
         port=DB_PORT
     )
     cursor = conn.cursor()
-    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id ;')
+    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id where status=\'WAITING\';')
     submissions = cursor.fetchall()
     for submission in submissions:
         submissionId = submission[0]
@@ -50,7 +50,7 @@ def resolve_submissions(count=0):
         res = sandbox.compile_code(solution_name)
 
         if res['error']:
-            cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Compilation Error', verdict['log'], submissionId))
+            cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Compilation Error', res['error'], submissionId))
             conn.commit()
             print('Compilation Error')
             continue
@@ -61,6 +61,11 @@ def resolve_submissions(count=0):
             print(f'Running test case {i+1}')
             cursor.execute('UPDATE \"Submission\" SET verdict=%s WHERE id=%s', (f'Running test case {i+1}', submissionId))
             conn.commit()
+            message = {
+                'submissionId': submissionId,
+                'verdict': f'Running test case {i+1}'
+            }
+            redis_client.publish('submission_status', json.dumps(message))
             inputPath = testCase[0]
             outputPath = testCase[1]
             res = sandbox.run_test_case(executable, inputPath, outputPath, 'default_evaluator.py', timeLimit, memoryLimit)
@@ -69,6 +74,11 @@ def resolve_submissions(count=0):
                 break
         cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', (verdict['response'], verdict['log'], submissionId))
         conn.commit()
+        message = {
+            'submissionId': submissionId,
+            'verdict': verdict['response']
+        }
+        redis_client.publish('submission_status', json.dumps(message))
         message = {
             'submissionId': submissionId,
             'result': verdict['response']
