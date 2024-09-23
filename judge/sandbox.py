@@ -4,8 +4,8 @@ import sys
 
 compile_command = {
     'py': None,
-    'cpp': 'g++ -std=gnu++17 -O2',
-    'c': 'gcc -std=gnu17 -O2',
+    'cpp': 'g++ -std=gnu++17 -w -O2',
+    'c': 'gcc -std=gnu17 -w -O2',
     'java': 'javac -encoding utf-8'
 }
 

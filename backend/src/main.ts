@@ -106,11 +106,9 @@ redisClient.connect().then(async () => {
     const socketIds = userSockets.get(submission!.author.id);
     if (!socketIds) return;
 
-    socketIds.forEach(socketId => {
-      io.to(socketId).emit('submission_status', {
-        submissionId,
-        verdict
-      })
+    io.emit('submission_status', {
+      submissionId,
+      verdict
     })
   })
 })
