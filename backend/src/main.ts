@@ -21,7 +21,7 @@ const port = Number(process.env.PORT) || 8000;
 const JWT_ACCESS_SECRET = String(process.env.JWT_ACCESS_SECRET)
 const REDIS_PASSWORD = String(process.env.REDIS_PASSWORD)
 
-const userSockets = new Map<string, string>();
+const userSockets = new Map<string, Set<string>>();
 
 app.use('/', api)
 
@@ -47,7 +47,11 @@ io.use((socket, next) => {
 
   socket.data.token = decoded;
 
-  userSockets.set(decoded.accountId, socket.id);
+  if (!userSockets.has(decoded.accountId)) {
+    userSockets.set(decoded.accountId, new Set());
+  }
+  userSockets.get(decoded.accountId)!.add(socket.id);
+
   next();
 })
 
@@ -58,7 +62,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     logger.info(`User ${socket.data.token.user} disconnected`);
-    userSockets.delete(socket.data.token.accountId);
+
+    userSockets.get(socket.data.token.accountId)?.delete(socket.id);
   })
 })
 
@@ -77,15 +82,17 @@ redisClient.connect().then(async () => {
     const submission = await prisma.submission.findUnique({ where: { id: submissionId }, include: { author: true } });
     if(!submission) return;
 
-    const socketId = userSockets.get(submission!.author.id);
+    const socketIds = userSockets.get(submission!.author.id);
+    if (!socketIds) return;
 
-    if(!socketId) return;
+    socketIds.forEach(socketId => {
+      io.to(socketId).emit('alert', {
+        type: result === 'Accepted' ? 'SUCCESS' : 'DANGER',
+        title: result.toUpperCase(),
+        text: `Solution for problem ${submission.problemId}`
+      })
+    });
 
-    io.to(socketId).emit('alert', {
-      type: result === 'Accepted' ? 'SUCCESS' : 'DANGER',
-      title: result.toUpperCase(),
-      text: `Solution for problem ${submission.problemId}`
-    })
   })
 
   redisClient.subscribe('submission_status', async (message) => {
@@ -96,13 +103,14 @@ redisClient.connect().then(async () => {
     const submission = await prisma.submission.findUnique({ where: { id: submissionId }, include: { author: true } });
     if(!submission) return;
 
-    const socketId = userSockets.get(submission!.author.id);
+    const socketIds = userSockets.get(submission!.author.id);
+    if (!socketIds) return;
 
-    if(!socketId) return;
-
-    io.to(socketId).emit('submission_status', {
-      submissionId,
-      verdict
+    socketIds.forEach(socketId => {
+      io.to(socketId).emit('submission_status', {
+        submissionId,
+        verdict
+      })
     })
   })
 })
