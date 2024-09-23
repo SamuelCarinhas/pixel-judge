@@ -37,6 +37,11 @@ export default function SubmissionPage() {
                 <span>Author: <Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></span> 
                 <span>Submitted At: {submission.createdAt.toLocaleString()}</span>
                 <span>Verdict: <span className={submission.verdict === 'Accepted' ? 'green' : 'red'}>{submission.verdict}</span></span>
+                <span>Details: 
+                    <pre>
+                        { submission.details }
+                    </pre>
+                </span>
             </div>
         </div>
     )

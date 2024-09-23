@@ -21,17 +21,6 @@ export default function UserPage() {
 
     const [submissions, setSubmissions] = useState<ISubmission[]>([]);
 
-    useEffect(() => {
-        axiosInstance.get('/submission/my')
-        .then(res => {
-            const submissions = res.data.submissions as ISubmission[]
-            submissions.map(submission => submission.createdAt = new Date(submission.createdAt))
-            submissions.map(submission => submission.updatedAt = new Date(submission.updatedAt))
-            setSubmissions(submissions);
-        })
-        .catch(() => {});
-    }, [])
-
     const authContext = useContext(AuthContext);
 
     const { username } = useParams();
@@ -71,6 +60,15 @@ export default function UserPage() {
         if(!username) setNotFound(true);
 
         fetchAccount(username as string);
+
+        axiosInstance.get(`/submission/user?username=${username}`)
+        .then(res => {
+            const submissions = res.data.submissions as ISubmission[]
+            submissions.map(submission => submission.createdAt = new Date(submission.createdAt))
+            submissions.map(submission => submission.updatedAt = new Date(submission.updatedAt))
+            setSubmissions(submissions);
+        })
+        .catch(() => {});
     }, [username]);
 
     useEffect(() => {

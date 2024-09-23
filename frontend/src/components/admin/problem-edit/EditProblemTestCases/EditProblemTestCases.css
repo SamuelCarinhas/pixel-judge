@@ -65,4 +65,5 @@
     word-break: break-all;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    word-spacing: 0.3rem;
 }

@@ -16,8 +16,10 @@ export async function getAllSubmissions(_req: Request, res: Response, next: Next
         .catch(error => next(error))
 }
 
-export async function getMySubmissions(_req: Request, res: Response, next: NextFunction) {
-    submissionService.getMySubmissions(res.locals.accoun)
+export async function getUserSubmissions(req: Request, res: Response, next: NextFunction) {
+    const { username  } = req.query;
+    
+    submissionService.getUserSubmissions(username as string)
         .then((submissions) => res.status(StatusCodes.OK).json({ message: 'Submissions retrieved', submissions }))
         .catch(error => next(error))
 }
@@ -49,7 +51,7 @@ export async function getRecentProblemSubmissions(req: Request, res: Response, n
 export default {
     getSubmissionInfo,
     getAllSubmissions,
-    getMySubmissions,
+    getUserSubmissions,
     getProblemSubmissions,
     getMyProblemSubmissions,
     getRecentProblemSubmissions
