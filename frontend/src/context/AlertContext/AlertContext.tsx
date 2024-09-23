@@ -1,5 +1,6 @@
-import {createContext, ReactNode, useState} from "react";
-import IAlertContext, {IAlert} from "./IAlertContext.ts";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import IAlertContext, {AlertType, IAlert} from "./IAlertContext.ts";
+import { AuthContext } from "../AuthContext/AuthContext.tsx";
 
 type Props = {
     children?: ReactNode;
@@ -12,6 +13,26 @@ const initialValue = {
 
 const AlertContext = createContext<IAlertContext>(initialValue)
 
+interface ISocketAlert {
+    type: string,
+    text: string,
+    title: string
+}
+
+function parseSocketAlert(alert: ISocketAlert): IAlert {
+    const map = {
+        'DEFAULT': AlertType.DEFAULT,
+        'INFO': AlertType.INFO,
+        'DANGER': AlertType.DANGER,
+        'SUCCESS': AlertType.SUCCESS,
+        'WARNING': AlertType.WARNING
+    }
+    return {
+        type: map[alert.type.toUpperCase() as never],
+        text: alert.text,
+        title: alert.title,
+    }
+}
 
 function randomString() {
     let string = '';
@@ -24,6 +45,14 @@ function randomString() {
 
 const AlertProvider = ({ children }: Props) => {
     const [ alerts, setAlerts ] = useState<IAlert[]>(initialValue.alerts);
+    const { socket } = useContext(AuthContext);
+
+    useEffect(() => {
+        if(socket === null) return;
+        socket.on('alert', (socketAlert: ISocketAlert ) => {
+            addAlert(parseSocketAlert(socketAlert));
+        });
+    }, [socket])
 
     function addAlert(alert: IAlert) {
         const id = Date.now().toString() + randomString();

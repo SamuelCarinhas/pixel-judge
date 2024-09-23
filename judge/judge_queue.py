@@ -2,6 +2,7 @@ import os
 import redis
 import psycopg2
 import sandbox
+import json
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -27,7 +28,7 @@ def resolve_submissions(count=0):
         port=DB_PORT
     )
     cursor = conn.cursor()
-    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id where status=\'WAITING\';')
+    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id ;')
     submissions = cursor.fetchall()
     for submission in submissions:
         submissionId = submission[0]
@@ -68,6 +69,11 @@ def resolve_submissions(count=0):
                 break
         cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', (verdict['response'], verdict['log'], submissionId))
         conn.commit()
+        message = {
+            'submissionId': submissionId,
+            'result': verdict['response']
+        }
+        redis_client.publish('submission_result', json.dumps(message))
         print('Verdict:', verdict)
         os.system(f'rm {solution_name}')
         if solution_name != executable:

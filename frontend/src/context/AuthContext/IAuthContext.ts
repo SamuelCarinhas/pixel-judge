@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+
 export enum AuthRole {
     LOADING,
     DEFAULT,
@@ -9,7 +11,8 @@ export enum AuthRole {
 export default interface IAuthContext {
     role: AuthRole;
     setRole: (value: AuthRole) => void;
-    username: string
+    username: string;
+    socket: Socket | null;
     logout: () => void;
     login: (authToken: string, refreshToken: string) => void;
 }
