@@ -122,7 +122,7 @@ export default function UserPage() {
                     {account.profile.online || (account.profile.lastVisit && Date.now() - account.profile.lastVisit.getTime() < 2000) ?
                         <span className='now'>Online</span>
                         :
-                        <span>Last Seen: {account.profile.lastVisit ? account.profile.lastVisit.toLocaleTimeString() : 'Never'}</span>
+                        <span>Last Seen: {account.profile.lastVisit ? account.profile.lastVisit.toLocaleString() : 'Never'}</span>
                     }
                 </div>
                     
