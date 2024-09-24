@@ -27,7 +27,11 @@ export default function SubmissionsPage() {
                 )
             );
         });
-    }, [socket])
+
+        socket.on('new_submission', (submission: ISubmission) => {
+            setSubmissions([submission, ...submissions]);
+        });
+    }, [submissions])
 
     function parseSubmissions(subs: ISubmission[]) {
         subs.map(submission => submission.createdAt = new Date(submission.createdAt))

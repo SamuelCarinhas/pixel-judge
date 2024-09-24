@@ -4,6 +4,7 @@ import prisma from "../utils/prisma.util"
 import { readFile, rmSync } from 'fs';
 import { AccountWithProfile } from "../utils/types.util";
 import Redis from 'ioredis';
+import { io } from "../main";
 
 const REDIS_PASSWORD = String(process.env.REDIS_PASSWORD);
 
@@ -114,12 +115,25 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
 
     if(!language) throw new BadRequest("Invalid language");
 
-    await prisma.submission.create({
+    const submission = await prisma.submission.create({
         data: {
             solutionPath: solution.path,
             authorId: currentAccount.id,
             problemId: problem.id,
             languageId: language.id
+        },
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            problem: {
+                select: {
+                    id: true
+                }
+            },
+            language: true
         }
     })
 
@@ -127,6 +141,10 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
 
     try {
         await redis.publish('ping', 'queue pinged');
+
+        const { solutionPath, ...submissionWithoutPath } = submission;
+
+        io.emit('new_submission', submissionWithoutPath);
 
         logger.info(`Submissions enqueued`);
     } catch(error) {
