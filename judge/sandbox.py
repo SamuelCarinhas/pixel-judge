@@ -80,7 +80,7 @@ def run_test_case(executable_path, run_command, input_path, output_path, checker
     checker_result = subprocess.run(['python3', checker_name, input_path, output_path, 'output.txt'], check=True, capture_output=True, text=True)
     accepted = 'Accepted' in checker_result.stdout
 
-    if not accepted and result.returncode != 0:
+    if not accepted and result.returncode != 0 or result.stderr.strip() == 'Time limit exceeded' or result.stderr.strip() == 'Time limit exceeded (wall clock)':
         if result.stderr.strip() == 'Time limit exceeded' or result.stderr.strip() == 'Time limit exceeded (wall clock)':
             return {
                 'response': 'Time Limit Exceeded',
