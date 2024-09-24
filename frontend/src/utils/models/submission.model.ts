@@ -13,5 +13,7 @@ export interface ISubmission {
     updatedAt: Date
     code: string
     execTime: number
-    language: string
+    language: {
+        id: string
+    }
 }

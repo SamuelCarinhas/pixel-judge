@@ -147,7 +147,9 @@ export default function UserPage() {
                                 <th>ID</th>
                                 <th>Submitted</th>
                                 <th>Problem</th>
+                                <th>Language</th>
                                 <th>Verdict</th>
+                                <th>Exec Time</th>
                             </tr>
                             {
                                 submissions.map((submission, key) => (
@@ -155,7 +157,9 @@ export default function UserPage() {
                                         <th className='id'><Link to={`/submission/${submission.id}`}>{submission.id}</Link></th>
                                         <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
                                         <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>
+                                        <th className='submitted'>{submission.language.id}</th>
                                         <th className={`verdict ${submission.verdict === 'Accepted' ? 'green' : 'red'}`}>{submission.verdict}</th>
+                                        <th className='submitted'>{submission.execTime}</th>
                                     </tr>
                                 ))
                             }

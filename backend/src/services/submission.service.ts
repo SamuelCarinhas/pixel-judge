@@ -29,7 +29,8 @@ export async function getSubmissionInfo(id: string) {
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     if(!submission) throw new NotFound({ id: "Solution not found" })
@@ -54,7 +55,8 @@ export async function getAllSubmissions(page: number = 1) {
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     
@@ -80,7 +82,8 @@ export async function getUserSubmissions(username: string) {
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     
@@ -101,7 +104,8 @@ export async function getProblemSubmissions(id: string) {
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     
@@ -122,7 +126,8 @@ export async function getMyProblemSubmissions(currentAccount: AccountWithProfile
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     
@@ -143,7 +148,8 @@ export async function getRecentProblemSubmissions(currentAccount: AccountWithPro
                 select: {
                     id: true
                 }
-            }
+            },
+            language: true
         }
     })
     

@@ -19,10 +19,11 @@ export default function SubmissionsPage() {
 
     useEffect(() => {
         if(socket === null) return;
-        socket.on('submission_status', ({submissionId, verdict}: {submissionId: string, verdict: string}  ) => {
+        socket.on('submission_status', ({submissionId, verdict, execTime}: {submissionId: string, verdict: string, execTime: number}  ) => {
+            console.log(submissionId, execTime)
             setSubmissions(prevSubmissions =>
                 prevSubmissions.map(submission =>
-                    submission.id === submissionId ? { ...submission, verdict } : submission
+                    submission.id === submissionId ? { ...submission, verdict, execTime } : submission
                 )
             );
         });
@@ -55,7 +56,7 @@ export default function SubmissionsPage() {
                                     <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
                                     <th className='author'><Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></th>
                                     <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>
-                                    <th className='submitted'>{submission.language}</th>
+                                    <th className='submitted'>{submission.language.id}</th>
                                     <th className={`verdict ${color[submission.verdict as never] ? color[submission.verdict as never] : 'black'}`}>{submission.verdict}</th>
                                     <th className='submitted'>{submission.execTime}</th>
                                 </tr>

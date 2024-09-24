@@ -21,6 +21,10 @@
     color: inherit;
 }
 
+.submissions-page .id a {
+    color: #FF7219;
+}
+
 .submissions-page table {
     border-collapse: collapse;
     width: 100%;

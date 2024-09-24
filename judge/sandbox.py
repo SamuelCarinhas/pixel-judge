@@ -2,27 +2,15 @@ import os
 import subprocess
 import sys
 
-compile_command = {
-    'py': None,
-    'cpp': 'g++ -std=gnu++17 -w -O2',
-    'c': 'gcc -std=gnu17 -w -O2',
-    'java': 'javac -encoding utf-8'
-}
-
-def compile_code(code_path):
+def compile_code(code_path, compile_flag, compile_command):
     assert os.path.isfile(code_path)
-
-    file_extension = code_path.split('.')[-1].lower()
-
-    if not compile_command[file_extension]:
+    if not compile_flag:
         return {
             'executable': code_path,
             'error': ''
         }
-    
-    args = compile_command[file_extension].split()
-    args.append(code_path)
 
+    args = compile_command.replace('$', code_path).split()
 
     try:
         result = subprocess.run(args, check=True, capture_output=True, text=True, timeout=5)
@@ -41,16 +29,7 @@ def compile_code(code_path):
             'error': e.stderr
         }
 
-def execute_command(command):
-    ext = command.split('.')[-1]
-    if ext == 'py':
-        return [f'/usr/bin/python3', f'{command}']
-    elif ext == 'java':
-        return [f'/usr/bin/java', f'{command}']
-    else:
-        return [f'./{command}']
-
-def run_test_case(executable_path, input_path, output_path, checker_path, time_limit, memory_limit):
+def run_test_case(executable_path, run_command, input_path, output_path, checker_path, time_limit, memory_limit):
     assert os.path.isfile(executable_path)
     assert os.path.isfile(input_path)
     assert os.path.isfile(output_path)
@@ -72,8 +51,10 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
 
         print(time_limit)
 
+        execute_command = run_command.replace('$', executable_path).split()
+
         cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', f'--time={time_limit}', f'--wall-time={time_limit+1}', f'--extra-time={time_limit+0.5}', '--run', '--',
-            *execute_command(executable_name)]
+            *execute_command]
         
         print(' '.join(cmds))
         result = subprocess.run(

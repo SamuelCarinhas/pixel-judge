@@ -30,6 +30,7 @@ export default function SubmissionPage() {
         :
         <div className='submission-page'>
             <span>Problem: <Link to={`/problem/${submission.problem.id}`}>{submission.problem.id}</Link></span>
+            <span>Language: {submission.language.id}</span>
             <pre className='submission'>
                 {submission.code}
             </pre>
@@ -37,6 +38,7 @@ export default function SubmissionPage() {
                 <span>Author: <Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></span> 
                 <span>Submitted At: {submission.createdAt.toLocaleString()}</span>
                 <span>Verdict: <span className={submission.verdict === 'Accepted' ? 'green' : 'red'}>{submission.verdict}</span></span>
+                <span>Execution Time: { submission.execTime }s</span>
                 <span>Details: 
                     <pre>
                         { submission.details }

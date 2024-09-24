@@ -126,6 +126,7 @@ redisClient.connect().then(async () => {
     const data = JSON.parse(message);
     const submissionId = data.submissionId as string;
     const verdict = data.verdict as string;
+    const execTime = data.execTime as number;
 
     const submission = await prisma.submission.findUnique({ where: { id: submissionId }, include: { author: true } });
     if(!submission) return;
@@ -135,7 +136,8 @@ redisClient.connect().then(async () => {
 
     io.emit('submission_status', {
       submissionId,
-      verdict
+      verdict,
+      execTime
     })
   })
 })

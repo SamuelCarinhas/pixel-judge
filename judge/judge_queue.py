@@ -28,7 +28,14 @@ def resolve_submissions(count=0):
         port=DB_PORT
     )
     cursor = conn.cursor()
-    cursor.execute('SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit" FROM \"Submission\" s JOIN "Problem" p ON s."problemId" = p.id where status=\'WAITING\';')
+    cursor.execute('''
+        SELECT s.id, s."problemId", s."solutionPath", p."timeLimit", p."memoryLimit",
+            l."fileExtension", l."compile", l."compileCommand", l."runCommand"
+        FROM "Submission" s
+        JOIN "Problem" p ON s."problemId" = p.id
+        JOIN "Language" l ON s."languageId" = l.id
+        WHERE s."status" = \'WAITING\';
+    ''')
     submissions = cursor.fetchall()
     for submission in submissions:
         submissionId = submission[0]
@@ -38,6 +45,10 @@ def resolve_submissions(count=0):
         solutionPath = submission[2]
         timeLimit = submission[3]
         memoryLimit = submission[4] * 1000
+        fileExtension = submission[5]
+        compileFlag = submission[6]
+        compileCommand = submission[7]
+        runCommand = submission[8]
 
         print(f'Evaluating submission {submissionId}')
 
@@ -47,7 +58,7 @@ def resolve_submissions(count=0):
         os.system(f'cp {solutionPath} .')
         solution_name = os.path.basename(solutionPath)
 
-        res = sandbox.compile_code(solution_name)
+        res = sandbox.compile_code(solution_name, compileFlag, compileCommand)
 
         if res['error']:
             cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Compilation Error', res['error'], submissionId))
@@ -68,7 +79,7 @@ def resolve_submissions(count=0):
             redis_client.publish('submission_status', json.dumps(message))
             inputPath = testCase[0]
             outputPath = testCase[1]
-            res = sandbox.run_test_case(executable, inputPath, outputPath, 'default_evaluator.py', timeLimit, memoryLimit)
+            res = sandbox.run_test_case(executable, runCommand, inputPath, outputPath, 'default_evaluator.py', timeLimit, memoryLimit)
             verdict = res
             if res['response'] != 'Accepted':
                 break
@@ -83,6 +94,7 @@ def resolve_submissions(count=0):
         conn.commit()
         message = {
             'submissionId': submissionId,
+            'execTime': exec_time,
             'verdict': verdict['response']
         }
         redis_client.publish('submission_status', json.dumps(message))

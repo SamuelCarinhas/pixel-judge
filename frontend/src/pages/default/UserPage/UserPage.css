@@ -73,6 +73,10 @@
     color: inherit;
 }
 
+.user-page .id a {
+    color: #FF7219;
+}
+
 .user-page .user-activity table {
     border-collapse: collapse;
     width: 100%;
