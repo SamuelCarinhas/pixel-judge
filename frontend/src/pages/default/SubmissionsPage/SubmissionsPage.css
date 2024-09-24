@@ -43,3 +43,7 @@
     cursor: pointer;
     color: #666;
 }
+
+.submissions-page .paged-container {
+    width: 100%;
+}

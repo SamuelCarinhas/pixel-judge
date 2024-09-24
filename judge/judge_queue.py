@@ -72,6 +72,10 @@ def resolve_submissions(count=0):
             verdict = res
             if res['response'] != 'Accepted':
                 break
+        if verdict is None:
+            cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Invalid Problem', 'No test cases', submissionId))
+            conn.commit()
+            continue
         cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', (verdict['response'], verdict['log'], submissionId))
         conn.commit()
         message = {

@@ -1,0 +1,28 @@
+.paged-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+}
+
+.paged-container .footer-pages {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+}
+
+.paged-container .footer-pages > * {
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.paged-container a.active {
+    background-color: #666;
+    color: #fff;
+    border-radius: 0.2rem;
+}

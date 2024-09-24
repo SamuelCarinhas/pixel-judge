@@ -14,7 +14,7 @@ export async function paginate<T>(
     { page = 1 }: PaginationParams,
     queryOptions: object = {}
 ): Promise<PaginationResult<T>> {
-    const limit = 10;
+    const limit = 20;
     const skip = (page - 1) * limit;
 
     const data = await model.findMany({

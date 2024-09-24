@@ -10,9 +10,11 @@ export async function getSubmissionInfo(req: Request, res: Response, next: NextF
         .catch(error => next(error))
 }
 
-export async function getAllSubmissions(_req: Request, res: Response, next: NextFunction) {
-    submissionService.getAllSubmissions()
-        .then((submissions) => res.status(StatusCodes.OK).json({ message: 'Submissions retrieved', submissions }))
+export async function getAllSubmissions(req: Request, res: Response, next: NextFunction) {
+    const { page } = req.query;
+    
+    submissionService.getAllSubmissions(Number(page) || 0)
+        .then((submissions) => res.status(StatusCodes.OK).json({ message: 'Submissions retrieved', ...submissions }))
         .catch(error => next(error))
 }
 
