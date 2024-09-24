@@ -24,8 +24,9 @@ router.get('/test-cases', validate(AdminProblemGetSchema), adminController.getTe
 router.get('/test-case', validate(AdminProblemGetSchema), adminController.getTestCase)
 
 router.get('/language/all', adminController.getLanguages)
-router.get('/language', validate(AdminProblemGetSchema), adminController.getLanguages)
+router.get('/language', validate(AdminProblemGetSchema), adminController.getLanguage)
+router.delete('/language', validate(AdminProblemGetSchema), adminController.deleteLanguage)
 router.post('/language', validate(LanguageSchema), adminController.addLanguage)
-router.post('/language', validate(LanguageSchema), adminController.updateLanguage)
+router.put('/language', validate(LanguageSchema), adminController.updateLanguage)
 
 export default router

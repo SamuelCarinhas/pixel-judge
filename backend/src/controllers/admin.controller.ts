@@ -147,7 +147,7 @@ export async function addLanguage(req: Request, res: Response, next: NextFunctio
     const { id, fileExtension, compile, compileCommand, runCommand } = req.body;
 
     adminService
-        .addLanguage(res.locals.account, id as string, fileExtension as string, compile as boolean, compileCommand as string, runCommand as string)
+        .addLanguage(res.locals.account, fileExtension as string, id as string, compile as boolean, compileCommand as string, runCommand as string)
         .then((language) => res.status(StatusCodes.OK).json({ message: "Language added", language }))
         .catch((error) => next(error))
 }
@@ -156,8 +156,17 @@ export async function updateLanguage(req: Request, res: Response, next: NextFunc
     const { id, fileExtension, compile, compileCommand, runCommand } = req.body;
 
     adminService
-        .updateLanguage(res.locals.account, id as string, fileExtension as string, compile as boolean, compileCommand as string, runCommand as string)
+        .updateLanguage(res.locals.account, fileExtension as string, id as string, compile as boolean, compileCommand as string, runCommand as string)
         .then((language) => res.status(StatusCodes.OK).json({ message: "Language updated", language }))
+        .catch((error) => next(error))
+}
+
+export async function deleteLanguage(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+
+    adminService
+        .deleteLanguage(id as string)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Language deleted" }))
         .catch((error) => next(error))
 }
 
@@ -178,5 +187,6 @@ export default {
     getLanguage,
     getLanguages,
     addLanguage,
-    updateLanguage
+    updateLanguage,
+    deleteLanguage
 }

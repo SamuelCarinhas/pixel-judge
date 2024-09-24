@@ -211,18 +211,23 @@ export async function getLanguage(id: string) {
 }
 
 export async function addLanguage(currentAccount: AccountWithProfile, fileExtension: string, id: string, compile: boolean, compileCommand: string, runCommand: string) {
-    const language = await prisma.language.create({
-        data: {
-            id,
-            fileExtension,
-            compile,
-            compileCommand,
-            runCommand
-        }
-    })
-
-    logger.admin(`${currentAccount.username} added a new language: ${language.id}`, currentAccount)
-    return language
+    try {
+        console.log('id', id);
+        const language = await prisma.language.create({
+            data: {
+                id,
+                fileExtension,
+                compile,
+                compileCommand,
+                runCommand
+            }
+        })
+    
+        logger.admin(`${currentAccount.username} added a new language: ${language.id}`, currentAccount)
+        return language
+    } catch {
+        throw new Conflict({ id: 'Language already exists.'})
+    }
 }
 
 export async function updateLanguage(currentAccount: AccountWithProfile, fileExtension: string, id: string, compile: boolean, compileCommand: string, runCommand: string) {
@@ -247,6 +252,17 @@ export async function updateLanguage(currentAccount: AccountWithProfile, fileExt
     return language
 }
 
+export async function deleteLanguage(id: string) {
+    let language = await prisma.language.findUnique({ where: { id } });
+    if(!language) throw new NotFound({ id: "Language not found "});
+
+    await prisma.language.delete({
+        where: {
+            id
+        }
+    })
+}
+
 export default {
     getUsers,
     updateUser,
@@ -264,5 +280,6 @@ export default {
     getLanguage,
     getLanguages,
     addLanguage,
-    updateLanguage
+    updateLanguage,
+    deleteLanguage
 }

@@ -27,6 +27,7 @@ import { AlertProvider } from './context/AlertContext/AlertContext'
 import ProblemPage from './pages/default/ProblemPage/ProblemPage'
 import SubmissionsPage from './pages/default/SubmissionsPage/SubmissionsPage'
 import SubmissionPage from './pages/default/SubmissionPage/SubmissionPage'
+import AdminSystemConfig from './pages/admin/AdminSystemConfig/AdminSystemConfig'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -60,6 +61,7 @@ createRoot(document.getElementById('root')!).render(
             <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
                 <Route path={'/admin'} element={ <PageContainer> <AdminContainer/> </PageContainer> } />
                 <Route path={'/admin/logs'} element={ <PageContainer> <AdminContainer> <AdminLogsPage /> </AdminContainer> </PageContainer> } />
+                <Route path={'/admin/system-config'} element={ <PageContainer> <AdminContainer> <AdminSystemConfig /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/users'} element={ <PageContainer> <AdminContainer> <AdminUsersPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems'} element={ <PageContainer> <AdminContainer> <AdminProblemListPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems/edit/:id'} element={ <PageContainer> <AdminContainer> <AdminProblemEditPage /> </AdminContainer> </PageContainer> } />

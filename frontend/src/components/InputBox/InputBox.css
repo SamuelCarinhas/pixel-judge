@@ -7,6 +7,18 @@
     display: none;
 }
 
+.input-box-area .error {
+    color: red;
+}
+
+.input-box-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.1rem;
+}
+
 .input-box-container .checkmark {
     display: inline-block;
     width: 20px;
