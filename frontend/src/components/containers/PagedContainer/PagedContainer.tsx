@@ -11,7 +11,7 @@ export default function PagedContainer<T>(props: IPagedContainer<T>) {
     const [maxPage, setMaxPage] = useState<number>(0);
 
     useEffect(() => {
-        const page = Number(searchParams.get('page')) || 0;
+        const page = Number(searchParams.get('page')) || 1;
 
         axiosInstance.get(`/submission/all?page=${page}`)
         .then(res => {
