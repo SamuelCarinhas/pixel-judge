@@ -119,7 +119,7 @@ export default function UserPage() {
                     <FaUserFriends /> <span>{account.followers} Followers</span> <span>{account.following} Following</span>
                 </div>
                 <div className='last-seen'>
-                    {account.profile.online || (account.profile.lastVisit && account.profile.lastVisit.getTime() - Date.now() < 2000) ?
+                    {account.profile.online || (account.profile.lastVisit && Date.now() - account.profile.lastVisit.getTime() < 2000) ?
                         <span className='now'>Online</span>
                         :
                         <span>Last Seen: {account.profile.lastVisit ? account.profile.lastVisit.toLocaleTimeString() : 'Never'}</span>
