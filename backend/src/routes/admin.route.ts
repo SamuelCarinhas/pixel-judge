@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../utils/validator.util";
 import adminController from "../controllers/admin.controller";
-import { AdminProblemGetSchema, AdminTestCaseVisibility, AdminUpdateProblemSchema, AdminUpdateUserSchem } from "../models/admin.model";
+import { AdminProblemGetSchema, AdminTestCaseVisibility, AdminUpdateProblemSchema, AdminUpdateUserSchem, LanguageSchema } from "../models/admin.model";
 import { CreateProblemSchema } from "../models/problem.model";
 import adminMiddleware from "../middleware/admin.middleware";
 
@@ -22,5 +22,10 @@ router.put('/test-case/visible', validate(AdminTestCaseVisibility), adminControl
 router.delete('/test-case', validate(AdminProblemGetSchema), adminController.removeTestCase)
 router.get('/test-cases', validate(AdminProblemGetSchema), adminController.getTestCases)
 router.get('/test-case', validate(AdminProblemGetSchema), adminController.getTestCase)
+
+router.get('/language/all', adminController.getLanguages)
+router.get('/language', validate(AdminProblemGetSchema), adminController.getLanguages)
+router.post('/language', validate(LanguageSchema), adminController.addLanguage)
+router.post('/language', validate(LanguageSchema), adminController.updateLanguage)
 
 export default router

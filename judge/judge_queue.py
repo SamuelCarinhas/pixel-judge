@@ -76,7 +76,10 @@ def resolve_submissions(count=0):
             cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', ('Invalid Problem', 'No test cases', submissionId))
             conn.commit()
             continue
-        cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s WHERE id=%s', (verdict['response'], verdict['log'], submissionId))
+        exec_time = 0
+        if 'time' in verdict:
+            exec_time = verdict['time']
+        cursor.execute('UPDATE \"Submission\" SET status=\'FINISHED\', verdict=%s, details=%s, "execTime"=%s WHERE id=%s', (verdict['response'], verdict['log'], exec_time, submissionId))
         conn.commit()
         message = {
             'submissionId': submissionId,

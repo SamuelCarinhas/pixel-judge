@@ -44,7 +44,9 @@ export default function SubmissionsPage() {
                             <th>Submitted</th>
                             <th>Author</th>
                             <th>Problem</th>
+                            <th>Language</th>
                             <th>Verdict</th>
+                            <th>Exec Time</th>
                         </tr>
                         {
                             parseSubmissions(submissions).map((submission, key) => (
@@ -53,7 +55,9 @@ export default function SubmissionsPage() {
                                     <th className='submitted'>{submission.createdAt.toLocaleString()}</th>
                                     <th className='author'><Link to={`/user/${submission.author.username}`}>@{submission.author.username}</Link></th>
                                     <th className='problem'><Link to={`/problem/${submission.problem.id}`}>#{submission.problem.id}</Link></th>
+                                    <th className='submitted'>{submission.language}</th>
                                     <th className={`verdict ${color[submission.verdict as never] ? color[submission.verdict as never] : 'black'}`}>{submission.verdict}</th>
+                                    <th className='submitted'>{submission.execTime}</th>
                                 </tr>
                             ))
                         }

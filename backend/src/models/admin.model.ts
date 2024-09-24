@@ -40,3 +40,13 @@ export const AdminTestCaseVisibility = z.object({
         visible: z.boolean({ message: 'Value must be a boolean' })
     })
 })
+
+export const LanguageSchema = z.object({
+    body: z.object({
+        id: z.string().min(1, 'The ID must be at least 1 character long'),
+        fileExtension: z.string().min(1, 'The file extension must be at least 1 character long'),
+        compile: z.boolean({ message: 'The compile flag must be a boolean' }),
+        compileCommand: z.string().min(1, 'The compile command must be at least 1 character long'),
+        runCommand: z.string().min(1, 'The run command must be at least 1 character long'),
+    })
+})

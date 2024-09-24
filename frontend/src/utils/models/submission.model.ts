@@ -12,4 +12,6 @@ export interface ISubmission {
     createdAt: Date
     updatedAt: Date
     code: string
+    execTime: number
+    language: string
 }

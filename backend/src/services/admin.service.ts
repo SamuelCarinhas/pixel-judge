@@ -197,6 +197,56 @@ export async function changeTestCaseVisibility(currentAccount: AccountWithProfil
     return testCase
 }
 
+export async function getLanguages() {
+    let languages = await prisma.language.findMany({  });
+
+    return languages;
+}
+
+export async function getLanguage(id: string) {
+    let language = await prisma.language.findUnique({ where: { id } });
+    if(!language) throw new NotFound({ id: "Language not found "});
+
+    return language;
+}
+
+export async function addLanguage(currentAccount: AccountWithProfile, fileExtension: string, id: string, compile: boolean, compileCommand: string, runCommand: string) {
+    const language = await prisma.language.create({
+        data: {
+            id,
+            fileExtension,
+            compile,
+            compileCommand,
+            runCommand
+        }
+    })
+
+    logger.admin(`${currentAccount.username} added a new language: ${language.id}`, currentAccount)
+    return language
+}
+
+export async function updateLanguage(currentAccount: AccountWithProfile, fileExtension: string, id: string, compile: boolean, compileCommand: string, runCommand: string) {
+    let language = await prisma.language.findUnique({ where: { id } })
+    if(!language) throw new NotFound({ id: "Language not found"});
+
+    language = await prisma.language.update({
+        where: {
+            id
+        },
+        data: {
+            id,
+            fileExtension,
+            compile,
+            compileCommand,
+            runCommand
+        }
+    })
+
+    logger.admin(`${currentAccount.username} updated language ${language.id}`, currentAccount)
+
+    return language
+}
+
 export default {
     getUsers,
     updateUser,
@@ -210,5 +260,9 @@ export default {
     editTestCase,
     removeTestCase,
     addTestCase,
-    changeTestCaseVisibility
+    changeTestCaseVisibility,
+    getLanguage,
+    getLanguages,
+    addLanguage,
+    updateLanguage
 }

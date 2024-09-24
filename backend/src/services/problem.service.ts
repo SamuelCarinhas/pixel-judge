@@ -1,4 +1,4 @@
-import { NotFound } from "../utils/error.util"
+import { BadRequest, NotFound } from "../utils/error.util"
 import logger from "../utils/logger.util";
 import prisma from "../utils/prisma.util"
 import { readFile, rmSync } from 'fs';
@@ -106,11 +106,20 @@ export async function submitSolution(currentAccount: AccountWithProfile, id: str
         throw new NotFound('Problem not found')
     }
 
+    const language = await prisma.language.findFirst({
+        where: {
+            fileExtension: solution.originalname.split('.').pop()?.toLocaleLowerCase()
+        }
+    })
+
+    if(!language) throw new BadRequest("Invalid language");
+
     await prisma.submission.create({
         data: {
             solutionPath: solution.path,
             authorId: currentAccount.id,
-            problemId: problem.id
+            problemId: problem.id,
+            languageId: language.id
         }
     })
 

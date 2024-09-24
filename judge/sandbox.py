@@ -70,8 +70,12 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
         os.system(f'cp {input_path} {box}')
         os.system(f'cp {checker_path} {box}')
 
-        cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', f'--time={time_limit}', '--run', '--',
+        print(time_limit)
+
+        cmds = ['isolate', f'--mem={memory_limit}', '--processes=1', f'--time={time_limit}', f'--wall-time={time_limit+1}', f'--extra-time={time_limit+0.5}', '--run', '--',
             *execute_command(executable_name)]
+        
+        print(' '.join(cmds))
         result = subprocess.run(
             cmds,
             input=open(input_path, 'r').read(),
@@ -96,9 +100,10 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
     accepted = 'Accepted' in checker_result.stdout
 
     if not accepted and result.returncode != 0:
-        if result.stderr.strip() == 'Time limit exceeded':
+        if result.stderr.strip() == 'Time limit exceeded' or result.stderr.strip() == 'Time limit exceeded (wall clock)':
             return {
                 'response': 'Time Limit Exceeded',
+                'time': time_limit,
                 'out': result.stdout,
                 'log': ''
             }
@@ -109,8 +114,11 @@ def run_test_case(executable_path, input_path, output_path, checker_path, time_l
                 'log': result.stderr
             }
     
+    time = float(result.stderr.strip().split(' sec real')[-2].split('(')[-1])
+    
     return {
         'response': 'Accepted' if accepted else 'Wrong Answer',
+        'time': time,
         'out': result.stdout,
         'log': ''
     }

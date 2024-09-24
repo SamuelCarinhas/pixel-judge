@@ -2,6 +2,7 @@ import fs from "fs"
 import multer from "multer"
 import { BadRequest, Forbidden } from "./error.util"
 import path from "path"
+import prisma from "./prisma.util"
 
 const UPLOADS_DIR = String(process.env.UPLOADS_DIR)
 const MAX_UPLOAD_SIZE = Number(process.env.MAX_UPLOAD_SIZE)
@@ -48,8 +49,9 @@ export const TestCaseMulter = (problemId: string) => multer({
 
 export const SubmissionMulter = (problemId: string) => multer({
   storage: diskStorage(`problem/${problemId}/submissions`),
-  fileFilter: function (_, file, callback) {
-    const allowedExtensions = ['.cpp', '.java', '.c', '.js', '.py'];
+  fileFilter: async function (_, file, callback) {
+    const languages = await prisma.language.findMany({});
+    const allowedExtensions = languages.map(language => `.${language.fileExtension}`);
     const fileExtension = path.extname(file.originalname).toLocaleLowerCase();
     if (allowedExtensions.includes(fileExtension)) {
       return callback(null, true)

@@ -127,6 +127,40 @@ export async function changeTestCaseVisibility(req: Request, res: Response, next
         .catch((error) => next(error))
 }
 
+export async function getLanguages(_req: Request, res: Response, next: NextFunction) {
+    adminService
+        .getLanguages()
+        .then((languages) => res.status(StatusCodes.OK).json({ message: "Languages retrieved", languages }))
+        .catch((error) => next(error))
+}
+
+export async function getLanguage(req: Request, res: Response, next: NextFunction) {
+    const { id  } = req.query;
+
+    adminService
+        .getLanguage(id as string)
+        .then((language) => res.status(StatusCodes.OK).json({ message: "Language retrieved", language }))
+        .catch((error) => next(error))
+}
+
+export async function addLanguage(req: Request, res: Response, next: NextFunction) {
+    const { id, fileExtension, compile, compileCommand, runCommand } = req.body;
+
+    adminService
+        .addLanguage(res.locals.account, id as string, fileExtension as string, compile as boolean, compileCommand as string, runCommand as string)
+        .then((language) => res.status(StatusCodes.OK).json({ message: "Language added", language }))
+        .catch((error) => next(error))
+}
+
+export async function updateLanguage(req: Request, res: Response, next: NextFunction) {
+    const { id, fileExtension, compile, compileCommand, runCommand } = req.body;
+
+    adminService
+        .updateLanguage(res.locals.account, id as string, fileExtension as string, compile as boolean, compileCommand as string, runCommand as string)
+        .then((language) => res.status(StatusCodes.OK).json({ message: "Language updated", language }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
@@ -140,5 +174,9 @@ export default {
     removeTestCase,
     getTestCases,
     getTestCase,
-    changeTestCaseVisibility
+    changeTestCaseVisibility,
+    getLanguage,
+    getLanguages,
+    addLanguage,
+    updateLanguage
 }
