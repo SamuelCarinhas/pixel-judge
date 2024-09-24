@@ -10,6 +10,7 @@ export interface IAccount {
         organization: string | null,
         lastVisit: Date | null,
         registered: Date
+        online: Boolean
     }
     followers: number,
     following: number

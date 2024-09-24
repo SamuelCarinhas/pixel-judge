@@ -62,6 +62,8 @@ model Profile {
   city String?
   organization String?
   lastVisit DateTime?
+  online Boolean @default(false)
+
   registered DateTime @default(now())
 
   imagePath String @default("default")

@@ -142,3 +142,7 @@
 .user-page .custom-button {
     width: fit-content;
 }
+
+.user-page .now {
+    color: green;
+}

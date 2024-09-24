@@ -26,6 +26,7 @@ export async function getProfile(username: string) {
                     organization: true,
                     lastVisit: true,
                     registered: true,
+                    online: true
                 }
             }
         }

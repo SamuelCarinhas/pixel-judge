@@ -55,13 +55,40 @@ io.use((socket, next) => {
   next();
 })
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   logger.info(`User ${socket.data.token.user} connected`);
 
   socket.emit('message', { content: 'Connected to the websocket!' })
 
-  socket.on('disconnect', () => {
+  const user = await prisma.account.findUnique({ where: { username: socket.data.token.user }})
+
+  if(user) {
+    await prisma.profile.update({
+      where: {
+        accountId: user.id
+      },
+      data: {
+        online: true,
+        lastVisit: new Date()
+      }
+    })
+  }
+
+
+  socket.on('disconnect', async () => {
     logger.info(`User ${socket.data.token.user} disconnected`);
+
+    if(user) {
+      await prisma.profile.update({
+        where: {
+          accountId: user.id
+        },
+        data: {
+          online: false,
+          lastVisit: new Date()
+        }
+      })
+    }
 
     userSockets.get(socket.data.token.accountId)?.delete(socket.id);
   })

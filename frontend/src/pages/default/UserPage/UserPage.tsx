@@ -37,7 +37,8 @@ export default function UserPage() {
             city: null,
             organization: null,
             lastVisit: null,
-            registered: new Date()
+            registered: new Date(),
+            online: false
         },
         followers: 0,
         following: 0
@@ -117,6 +118,14 @@ export default function UserPage() {
                 <div className='social'>
                     <FaUserFriends /> <span>{account.followers} Followers</span> <span>{account.following} Following</span>
                 </div>
+                <div className='last-seen'>
+                    {account.profile.online ?
+                        <span className='now'>Online</span>
+                        :
+                        <span>Last Seen: {account.profile.lastVisit ? account.profile.lastVisit.toLocaleTimeString() : 'Never'}</span>
+                    }
+                </div>
+                    
                 <div className='information'>
                     <h3>Information</h3>
                     <span><HiOutlineBuildingOffice2 /> {account.profile.organization}</span>
