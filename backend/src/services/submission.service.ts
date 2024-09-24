@@ -2,6 +2,8 @@ import { NotFound } from "../utils/error.util"
 import prisma from "../utils/prisma.util"
 import { readFile } from 'fs';
 import { AccountWithProfile } from "../utils/types.util";
+import { paginate } from "../utils/pagination.util";
+import { Submission } from "@prisma/client";
 
 const readFileContents = (filePath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -39,8 +41,9 @@ export async function getSubmissionInfo(id: string) {
     }
 }
 
-export async function getAllSubmissions() {
-    const submissions = await prisma.submission.findMany({ orderBy: { createdAt: 'desc', },
+export async function getAllSubmissions(page: number = 1) {
+    const submissions = await paginate<Submission>(prisma.submission, { page }, {
+        orderBy: { createdAt: 'desc' },
         include: {
             author: {
                 select: {
@@ -55,9 +58,12 @@ export async function getAllSubmissions() {
         }
     })
     
-    const submissionsWithoutPath = submissions.map(({ solutionPath, ...rest }) => rest);
+    const submissionsWithoutPath = submissions.data.map(({ solutionPath, ...rest }) => rest);
 
-    return submissionsWithoutPath;
+    return {
+        ...submissions,
+        data: submissionsWithoutPath
+    };
 }
 
 export async function getUserSubmissions(username: string) {
