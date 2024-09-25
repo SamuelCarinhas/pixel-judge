@@ -119,6 +119,7 @@ const AuthProvider = ({ children }: Props) => {
 
             axiosInstance.interceptors.request.use(request => {
                 const accessToken = localStorage.getItem('authToken');
+                console.log('Request', accessToken);
                 request.headers['Authorization'] = `Bearer ${accessToken}`;
                 return request
             }, error => Promise.reject(error));
@@ -150,6 +151,7 @@ const AuthProvider = ({ children }: Props) => {
 
             connectSocketIO();
         } catch(e) {
+            console.log('LOGOUT', e);
             logout();
         }
     }
