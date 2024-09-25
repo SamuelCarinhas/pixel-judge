@@ -1,0 +1,33 @@
+.new-forum-post {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.new-forum-post .error {
+    color: red;
+}
+
+.new-forum-post .post-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;;
+    width: 50%;
+}
+
+.new-forum-post .preview-post {
+    width: 50%;
+}
+
+.new-forum-post .input-area {
+    width: 100%;
+}
+
+.new-forum-post .input-area .input-container {
+    width: 100%;
+}
+
+.new-forum-post .input-area .input-container textarea {
+    width: 100%;
+}

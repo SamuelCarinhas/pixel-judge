@@ -1,14 +1,10 @@
 .forum-page {
     display: flex;
     width: 100%;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-direction: column;
-    gap: 4rem;
-    font-size: 2rem;
-    text-align: center;
+    gap: 1rem;
 }
 
-.forum-page img {
-    height: 15rem;
-}
+

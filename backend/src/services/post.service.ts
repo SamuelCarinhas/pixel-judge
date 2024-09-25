@@ -15,6 +15,8 @@ export async function createPost(currentAccount: AccountWithProfile, title: stri
     })
 
     logger.info(`${currentAccount.username} created post ${post.id}`, currentAccount)
+
+    return post;
 }
 
 export async function updatePost(currentAccount: AccountWithProfile, id: string, title: string, content: string) {
@@ -34,6 +36,8 @@ export async function updatePost(currentAccount: AccountWithProfile, id: string,
     })
 
     logger.info(`${currentAccount.username} updated post ${post.id}`, currentAccount)
+
+    return post;
 }
 
 export async function getPosts() {
