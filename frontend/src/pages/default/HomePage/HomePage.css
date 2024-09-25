@@ -1,13 +1,81 @@
 .home-page {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    height: 100%;
-    font-size: 1.5rem;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
 }
 
-.home-page img {
-    width: 25rem;
+.home-page .like.active svg {
+    color: red;
+}
+
+.home-page .like:hover {
+    cursor: pointer;
+}
+
+.home-page .like:hover svg {
+    color: red;
+}
+
+.home-page .like.active:hover svg {
+    color: black;
+}
+
+.home-page a {
+    text-decoration: none;
+    color: #FF7219;
+}
+
+.home-page a:hover {
+    filter: brightness(80%);
+}
+
+.home-page .post {
+    width: 100%;
+    border-left: 0.5rem solid #ccc;
+}
+
+.home-page .title {
+    padding: 1rem;
+    font-size: large;
+}
+
+.home-page .post .post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+}
+
+.home-page .post .post-content {
+    border-bottom: 1px solid #ccc;
+}
+
+.home-page .post .post-footer {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.home-page .post .post-header .avatar {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.home-page .post .post-header img {
+    width: 3rem;
+    object-fit: contain;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
 }

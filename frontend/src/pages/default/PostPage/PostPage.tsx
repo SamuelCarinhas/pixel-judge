@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import MarkdownContainer from '../../../components/containers/MarkdownContainer/MarkdownContainer';
 import { FaHeart } from 'react-icons/fa';
 import { IoChatbox } from 'react-icons/io5';
+import InputBox from '../../../components/InputBox/InputBox';
 
 const REST_URL = import.meta.env.VITE_REST_URL
 
@@ -57,12 +58,39 @@ export default function PostPage() {
         }
     }
 
+    function updateHomePage(e: React.ChangeEvent<HTMLInputElement>) {
+        if(!post) return;
+
+        const homePage = e.target.checked;
+        axiosInstance.put(`/post/home-page?id=${id}`, {
+            homePage
+        }).then(() => {
+            console.log(1);
+            const cpyPost = { ...post };
+            cpyPost.homePage = homePage;
+            setPost(cpyPost);
+        })
+
+        console.log(post);
+    }
+
     return (
         post === undefined ? <></>
         :
         <div className='post-page'>
             <div className='post'>
-                <span className='title'> { post.title } </span>
+                <div className='row'>
+                    <span className='title'> { post.title } </span>
+                    {
+                        role === AuthRole.ADMIN &&
+                        <InputBox
+                            label={'public'}
+                            onChange={ updateHomePage }
+                            checked={ post.homePage }
+                            description='Home Page'
+                        />
+                    }
+                </div>
                 <div className='post-header'>
                     <div className='avatar'>
                         <img src={ `${REST_URL}/profile/picture?username=${post.profile.account.username}` }/>

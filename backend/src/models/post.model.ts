@@ -6,3 +6,9 @@ export const PostSchema = z.object({
         content: z.string({ message: 'Post content is mandatory' }).min(1, 'Post content must be at least 1 character long')
     })
 })
+
+export const PostHomePageSchema = z.object({
+    body: z.object({
+        homePage: z.boolean({ message: 'HomePage must be a boolean'})
+    })
+})

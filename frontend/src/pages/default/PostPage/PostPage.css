@@ -37,8 +37,16 @@
     border-left: 0.5rem solid #ccc;
 }
 
-.post-page .title {
+.post-page .post .row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
     padding: 1rem;
+    box-sizing: border-box;
+}
+
+.post-page .title {
     font-size: large;
 }
 

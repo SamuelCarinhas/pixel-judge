@@ -55,11 +55,30 @@ export async function unlike(req: Request, res: Response, next: NextFunction) {
         .catch((error) => next(error))
 }
 
+export async function getHomePosts(req: Request, res: Response, next: NextFunction) {
+    postService
+        .getHomePosts()
+        .then((posts) => res.status(StatusCodes.OK).json({ message: "Posts retrieved", posts }))
+        .catch((error) => next(error))
+}
+
+export async function changeHomePagePost(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.query;
+    const { homePage } = req.body;
+
+    postService
+        .changeHomePagePost(res.locals.account, id as string, homePage)
+        .then((post) => res.status(StatusCodes.OK).json({ message: "Post updated", post }))
+        .catch((error) => next(error))
+}
+
 export default {
     getPost,
     getPosts,
     createPost,
     updatePost,
     like,
-    unlike
+    unlike,
+    getHomePosts,
+    changeHomePagePost
 }

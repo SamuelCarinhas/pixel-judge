@@ -42,6 +42,57 @@ export async function updatePost(currentAccount: AccountWithProfile, id: string,
 
 export async function getPosts() {
     const posts = await prisma.post.findMany({
+        orderBy: [ { createdAt: 'desc' }],
+        include: {
+            profile: {
+                select: {
+                    account: {
+                        select: {
+                            username: true
+                        }
+                    }
+                }
+            },
+            likes: {
+                select: {
+                    profile: {
+                        select: {
+                            account: {
+                                select: {
+                                    username: true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            comments: {
+                select: {
+                    profile: {
+                        select: {
+                            account: {
+                                select: {
+                                    username: true
+                                }
+                            }
+                        }
+                    },
+                    createdAt: true,
+                    updatedAt: true
+                }
+            }
+        }
+    })
+
+    return posts
+}
+
+export async function getHomePosts() {
+    const posts = await prisma.post.findMany({
+        orderBy: [ { createdAt: 'desc' }],
+        where: {
+            homePage: true
+        },
         include: {
             profile: {
                 select: {
@@ -161,11 +212,33 @@ export async function unlike(currentAccount: AccountWithProfile, id: string) {
     })
 }
 
+export async function changeHomePagePost(currentAccount: AccountWithProfile, id: string, homePage: boolean) {
+    let post = await prisma.post.findUnique({ where: { id } });
+    if(!post) throw new NotFound({ id: "Post not found" });
+
+    post = await prisma.post.update({
+        where: {
+            id
+        },
+        data: {
+            homePage
+        }
+    }).catch(() => {
+        throw new Conflict("It is not possible to update this post");
+    })
+
+    logger.info(`${currentAccount.username} changed post ${post.id} visibility`, currentAccount)
+
+    return post;
+}
+
 export default {
     createPost,
     updatePost,
     getPosts,
     getPost,
     like,
-    unlike
+    unlike,
+    getHomePosts,
+    changeHomePagePost
 }
