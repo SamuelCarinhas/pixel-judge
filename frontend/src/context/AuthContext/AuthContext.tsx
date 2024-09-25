@@ -41,16 +41,45 @@ const AuthProvider = ({ children }: Props) => {
                 "Authorization" : `Bearer ${refreshToken}`
             }
         })
-
+    
         const response = await instance.post(`${REST_URL}/auth/refresh-token`, {
             refreshToken,
         });
-
+    
         const { accessToken, refreshToken: newRefreshToken } = response.data;
         
         localStorage.setItem('authToken', accessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
     }
+    
+    axiosInstance.interceptors.request.use(request => {
+        const accessToken = localStorage.getItem('authToken');
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+        return request
+    }, error => Promise.reject(error));
+    
+    axiosInstance.interceptors.response.use(
+        response => {
+            return response
+        },
+        async error => {
+            const originalRequest = error.config;
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                try {
+                    await updateToken();
+
+    
+                    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+    
+                    return axiosInstance(originalRequest);
+                } catch (refreshError) {
+                    logout();
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
 
     async function connectSocketIO() {
         let authToken = localStorage.getItem('authToken');
@@ -92,7 +121,6 @@ const AuthProvider = ({ children }: Props) => {
             return;
         }
 
-        console.log('LOGIN');
         login(authToken, refreshToken);
     }, []);
 
@@ -115,41 +143,8 @@ const AuthProvider = ({ children }: Props) => {
             setUsername(decoded['user']);
             setRole(role);
 
-            axiosInstance.interceptors.request.use(request => {
-                const accessToken = localStorage.getItem('authToken');
-                console.log('Request', accessToken);
-                request.headers['Authorization'] = `Bearer ${accessToken}`;
-                return request
-            }, error => Promise.reject(error));
-
-            axiosInstance.interceptors.response.use(
-                response => {
-                    console.log('RESPONSE', response)
-                    return response
-                },
-                async error => {
-                    const originalRequest = error.config;
-                    if (error.response.status === 401 && !originalRequest._retry) {
-                        originalRequest._retry = true;
-                        try {
-                            await updateToken();
-
-                            console.log('UPDATE TOKEN');
-
-                            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
-
-                            return axiosInstance(originalRequest);
-                        } catch (refreshError) {
-                            logout();
-                        }
-                    }
-                    return Promise.reject(error);
-                }
-            );
-
             connectSocketIO();
         } catch(e) {
-            console.log('LOGOUT', e);
             logout();
         }
     }
