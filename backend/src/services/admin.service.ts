@@ -212,7 +212,6 @@ export async function getLanguage(id: string) {
 
 export async function addLanguage(currentAccount: AccountWithProfile, fileExtension: string, id: string, compile: boolean, compileCommand: string, runCommand: string) {
     try {
-        console.log('id', id);
         const language = await prisma.language.create({
             data: {
                 id,

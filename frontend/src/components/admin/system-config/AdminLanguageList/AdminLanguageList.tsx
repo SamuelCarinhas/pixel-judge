@@ -63,7 +63,6 @@ export default function AdminLanguageList() {
                 if(error.response && error.response.data && error.response.data.description) {
                     const errors = error.response.data.description;
                     for (let [key, value] of Object.entries(errors)) {
-                        console.log(value)
                         setError(key as keyof ILanguage, { message: value as string });
                     }
                 } else {
@@ -95,7 +94,6 @@ export default function AdminLanguageList() {
                 if(error.response && error.response.data && error.response.data.description) {
                     const errors = error.response.data.description;
                     for (let [key, value] of Object.entries(errors)) {
-                        console.log(value)
                         setError(key as keyof ILanguage, { message: value as string });
                     }
                 } else {

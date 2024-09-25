@@ -65,13 +65,10 @@ export default function PostPage() {
         axiosInstance.put(`/post/home-page?id=${id}`, {
             homePage
         }).then(() => {
-            console.log(1);
             const cpyPost = { ...post };
             cpyPost.homePage = homePage;
             setPost(cpyPost);
         })
-
-        console.log(post);
     }
 
     return (

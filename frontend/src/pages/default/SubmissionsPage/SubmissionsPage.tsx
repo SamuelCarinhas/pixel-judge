@@ -20,7 +20,6 @@ export default function SubmissionsPage() {
     useEffect(() => {
         if(socket === null) return;
         socket.on('submission_status', ({submissionId, verdict, execTime}: {submissionId: string, verdict: string, execTime: number}  ) => {
-            console.log(submissionId, execTime)
             setSubmissions(prevSubmissions =>
                 prevSubmissions.map(submission =>
                     submission.id === submissionId ? { ...submission, verdict, execTime } : submission
