@@ -74,6 +74,10 @@ model Profile {
   following    Follows[] @relation("Following")
   followers    Follows[] @relation("Followers")
 
+  posts Post[]
+  postLikes PostLike[]
+  postComment PostComment[]
+
   @@index([country])
   @@index([organization])
   @@index([city])
@@ -190,4 +194,55 @@ model Submission {
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+}
+
+model Post {
+  id String @id @unique @default(cuid())
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  profileId String
+
+  title String
+  content String
+
+  likes PostLike[]
+  comments PostComment[]
+
+  homePage Boolean @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PostLike {
+  id          String   @id @default(cuid())
+  
+  post    Post  @relation(fields: [postId], references: [id])
+  postId  String
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  profileId String
+
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([postId, profileId])
+}
+
+model PostComment {
+  id String @id @default(cuid())
+
+  post    Post  @relation(fields: [postId], references: [id])
+  postId  String
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  profileId String
+
+  subComments PostComment[] @relation("SubComments")
+
+  parentComment PostComment? @relation("SubComments", fields: [parentCommentId], references: [id])
+  parentCommentId String
+
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

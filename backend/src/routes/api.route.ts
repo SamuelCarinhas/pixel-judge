@@ -6,6 +6,7 @@ import profileRoute from "./profile.route"
 import adminRoute from "./admin.route"
 import problemRoute from "./problem.route"
 import submissionRoute from "./submission.route"
+import postRoute from "./post.route"
 import apiMiddleware from "../middleware/api.middleware"
 import apiController from "../controllers/api.controller"
 import hpp from "hpp"
@@ -27,6 +28,7 @@ router.use('/profile/', profileRoute)
 router.use('/admin/', authMiddleware.authorizeAdmin, adminRoute)
 router.use('/problem/', problemRoute)
 router.use('/submission/', submissionRoute)
+router.use('/post/', postRoute)
 
 router.get("/", apiController.root)
 router.get("/health-check", apiController.health)
