@@ -93,6 +93,8 @@ const AuthProvider = ({ children }: Props) => {
             setRole(AuthRole.DEFAULT);
             return;
         }
+
+        console.log('LOGIN');
         login(authToken, refreshToken);
     }, []);
 
