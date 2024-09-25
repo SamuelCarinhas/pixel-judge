@@ -8,11 +8,11 @@ import CustomButton from '../../../CustomButton/CustomButton';
 import { IButtonColor } from '../../../CustomButton/ICustomButton';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Popup from '../../../Popup/Popup';
-import axiosInstance from '../../../../utils/axios';
 import { AlertContext } from '../../../../context/AlertContext/AlertContext';
 import { AlertType } from '../../../../context/AlertContext/IAlertContext';
 import axios from 'axios';
 import InputBox from '../../../InputBox/InputBox';
+import { AuthContext } from '../../../../context/AuthContext/AuthContext';
 
 export default function AdminLanguageList() {
 
@@ -25,6 +25,8 @@ export default function AdminLanguageList() {
 
     const [deleteLanguage, setDeleteLanguage] = useState<number>(-1);
     const [editLanguage, setEditLanguage] = useState<number>(-1);
+
+    const { axiosInstance } = useContext(AuthContext);
 
     const {
         register,

@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './RatingPage.css'
 import { Link } from 'react-router-dom';
-import axiosInstance from '../../../utils/axios';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function RatingPage() {
 
     const [users, setUsers] = useState<{username: string}[]>([]);
+
+    const { axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         axiosInstance.get('/profile/all')

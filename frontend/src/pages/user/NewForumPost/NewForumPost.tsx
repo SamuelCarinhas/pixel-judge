@@ -8,11 +8,11 @@ import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import Loading from '../../../components/Loading/Loading';
 import InputField from '../../../components/InputField/InputField';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
-import axiosInstance from '../../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AlertContext } from '../../../context/AlertContext/AlertContext';
 import { AlertType } from '../../../context/AlertContext/IAlertContext';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 type CreatePostInput = {
     title: string
@@ -32,6 +32,7 @@ export default function NewForumPost() {
     const content = watch('content');
     const title = watch('title');
     const { addAlert } = useContext(AlertContext);
+    const { axiosInstance }= useContext(AuthContext);
 
     const navigate = useNavigate();
 

@@ -3,7 +3,6 @@ import './ProblemPage.css'
 import { useContext, useEffect, useState } from 'react';
 import { IAdminProblem } from '../../../utils/models/admin.model';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import axiosInstance from '../../../utils/axios';
 import MarkdownContainer from '../../../components/containers/MarkdownContainer/MarkdownContainer';
 import { CiTimer } from 'react-icons/ci';
 import { IoIosPricetags, IoIosSend } from 'react-icons/io';
@@ -30,7 +29,7 @@ export default function ProblemPage() {
     const { id } = useParams();
     const [notFound, setNotFound] = useState(false);
     const [problem, setProblem] = useState<IAdminProblem>();
-    const { role } = useContext(AuthContext);
+    const { role, axiosInstance } = useContext(AuthContext);
     const { addAlert } = useContext(AlertContext);
     const navigate = useNavigate();
 

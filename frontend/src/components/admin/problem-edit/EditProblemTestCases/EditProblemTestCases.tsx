@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import './EditProblemTestCases.css'
 import { AlertContext } from '../../../../context/AlertContext/AlertContext';
 import { useParams } from 'react-router-dom';
-import axiosInstance from '../../../../utils/axios';
 import { FaFolder, FaUpload } from 'react-icons/fa';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import Popup from '../../../Popup/Popup';
@@ -15,6 +14,7 @@ import Loading from '../../../Loading/Loading';
 import { IAdminProblem } from '../../../../utils/models/admin.model';
 import axios from 'axios';
 import InputBox from '../../../InputBox/InputBox';
+import { AuthContext } from '../../../../context/AuthContext/AuthContext';
 
 type TestCaseInput = {
     input: FileList,
@@ -29,7 +29,10 @@ export default function EditProblemTestCases() {
         setError,
         formState: { errors, isSubmitting }
     } = useForm<TestCaseInput>();
+    
     const { addAlert } = useContext(AlertContext);
+    const { axiosInstance } = useContext(AuthContext);
+
     const { id } = useParams();
 
     const [testCases, setTestCases] = useState<{id: string, visible: boolean}[]>([]);

@@ -2,7 +2,6 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import IAuthContext, { AuthRole } from "./IAuthContext.ts";
 import { jwtDecode } from "jwt-decode";
 import { roleMap } from "./IAuthContext.ts";
-import axiosInstance from "../../utils/axios.ts";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 
@@ -18,7 +17,10 @@ const initialValue = {
     authToken: null,
     refreshToken: null,
     login: () => {},
-    socket: null
+    socket: null,
+    axiosInstance: axios.create({
+        baseURL: import.meta.env.VITE_REST_URL
+    })
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue)
@@ -29,6 +31,10 @@ const AuthProvider = ({ children }: Props) => {
     const [ role, setRole ] = useState<AuthRole>(initialValue.role);
     const [ username, setUsername ] = useState<string>("");
     const [ socket, setSocket ] = useState<Socket | null>(null);
+
+    const axiosInstance = axios.create({
+        baseURL: import.meta.env.VITE_REST_URL
+    })
 
     async function updateToken() {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -142,7 +148,7 @@ const AuthProvider = ({ children }: Props) => {
     }
 
     return (
-        <AuthContext.Provider value={{ username, role, setRole, logout, login, socket }}>
+        <AuthContext.Provider value={{ username, role, setRole, logout, login, socket, axiosInstance }}>
             { children }
         </AuthContext.Provider>
     )

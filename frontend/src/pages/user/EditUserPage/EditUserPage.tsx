@@ -9,7 +9,6 @@ import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import Loading from '../../../components/Loading/Loading';
-import axiosInstance from '../../../utils/axios';
 import { IAccount } from '../../../utils/models/profile.model';
 import axios from 'axios';
 import { BiImageAdd } from 'react-icons/bi';
@@ -25,7 +24,7 @@ const REST_URL = import.meta.env.VITE_REST_URL
 
 export default function EditUserPage() {
 
-    const { username } = useContext(AuthContext);
+    const { username, axiosInstance } = useContext(AuthContext);
 
     const [imageURL, setImageURL] = useState<string>("");
 

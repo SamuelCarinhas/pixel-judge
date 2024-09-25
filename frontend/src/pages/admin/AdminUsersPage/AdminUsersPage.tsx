@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import './AdminUsersPage.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole, roleMap, roleNames, roleTags } from '../../../context/AuthContext/IAuthContext';
-import axiosInstance from '../../../utils/axios';
 import { CiSearch } from 'react-icons/ci';
 import { MdCancel, MdDelete, MdEdit } from 'react-icons/md';
 import { FaSave } from 'react-icons/fa';
@@ -23,7 +22,7 @@ export default function AdminUsersPage() {
     const [currentEditing, setCurrentEditing] = useState<IUser | undefined>(undefined);
     const [search, setSearch] = useState<string>("");
 
-    const { role, username } = useContext(AuthContext);
+    const { role, username, axiosInstance } = useContext(AuthContext);
 
     const roles = ['USER', 'ADMIN', 'MODERATOR'];
 

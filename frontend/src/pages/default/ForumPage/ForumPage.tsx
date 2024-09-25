@@ -1,7 +1,6 @@
 import './ForumPage.css'
 import { useContext, useEffect, useState } from 'react'
 import { IPost } from '../../../utils/models/post.model'
-import axiosInstance from '../../../utils/axios';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,7 @@ const REST_URL = import.meta.env.VITE_REST_URL
 export default function ForumPage() {
 
     const [posts, setPosts] = useState<IPost[]>([]);
-    const { role, username } = useContext(AuthContext);
+    const { role, username, axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         axiosInstance.get('/post/all').then(res => {

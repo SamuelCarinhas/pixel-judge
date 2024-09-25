@@ -1,7 +1,6 @@
 import './PostPage.css'
 import { useContext, useEffect, useState } from 'react'
 import { IPost } from '../../../utils/models/post.model'
-import axiosInstance from '../../../utils/axios';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import { Link, useParams } from 'react-router-dom';
@@ -17,7 +16,7 @@ export default function PostPage() {
     const { id } = useParams();
 
     const [post, setPost] = useState<IPost | undefined>(undefined);
-    const { role, username } = useContext(AuthContext);
+    const { role, username, axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         axiosInstance.get(`/post?id=${id}`).then(res => {

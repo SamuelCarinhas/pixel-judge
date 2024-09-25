@@ -10,7 +10,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../../context/AuthContext/IAuthContext';
 import { IAdminProblem } from '../../../../utils/models/admin.model';
-import axiosInstance from '../../../../utils/axios';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AlertType } from '../../../../context/AlertContext/IAlertContext';
@@ -24,7 +23,7 @@ type ProblemSettingsInput = {
 
 export default function EditProblemSettings() {
 
-    const { role } = useContext(AuthContext);
+    const { role, axiosInstance } = useContext(AuthContext);
     const { id } = useParams();
     const { addAlert } = useContext(AlertContext);
     const [problem, setProblem] = useState<IAdminProblem>();

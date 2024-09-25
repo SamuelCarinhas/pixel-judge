@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router-dom'
 import './SubmissionPage.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import axiosInstance from '../../../utils/axios';
 import { ISubmission } from '../../../utils/models/submission.model';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function SubmissionPage() {
 
@@ -11,6 +11,8 @@ export default function SubmissionPage() {
     const [notFound, setNotFound] = useState(false);
 
     const [submission, setSubmission] = useState<ISubmission>();
+
+    const { axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         axiosInstance.get(`/submission?id=${id}`)

@@ -1,3 +1,4 @@
+import { AxiosInstance } from "axios";
 import { Socket } from "socket.io-client";
 
 export enum AuthRole {
@@ -15,6 +16,7 @@ export default interface IAuthContext {
     socket: Socket | null;
     logout: () => void;
     login: (authToken: string, refreshToken: string) => void;
+    axiosInstance: AxiosInstance;
 }
 
 export const roleMap = {

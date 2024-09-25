@@ -1,14 +1,15 @@
 import './PagedContainer.css'
 import IPagedContainer from './IPagedContainer';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axiosInstance from '../../../utils/axios';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function PagedContainer<T>(props: IPagedContainer<T>) {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState<number>(Number(searchParams.get('page')) || 1);
     const [maxPage, setMaxPage] = useState<number>(0);
+    const { axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         const page = Number(searchParams.get('page')) || 1;
