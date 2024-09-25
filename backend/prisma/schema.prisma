@@ -78,6 +78,8 @@ model Profile {
   postLikes PostLike[]
   postComment PostComment[]
 
+  contests ContestParticipant[]
+
   @@index([country])
   @@index([organization])
   @@index([city])
@@ -125,6 +127,8 @@ model Problem {
   testCases ProblemTestCase[]
   solutions ProblemSolution[]
   submissions Submission[]
+
+  contests ContestProblem[]
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt @default(now())
@@ -190,6 +194,9 @@ model Submission {
   language Language @relation(fields: [languageId], references: [id])
   languageId String
 
+  contest Contest? @relation(fields: [contestId], references: [id])
+  contestId String?
+
   execTime Float @default(0)
 
   createdAt       DateTime  @default(now())
@@ -245,4 +252,44 @@ model PostComment {
 
   createdAt   DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Contest {
+  id String @id @default(cuid())
+
+  startDate DateTime
+  endDate DateTime
+
+  participants ContestParticipant[]
+  submissions Submission[]
+  problems ContestProblem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContestProblem {
+  contest Contest  @relation(fields: [contestId], references: [id])
+  contestId  String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  problemId String
+
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([contestId, problemId])
+}
+
+model ContestParticipant {
+  contest Contest  @relation(fields: [contestId], references: [id])
+  contestId  String
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  profileId String
+
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([contestId, profileId])
 }
