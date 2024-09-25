@@ -32,7 +32,7 @@ export default function AdminLogsPage() {
                 logs.map(log => log.createdAt = new Date(log.createdAt))
                 setLogs(logs)
             })
-    }, [role]);
+    }, [axiosInstance]);
 
     return (
         <div className='admin-logs'>

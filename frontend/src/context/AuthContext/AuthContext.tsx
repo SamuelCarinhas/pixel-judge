@@ -32,9 +32,7 @@ const AuthProvider = ({ children }: Props) => {
     const [ username, setUsername ] = useState<string>("");
     const [ socket, setSocket ] = useState<Socket | null>(null);
 
-    const axiosInstance = axios.create({
-        baseURL: import.meta.env.VITE_REST_URL
-    })
+    const axiosInstance = initialValue.axiosInstance;
 
     async function updateToken() {
         const refreshToken = localStorage.getItem('refreshToken');
