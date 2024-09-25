@@ -37,18 +37,24 @@ def resolve_submissions(count=0):
         WHERE s."status" = \'WAITING\';
     ''')
     submissions = cursor.fetchall()
+
+    extra = os.getcwd().startswith('/mnt/')
+
     for submission in submissions:
         submissionId = submission[0]
         cursor.execute('UPDATE \"Submission\" SET status=\'JUDGING\' WHERE id=%s', (submissionId,))
         conn.commit()
         problemId = submission[1]
-        solutionPath = submission[2]
+        solutionPath = submission[2].replace('\\', '/')
         timeLimit = submission[3]
         memoryLimit = submission[4] * 1000
         fileExtension = submission[5]
         compileFlag = submission[6]
         compileCommand = submission[7]
         runCommand = submission[8]
+
+        if extra:
+            solutionPath = solutionPath.replace('C:', '/mnt/c')
 
         print(f'Evaluating submission {submissionId}')
 
@@ -66,7 +72,9 @@ def resolve_submissions(count=0):
             print('Compilation Error')
             continue
         
-        executable = res['executable']
+        executable = res['executable'].replace('\\', '/')
+        if extra:
+            executable = executable.replace('C:', '/mnt/c')
         verdict = None
         for i, testCase in enumerate(testCases):
             print(f'Running test case {i+1}')
@@ -77,8 +85,11 @@ def resolve_submissions(count=0):
                 'verdict': f'Running test case {i+1}'
             }
             redis_client.publish('submission_status', json.dumps(message))
-            inputPath = testCase[0]
-            outputPath = testCase[1]
+            inputPath = testCase[0].replace('\\', '/')
+            outputPath = testCase[1].replace('\\', '/')
+            if extra:
+                inputPath = inputPath.replace('C:', '/mnt/c')
+                outputPath = outputPath.replace('C:', '/mnt/c')
             res = sandbox.run_test_case(executable, runCommand, inputPath, outputPath, 'default_evaluator.py', timeLimit, memoryLimit)
             verdict = res
             if res['response'] != 'Accepted':
