@@ -37,6 +37,11 @@
     border-left: 0.5rem solid #ccc;
 }
 
+.forum-page .title {
+    padding: 1rem;
+    font-size: large;
+}
+
 .forum-page .post .post-header {
     display: flex;
     flex-direction: row;

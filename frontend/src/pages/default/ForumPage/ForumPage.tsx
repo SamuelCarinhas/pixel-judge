@@ -68,6 +68,7 @@ export default function ForumPage() {
             }
             {posts.map((post, index) => (
                 <div className='post' key={index}>
+                    <span className='title'> { post.title } </span>
                     <div className='post-header'>
                         <div className='avatar'>
                             <img src={ `${REST_URL}/profile/picture?username=${post.profile.account.username}` }/>

@@ -1,0 +1,81 @@
+.post-page {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.post-page .like.active svg {
+    color: red;
+}
+
+.post-page .like:hover {
+    cursor: pointer;
+}
+
+.post-page .like:hover svg {
+    color: red;
+}
+
+.post-page .like.active:hover svg {
+    color: black;
+}
+
+.post-page a {
+    text-decoration: none;
+    color: #FF7219;
+}
+
+.post-page a:hover {
+    filter: brightness(80%);
+}
+
+.post-page .post {
+    width: 100%;
+    border-left: 0.5rem solid #ccc;
+}
+
+.post-page .title {
+    padding: 1rem;
+    font-size: large;
+}
+
+.post-page .post .post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+}
+
+.post-page .post .post-content {
+    border-bottom: 1px solid #ccc;
+}
+
+.post-page .post .post-footer {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.post-page .post .post-header .avatar {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.post-page .post .post-header img {
+    width: 3rem;
+    object-fit: contain;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+}

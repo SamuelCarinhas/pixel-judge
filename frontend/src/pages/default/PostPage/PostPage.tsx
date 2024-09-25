@@ -5,8 +5,6 @@ import axiosInstance from '../../../utils/axios';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import { Link, useParams } from 'react-router-dom';
-import CustomButton from '../../../components/CustomButton/CustomButton';
-import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import MarkdownContainer from '../../../components/containers/MarkdownContainer/MarkdownContainer';
 import { FaHeart } from 'react-icons/fa';
 import { IoChatbox } from 'react-icons/io5';
@@ -62,8 +60,9 @@ export default function PostPage() {
     return (
         post === undefined ? <></>
         :
-        <div className='forum-page'>
+        <div className='post-page'>
             <div className='post'>
+                <span className='title'> { post.title } </span>
                 <div className='post-header'>
                     <div className='avatar'>
                         <img src={ `${REST_URL}/profile/picture?username=${post.profile.account.username}` }/>
