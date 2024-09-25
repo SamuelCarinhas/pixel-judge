@@ -115,8 +115,6 @@ const AuthProvider = ({ children }: Props) => {
             setUsername(decoded['user']);
             setRole(role);
 
-            connectSocketIO();
-
             axiosInstance.interceptors.request.use(request => {
                 const accessToken = localStorage.getItem('authToken');
                 request.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -124,13 +122,18 @@ const AuthProvider = ({ children }: Props) => {
             }, error => Promise.reject(error));
 
             axiosInstance.interceptors.response.use(
-                response => response,
+                response => {
+                    console.log('RESPONSE', response)
+                    return response
+                },
                 async error => {
                     const originalRequest = error.config;
                     if (error.response.status === 401 && !originalRequest._retry) {
                         originalRequest._retry = true;
                         try {
                             await updateToken();
+
+                            console.log('UPDATE TOKEN');
 
                             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
@@ -142,6 +145,8 @@ const AuthProvider = ({ children }: Props) => {
                     return Promise.reject(error);
                 }
             );
+
+            connectSocketIO();
         } catch(e) {
             logout();
         }
