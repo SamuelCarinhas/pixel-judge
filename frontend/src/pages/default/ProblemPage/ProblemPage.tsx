@@ -48,7 +48,6 @@ export default function ProblemPage() {
                 submissions.map(submission => submission.updatedAt = new Date(submission.updatedAt))
                 setSubmissions(submissions);
             })
-            .catch(() => {});
     }, [id]);
 
     const {
