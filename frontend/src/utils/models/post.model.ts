@@ -1,33 +1,31 @@
 export interface IPost {
     id: string,
+    title: string,
+    content: string,
     homePage: boolean,
     createdAt: Date,
     updatedAt: Date,
     profile: {
-        imagePath: string,
         account: {
             username: string
         }
     }
-    likes: [
+    likes:
         {
             profile: {
                 account: {
                     username: string
                 }
             }
-        }
-    ]
-    comments: [
+        }[]
+    comments:
         {
             profile: {
-                imagePath: string,
                 account: {
                     username: string
                 }
             }
             createdAt: Date,
             updatedAt: Date
-        }
-    ]
+        }[]
 }

@@ -37,9 +37,29 @@ export async function updatePost(req: Request, res: Response, next: NextFunction
         .catch((error) => next(error))
 }
 
+export async function like(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.query;
+
+    postService
+        .like(res.locals.account, id as string)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Liked the post" }))
+        .catch((error) => next(error))
+}
+
+export async function unlike(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.query;
+
+    postService
+        .unlike(res.locals.account, id as string)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Unliked the post" }))
+        .catch((error) => next(error))
+}
+
 export default {
     getPost,
     getPosts,
     createPost,
-    updatePost
+    updatePost,
+    like,
+    unlike
 }

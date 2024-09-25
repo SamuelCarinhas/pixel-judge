@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import adminService from "../services/admin.service";
 import { AdminUpdateProblemSchema } from "../models/admin.model";
-import { AccountWithProfile } from "../utils/types.util";
 
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
     adminService

@@ -45,7 +45,6 @@ export async function getPosts() {
         include: {
             profile: {
                 select: {
-                    imagePath: true,
                     account: {
                         select: {
                             username: true
@@ -70,7 +69,6 @@ export async function getPosts() {
                 select: {
                     profile: {
                         select: {
-                            imagePath: true,
                             account: {
                                 select: {
                                     username: true
@@ -96,7 +94,6 @@ export async function getPost(id: string) {
         include: {
             profile: {
                 select: {
-                    imagePath: true,
                     account: {
                         select: {
                             username: true
@@ -121,7 +118,6 @@ export async function getPost(id: string) {
                 select: {
                     profile: {
                         select: {
-                            imagePath: true,
                             account: {
                                 select: {
                                     username: true
@@ -141,9 +137,35 @@ export async function getPost(id: string) {
     return post
 }
 
+export async function like(currentAccount: AccountWithProfile, id: string) {
+    const post = await prisma.post.findUnique({ where: { id } })
+    if(!post) throw new NotFound({ id: "Post not found" })
+    
+    await prisma.postLike.create({
+        data: {
+            profileId: currentAccount.profile.id,
+            postId: post.id
+        }
+    }).catch(() => {});
+}
+
+export async function unlike(currentAccount: AccountWithProfile, id: string) {
+    const post = await prisma.post.findUnique({ where: { id } })
+    if(!post) throw new NotFound({ id: "Post not found" })
+    
+    await prisma.postLike.deleteMany({
+        where: {
+            profileId: currentAccount.profile.id,
+            postId: post.id
+        }
+    })
+}
+
 export default {
     createPost,
     updatePost,
     getPosts,
-    getPost
+    getPost,
+    like,
+    unlike
 }

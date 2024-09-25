@@ -2,9 +2,75 @@
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
 }
 
+.forum-page .like.active svg {
+    color: red;
+}
 
+.forum-page .like:hover {
+    cursor: pointer;
+}
+
+.forum-page .like:hover svg {
+    color: red;
+}
+
+.forum-page .like.active:hover svg {
+    color: black;
+}
+
+.forum-page a {
+    text-decoration: none;
+    color: #FF7219;
+}
+
+.forum-page a:hover {
+    filter: brightness(80%);
+}
+
+.forum-page .post {
+    width: 100%;
+    border-left: 0.5rem solid #ccc;
+}
+
+.forum-page .post .post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+}
+
+.forum-page .post .post-content {
+    border-bottom: 1px solid #ccc;
+}
+
+.forum-page .post .post-footer {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.forum-page .post .post-header .avatar {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.forum-page .post .post-header img {
+    width: 3rem;
+    object-fit: contain;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+}

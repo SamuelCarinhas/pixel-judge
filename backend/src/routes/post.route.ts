@@ -10,5 +10,7 @@ const router = Router()
 router.get('/', validate(AdminProblemGetSchema), postController.getPost)
 router.get('/all', postController.getPosts)
 router.post('/', authMiddleware.authorizeAccess, validate(PostSchema), postController.createPost)
+router.post('/like', authMiddleware.authorizeAccess, validate(AdminProblemGetSchema), postController.like)
+router.post('/unlike', authMiddleware.authorizeAccess, validate(AdminProblemGetSchema), postController.unlike)
 
 export default router
