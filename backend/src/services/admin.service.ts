@@ -262,6 +262,66 @@ export async function deleteLanguage(id: string) {
     })
 }
 
+export async function getContests() {
+    const contests = await prisma.contest.findMany({});
+
+    return contests;
+}
+
+export async function getContest(id: string) {
+    const contest = await prisma.contest.findUnique({ where: { id } });
+    if(!contest) throw new NotFound("Contest not found");
+
+    return contest;
+}
+
+export async function createContest(currentAccount: AccountWithProfile, title: string, startDate: Date, endDate: Date) {
+    const contest = await prisma.contest.create({
+        data: {
+            title,
+            startDate,
+            endDate
+        }
+    }).catch(() => { throw new Conflict({ id: "There is already a contest with this ID" })})
+
+    logger.admin(`${currentAccount.username} created contest ${contest.id}`, currentAccount)
+    
+    return contest;
+}
+
+export async function addContestProblem(currentAccount: AccountWithProfile, problemId: string, contestId: string, id: string) {
+    const contest = await prisma.contest.findUnique({ where: { id: contestId } });
+    if(!contest) throw new NotFound("Contest not found");
+    const problem = await prisma.problem.findUnique({ where: { id: problemId } });
+    if(!problem) throw new NotFound("Problem not found");
+
+    prisma.contestProblem.create({
+        data: {
+            id,
+            contestId: contest.id,
+            problemId: problem.id
+        }
+    }).catch(() => { throw new Conflict("This problem is already in this contest") })
+
+    logger.admin(`${currentAccount.username} added problem ${problem.id} to contest ${contest.id}`, currentAccount)
+}
+
+export async function removeContestProblem(currentAccount: AccountWithProfile, problemId: string, contestId: string) {
+    const contest = await prisma.contest.findUnique({ where: { id: contestId } });
+    if(!contest) throw new NotFound("Contest not found");
+    const problem = await prisma.problem.findUnique({ where: { id: problemId } });
+    if(!problem) throw new NotFound("Problem not found");
+
+    prisma.contestProblem.deleteMany({
+        where: {
+            contestId: contest.id,
+            problemId: problem.id
+        }
+    })
+
+    logger.admin(`${currentAccount.username} removed problem ${problem.id} to contest ${contest.id}`, currentAccount)
+}
+
 export default {
     getUsers,
     updateUser,
@@ -280,5 +340,10 @@ export default {
     getLanguages,
     addLanguage,
     updateLanguage,
-    deleteLanguage
+    deleteLanguage,
+    getContests,
+    getContest,
+    createContest,
+    addContestProblem,
+    removeContestProblem
 }

@@ -29,4 +29,8 @@ router.delete('/language', validate(AdminProblemGetSchema), adminController.dele
 router.post('/language', validate(LanguageSchema), adminController.addLanguage)
 router.put('/language', validate(LanguageSchema), adminController.updateLanguage)
 
+
+router.get('/contest/all', adminController.getContests)
+router.get('/contest', validate(AdminProblemGetSchema), adminController.getContest)
+
 export default router
