@@ -1,0 +1,74 @@
+.admin-contests {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-contests .search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-contests .search-bar .bar-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-contests .create-contest {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-contests table {
+    border-collapse: collapse;
+    border: none;
+    overflow: hidden;
+    width: 100%;
+    border: solid #eee 1px;
+    margin-bottom: 1rem;
+}
+
+.admin-contests td, th {
+    text-align: left;
+    vertical-align: middle;
+    padding: 8px;
+    border: none;
+    align-items: center;
+    height: 1.5rem;
+}
+
+.admin-contests tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.admin-contests .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-contests .red {
+    color: red;
+}
+
+.admin-contests .orange {
+    color: orange;
+}
+
+.admin-contests .green {
+    color: green;
+}
+
+.admin-contests .option:hover {
+    cursor: pointer;
+    filter: brightness(80%);
+}

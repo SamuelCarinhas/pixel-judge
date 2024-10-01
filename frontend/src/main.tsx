@@ -30,6 +30,7 @@ import SubmissionPage from './pages/default/SubmissionPage/SubmissionPage'
 import AdminSystemConfig from './pages/admin/AdminSystemConfig/AdminSystemConfig'
 import NewForumPost from './pages/user/NewForumPost/NewForumPost'
 import PostPage from './pages/default/PostPage/PostPage'
+import AdminContestListPage from './pages/admin/AdminContestListPage/AdminContestListPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -69,6 +70,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route path={'/admin/users'} element={ <PageContainer> <AdminContainer> <AdminUsersPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems'} element={ <PageContainer> <AdminContainer> <AdminProblemListPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems/edit/:id'} element={ <PageContainer> <AdminContainer> <AdminProblemEditPage /> </AdminContainer> </PageContainer> } />
+                <Route path={'/admin/contests'} element={ <PageContainer> <AdminContainer> <AdminContestListPage /> </AdminContainer> </PageContainer> } />
             </Route>
             <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
           </Routes>
