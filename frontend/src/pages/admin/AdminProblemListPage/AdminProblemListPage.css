@@ -36,7 +36,7 @@
     margin-bottom: 1rem;
 }
 
-.admin-problems td, th {
+.admin-problems td, .admin-problems th {
     text-align: left;
     vertical-align: middle;
     padding: 8px;
