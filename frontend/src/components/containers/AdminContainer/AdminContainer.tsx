@@ -56,7 +56,6 @@ export default function AdminContainer(props: IAdminContainer) {
     function toggleDropdown(idx: number) {
         const dropdowns = [...activeDropdown];
         dropdowns[idx] = !dropdowns[idx];
-        console.log('Toggle', idx, activeDropdown[idx], 'to', dropdowns[idx]);
         setActiveDropdown(dropdowns);
     }
 
