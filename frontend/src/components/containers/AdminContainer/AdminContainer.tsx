@@ -55,13 +55,18 @@ export default function AdminContainer(props: IAdminContainer) {
 
     function toggleDropdown(idx: number) {
         const dropdowns = [...activeDropdown];
-        dropdowns[idx] = true;
+        dropdowns[idx] = !dropdowns[idx];
+        console.log('Toggle', idx, activeDropdown[idx], 'to', dropdowns[idx]);
         setActiveDropdown(dropdowns);
     }
 
     useEffect(() => {
         const idx = dropdowns.findIndex(dropdown => dropdown.options.findIndex(option => option.path === path.pathname.toLowerCase()) !== -1)
-        if(idx !== -1) toggleDropdown(idx);
+        if(idx !== -1) {
+            const dropdowns = [false, false, false];
+            dropdowns[idx] = true;
+            setActiveDropdown(dropdowns);
+        }
     }, [path]);
 
     return (
