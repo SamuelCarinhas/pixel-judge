@@ -50,3 +50,15 @@ export const LanguageSchema = z.object({
         runCommand: z.string().min(1, 'The run command must be at least 1 character long'),
     })
 })
+
+export const AdminContestSchema = z.object({
+    body: z.object({
+        title: z.string().min(3, 'Title cannot be less than 3 characters').max(20, 'Title cannot be more than 20 characters').optional(),
+        startDate: z.string()
+            .refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date format" })
+            .transform((val) => new Date(val).toISOString()),
+        endDate: z.string()
+            .refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date format" })
+            .transform((val) => new Date(val).toISOString())
+    })
+})

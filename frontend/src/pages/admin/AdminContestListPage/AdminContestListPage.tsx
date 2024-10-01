@@ -5,7 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import CustomButton from "../../../components/CustomButton/CustomButton";
 import { IButtonColor } from "../../../components/CustomButton/ICustomButton";
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { MdEdit, MdLibraryBooks } from 'react-icons/md';
+import { MdDelete, MdEdit, MdLibraryBooks } from 'react-icons/md';
 import Popup from '../../../components/Popup/Popup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,8 +22,9 @@ type CreateContestInput = {
 }
 
 interface Contest {
+    id: string
     title: string
-    public: boolean
+    visible: boolean
     startDate: Date
     endDate: Date
 }
@@ -43,7 +44,13 @@ export default function AdminContestListPage() {
 
         axiosInstance.get('/admin/contest/all')
             .then(res => {
-                setContests(res.data.contests);
+                const data = res.data.contests as Contest[];
+                data.forEach(contest => {
+                    contest.startDate = new Date(contest.startDate),
+                    contest.endDate = new Date(contest.endDate)
+                })
+
+                setContests(data);
             })
     }, [role]);
 
@@ -56,15 +63,20 @@ export default function AdminContestListPage() {
     } = useForm<CreateContestInput>();
 
     const onSubmit: SubmitHandler<CreateContestInput> = async (data) => {
+        console.log(data);
         try {
-            await axiosInstance.post(`/admin/contest`, data);
+            const res = await axiosInstance.post(`/admin/contest`, data);
+            const contest = res.data.contest as Contest;
             addAlert({
                 type: AlertType.SUCCESS,
                 title: 'Success',
                 text: `Contest ${data.title} created`
             })
-            navigate(`/admin/contest/edit/${data.title}`)
+            navigate(`/admin/contest/edit/${contest.id}`)
         } catch(error) {
+            console.log(1);
+            console.log(error);
+
             if(!axios.isAxiosError(error)) {
                 setError("root", { message: "This was not supposed to happen."});
                 return;
@@ -72,14 +84,13 @@ export default function AdminContestListPage() {
             
             if(error.response && error.response.data && error.response.data.description) {
                 const errors = error.response.data.description;
+                console.log(errors);
                 for (let [key, value] of Object.entries(errors)) {
                     setError(key as keyof CreateContestInput, { message: value as string });
                 }
             } else {
                 setError("root", { message: "The server failed to respond" });
             }
-
-            throw error;
         }
     }
 
@@ -110,15 +121,18 @@ export default function AdminContestListPage() {
                         contests.filter(contest => contest.title.toLowerCase().includes(search.toLowerCase())).map((contest, idx) => (
                             <tr key={idx}>
                                 <td>{ contest.title }</td>
-                                <td>{ contest.public.toString() }</td>
-                                <td>{ contest.startDate.toLocaleTimeString() }</td>
-                                <td>{ contest.endDate.toLocaleTimeString() }</td>
+                                <td>{ contest.startDate.toLocaleString() }</td>
+                                <td>{ contest.endDate.toLocaleString() }</td>
+                                <td>{ contest.visible.toString() }</td>
                                 <td className='options'>
-                                    <Link to={`/admin/contest/edit/${contest.title}`}>
+                                    <Link to={`/admin/contest/edit/${contest.id}`}>
                                         <div className='option orange'>
                                             <MdEdit />
                                         </div>
                                     </Link>
+                                    <div className='option red'>
+                                        <MdDelete />
+                                    </div>
                                 </td>
                             </tr>
                         ))
@@ -153,6 +167,7 @@ export default function AdminContestListPage() {
                             placeholder='contest-end-date'
                         />
                         <CustomButton disabled={ isSubmitting } type='submit' text='Confirm' color={IButtonColor.GREEN}/>
+
                         { errors.root && <span className='red'>{ errors.root.message }</span> }
                     </form>
                 </Popup>

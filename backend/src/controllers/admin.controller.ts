@@ -187,11 +187,14 @@ export async function getContest(req: Request, res: Response, next: NextFunction
 }
 
 export async function createContest(req: Request, res: Response, next: NextFunction) {
-    const { title, startDate, endDate } = req.body;
+    let { title, startDate, endDate } = req.body;
+
+    startDate = new Date(startDate).toISOString();
+    endDate = new Date(endDate).toISOString();
 
     adminService
         .createContest(res.locals.account, title, startDate, endDate)
-        .then((contests) => res.status(StatusCodes.OK).json({ message: "Contests retrieved", contests }))
+        .then((contest) => res.status(StatusCodes.OK).json({ message: "Contests retrieved", contest }))
         .catch((error) => next(error))
 }
 

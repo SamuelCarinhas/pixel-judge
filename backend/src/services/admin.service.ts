@@ -282,7 +282,7 @@ export async function createContest(currentAccount: AccountWithProfile, title: s
             startDate,
             endDate
         }
-    }).catch(() => { throw new Conflict({ id: "There is already a contest with this ID" })})
+    }).catch(() => { throw new Conflict({ title: "There is already a contest with this title" })})
 
     logger.admin(`${currentAccount.username} created contest ${contest.id}`, currentAccount)
     
