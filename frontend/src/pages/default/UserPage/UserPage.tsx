@@ -12,7 +12,6 @@ import CustomButton from '../../../components/CustomButton/CustomButton';
 import { IButtonColor } from '../../../components/CustomButton/ICustomButton';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole, roleColors, roleMap, roleNames } from '../../../context/AuthContext/IAuthContext';
-import axiosInstance from '../../../utils/axios';
 import { ISubmission } from '../../../utils/models/submission.model';
 
 const REST_URL = import.meta.env.VITE_REST_URL
@@ -22,6 +21,7 @@ export default function UserPage() {
     const [submissions, setSubmissions] = useState<ISubmission[]>([]);
 
     const authContext = useContext(AuthContext);
+    const { axiosInstance } = useContext(AuthContext);
 
     const { username } = useParams();
     const [notFound, setNotFound] = useState<boolean>(false);

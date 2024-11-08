@@ -2,7 +2,6 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import IAuthContext, { AuthRole } from "./IAuthContext.ts";
 import { jwtDecode } from "jwt-decode";
 import { roleMap } from "./IAuthContext.ts";
-import axiosInstance from "../../utils/axios.ts";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 
@@ -18,7 +17,10 @@ const initialValue = {
     authToken: null,
     refreshToken: null,
     login: () => {},
-    socket: null
+    socket: null,
+    axiosInstance: axios.create({
+        baseURL: import.meta.env.VITE_REST_URL
+    })
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue)
@@ -30,6 +32,8 @@ const AuthProvider = ({ children }: Props) => {
     const [ username, setUsername ] = useState<string>("");
     const [ socket, setSocket ] = useState<Socket | null>(null);
 
+    const axiosInstance = initialValue.axiosInstance;
+
     async function updateToken() {
         const refreshToken = localStorage.getItem('refreshToken');
         let instance = axios.create({
@@ -37,16 +41,45 @@ const AuthProvider = ({ children }: Props) => {
                 "Authorization" : `Bearer ${refreshToken}`
             }
         })
-
+    
         const response = await instance.post(`${REST_URL}/auth/refresh-token`, {
             refreshToken,
         });
-
+    
         const { accessToken, refreshToken: newRefreshToken } = response.data;
         
         localStorage.setItem('authToken', accessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
     }
+    
+    axiosInstance.interceptors.request.use(request => {
+        const accessToken = localStorage.getItem('authToken');
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+        return request
+    }, error => Promise.reject(error));
+    
+    axiosInstance.interceptors.response.use(
+        response => {
+            return response
+        },
+        async error => {
+            const originalRequest = error.config;
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                try {
+                    await updateToken();
+
+    
+                    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+    
+                    return axiosInstance(originalRequest);
+                } catch (refreshError) {
+                    logout();
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
 
     async function connectSocketIO() {
         let authToken = localStorage.getItem('authToken');
@@ -87,6 +120,7 @@ const AuthProvider = ({ children }: Props) => {
             setRole(AuthRole.DEFAULT);
             return;
         }
+
         login(authToken, refreshToken);
     }, []);
 
@@ -110,39 +144,13 @@ const AuthProvider = ({ children }: Props) => {
             setRole(role);
 
             connectSocketIO();
-
-            axiosInstance.interceptors.request.use(request => {
-                const accessToken = localStorage.getItem('authToken');
-                request.headers['Authorization'] = `Bearer ${accessToken}`;
-                return request
-            }, error => Promise.reject(error));
-
-            axiosInstance.interceptors.response.use(
-                response => response,
-                async error => {
-                    const originalRequest = error.config;
-                    if (error.response.status === 401 && !originalRequest._retry) {
-                        originalRequest._retry = true;
-                        try {
-                            await updateToken();
-
-                            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
-
-                            return axiosInstance(originalRequest);
-                        } catch (refreshError) {
-                            logout();
-                        }
-                    }
-                    return Promise.reject(error);
-                }
-            );
         } catch(e) {
             logout();
         }
     }
 
     return (
-        <AuthContext.Provider value={{ username, role, setRole, logout, login, socket }}>
+        <AuthContext.Provider value={{ username, role, setRole, logout, login, socket, axiosInstance }}>
             { children }
         </AuthContext.Provider>
     )

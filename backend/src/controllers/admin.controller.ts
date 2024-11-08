@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import adminService from "../services/admin.service";
 import { AdminUpdateProblemSchema } from "../models/admin.model";
-import { AccountWithProfile } from "../utils/types.util";
 
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
     adminService
@@ -170,6 +169,53 @@ export async function deleteLanguage(req: Request, res: Response, next: NextFunc
         .catch((error) => next(error))
 }
 
+export async function getContests(_req: Request, res: Response, next: NextFunction) {
+
+    adminService
+        .getContests()
+        .then((contests) => res.status(StatusCodes.OK).json({ message: "Contests retrieved", contests }))
+        .catch((error) => next(error))
+}
+
+export async function getContest(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.query;
+
+    adminService
+        .getContest(id as string)
+        .then((contest) => res.status(StatusCodes.OK).json({ message: "Contest retrieved", contest }))
+        .catch((error) => next(error))
+}
+
+export async function createContest(req: Request, res: Response, next: NextFunction) {
+    let { title, startDate, endDate } = req.body;
+
+    startDate = new Date(startDate).toISOString();
+    endDate = new Date(endDate).toISOString();
+
+    adminService
+        .createContest(res.locals.account, title, startDate, endDate)
+        .then((contest) => res.status(StatusCodes.OK).json({ message: "Contests retrieved", contest }))
+        .catch((error) => next(error))
+}
+
+export async function addContestProblem(req: Request, res: Response, next: NextFunction) {
+    const { problemId, contestId, id } = req.body;
+
+    adminService
+        .addContestProblem(res.locals.account, problemId, contestId, id)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Problem added" }))
+        .catch((error) => next(error))
+}
+
+export async function removeContestProblem(req: Request, res: Response, next: NextFunction) {
+    const { problemId, contestId } = req.body;
+
+    adminService
+        .removeContestProblem(res.locals.account, problemId, contestId)
+        .then(() => res.status(StatusCodes.OK).json({ message: "Problem removed" }))
+        .catch((error) => next(error))
+}
+
 export default {
     getUsers,
     updateUser,
@@ -188,5 +234,10 @@ export default {
     getLanguages,
     addLanguage,
     updateLanguage,
-    deleteLanguage
+    deleteLanguage,
+    getContests,
+    getContest,
+    createContest,
+    addContestProblem,
+    removeContestProblem
 }

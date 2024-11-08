@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react'
 import './AdminLogsPage.css'
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
-import axiosInstance from '../../../utils/axios';
 
 interface ILog {
     author: {
@@ -20,7 +19,7 @@ const colorType = {
 
 export default function AdminLogsPage() {
 
-    const { role } = useContext(AuthContext);
+    const { role, axiosInstance } = useContext(AuthContext);
 
     const [logs, setLogs] = useState<ILog[]>([]);
 
@@ -33,7 +32,7 @@ export default function AdminLogsPage() {
                 logs.map(log => log.createdAt = new Date(log.createdAt))
                 setLogs(logs)
             })
-    }, [role]);
+    }, [axiosInstance]);
 
     return (
         <div className='admin-logs'>

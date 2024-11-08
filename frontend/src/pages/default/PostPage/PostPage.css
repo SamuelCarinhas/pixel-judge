@@ -1,4 +1,4 @@
-.home-page {
+.post-page {
     display: flex;
     width: 100%;
     justify-content: flex-start;
@@ -7,42 +7,50 @@
     gap: 3rem;
 }
 
-.home-page .like.active svg {
+.post-page .like.active svg {
     color: red;
 }
 
-.home-page .like:hover {
+.post-page .like:hover {
     cursor: pointer;
 }
 
-.home-page .like:hover svg {
+.post-page .like:hover svg {
     color: red;
 }
 
-.home-page .like.active:hover svg {
+.post-page .like.active:hover svg {
     color: black;
 }
 
-.home-page a {
+.post-page a {
     text-decoration: none;
     color: #FF7219;
 }
 
-.home-page a:hover {
+.post-page a:hover {
     filter: brightness(80%);
 }
 
-.home-page .post {
+.post-page .post {
     width: 100%;
     border-left: 0.5rem solid #ccc;
 }
 
-.home-page .title {
+.post-page .post .row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
     padding: 1rem;
+    box-sizing: border-box;
+}
+
+.post-page .title {
     font-size: large;
 }
 
-.home-page .post .post-header {
+.post-page .post .post-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -51,11 +59,11 @@
     border-bottom: 1px solid #ccc;
 }
 
-.home-page .post .post-content {
+.post-page .post .post-content {
     border-bottom: 1px solid #ccc;
 }
 
-.home-page .post .post-footer {
+.post-page .post .post-footer {
     user-select: none;
     display: flex;
     flex-direction: row;
@@ -66,14 +74,14 @@
     box-sizing: border-box;
 }
 
-.home-page .post .post-header .avatar {
+.post-page .post .post-header .avatar {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     align-items: flex-start;
 }
 
-.home-page .post .post-header img {
+.post-page .post .post-header img {
     width: 3rem;
     object-fit: contain;
     aspect-ratio: 1;

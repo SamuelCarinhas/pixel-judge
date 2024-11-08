@@ -9,7 +9,6 @@ import { MdEdit, MdLibraryBooks } from 'react-icons/md';
 import Popup from '../../../components/Popup/Popup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../../utils/axios';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import { AuthRole } from '../../../context/AuthContext/IAuthContext';
 import { AlertType } from '../../../context/AlertContext/IAlertContext';
@@ -30,7 +29,7 @@ export default function AdminProblemListPage() {
     const [search, setSearch] = useState<string>('');
     const [creatingProblem, setCreatingProblem] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { role } = useContext(AuthContext);
+    const { role, axiosInstance } = useContext(AuthContext);
     const { addAlert } = useContext(AlertContext);
 
     const [problems, setProblems] = useState<Problem[]>([]);

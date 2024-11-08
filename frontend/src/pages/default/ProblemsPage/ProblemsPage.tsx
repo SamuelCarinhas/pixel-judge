@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import axiosInstance from '../../../utils/axios';
+import { useContext, useEffect, useState } from 'react';
 import './ProblemsPage.css'
 import { IAdminProblem } from '../../../utils/models/admin.model';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function ProblemsPage() {
 
     const [problems, setProblems] = useState<IAdminProblem[]>([]);
+
+    const { axiosInstance } = useContext(AuthContext);
 
     useEffect(() => {
         axiosInstance.get('/problem/all')

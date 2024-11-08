@@ -1,15 +1,17 @@
 import { useParams } from 'react-router-dom'
 import './AdminProblemEditPage.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import EditProblemSettings from '../../../components/admin/problem-edit/EditProblemSettings/EditProblemSettings';
 import EditProblemDescription from '../../../components/admin/problem-edit/EditProblemDescription/EditProblemDescription';
-import axiosInstance from '../../../utils/axios';
 import NotFoundPage from '../../default/NotFoundPage/NotFoundPage';
 import EditProblemTestCases from '../../../components/admin/problem-edit/EditProblemTestCases/EditProblemTestCases';
+import { AuthContext } from '../../../context/AuthContext/AuthContext';
 
 export default function AdminProblemEditPage() {
 
     const { id } = useParams();
+
+    const { axiosInstance } = useContext(AuthContext);
 
     const [component, setComponent] = useState<number>(0);
     const [notFound, setNotFound] = useState<boolean>(false);

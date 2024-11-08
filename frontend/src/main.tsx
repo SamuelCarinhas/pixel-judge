@@ -28,6 +28,9 @@ import ProblemPage from './pages/default/ProblemPage/ProblemPage'
 import SubmissionsPage from './pages/default/SubmissionsPage/SubmissionsPage'
 import SubmissionPage from './pages/default/SubmissionPage/SubmissionPage'
 import AdminSystemConfig from './pages/admin/AdminSystemConfig/AdminSystemConfig'
+import NewForumPost from './pages/user/NewForumPost/NewForumPost'
+import PostPage from './pages/default/PostPage/PostPage'
+import AdminContestListPage from './pages/admin/AdminContestListPage/AdminContestListPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -56,6 +59,8 @@ createRoot(document.getElementById('root')!).render(
             
             <Route element={ <ProtectedRoute roles={[AuthRole.USER, AuthRole.MODERATOR, AuthRole.ADMIN]} />}>
                 <Route path={'/settings/profile'} element={ <PageContainer> <EditUserPage /> </PageContainer> } />
+                <Route path={'/forum/new-post'} element={ <PageContainer> <NewForumPost /> </PageContainer> } />
+                <Route path={'/forum/:id'} element={ <PageContainer> <PostPage /> </PageContainer> } />
             </Route>
 
             <Route element={ <ProtectedRoute roles={[AuthRole.ADMIN]}/> }>
@@ -65,6 +70,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route path={'/admin/users'} element={ <PageContainer> <AdminContainer> <AdminUsersPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems'} element={ <PageContainer> <AdminContainer> <AdminProblemListPage /> </AdminContainer> </PageContainer> } />
                 <Route path={'/admin/problems/edit/:id'} element={ <PageContainer> <AdminContainer> <AdminProblemEditPage /> </AdminContainer> </PageContainer> } />
+                <Route path={'/admin/contests'} element={ <PageContainer> <AdminContainer> <AdminContestListPage /> </AdminContainer> </PageContainer> } />
             </Route>
             <Route path="*" element={ <PageContainer> <NotFoundPage /> </PageContainer>} />
           </Routes>
