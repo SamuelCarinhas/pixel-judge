@@ -1,18 +1,15 @@
 import { FaGraduationCap } from "react-icons/fa";
-import Navbar from "../components/Navbar";
-import ValueCard from "../components/ValueCard";
+import ValueCard from "../components/cards/ValueCard";
 import { IoMdTime } from "react-icons/io";
 import { RiAuctionFill } from "react-icons/ri";
 import { MdSecurity } from "react-icons/md";
-import Footer from "../components/Footer";
 import AnimatedCanvas from "../components/AnimatedCanvas";
+import PageContainer from "../components/containers/PageContainer";
 
 export default function LandingPage() {
 
     return (
-        <div className="landing-page font-outfit flex w-full flex-col bg-[#F9FAFB] dark:bg-[#252525] items-center overflow-hidden">
-            <Navbar />
-
+        <PageContainer>
             <section className='relative flex w-full items-center justify-center bg-white dark:bg-[#222222]'>
                 <AnimatedCanvas />
                 <div className='z-10 pr-10 pl-10 max-w-7xl flex flex-col items-center justify-center gap-5 min-h-[30rem] h-[70dvh] max-h-[50rem] w-full'>
@@ -46,8 +43,6 @@ export default function LandingPage() {
                         giving you a professional-grade testing environment similar to real-world competitions." />
                 </div>
             </section>
-
-            <Footer />
-        </div>
+        </PageContainer>
     )
 }

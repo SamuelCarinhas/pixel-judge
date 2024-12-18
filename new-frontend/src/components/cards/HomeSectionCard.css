@@ -1,0 +1,3 @@
+.percentage::after {
+    background: conic-gradient(#FF8800 0% 16%, transparent 0 100%);
+}
